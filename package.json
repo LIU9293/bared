@@ -1,0 +1,30 @@
+{
+  "name": "bared",
+  "version": "0.0.1",
+  "description": "Headless CMS framework in NodeJS, lightweight but powerful",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest -i"
+  },
+  "keywords": [],
+  "author": "baredigit (hello@baredigit.com)",
+  "license": "MIT",
+  "dependencies": {
+    "@koa/router": "10.1.1",
+    "dotenv": "16.0.0",
+    "jsonwebtoken": "8.5.1",
+    "knex": "1.0.4",
+    "koa": "2.13.4",
+    "koa-bodyparser": "4.3.0",
+    "mysql2": "2.3.3"
+  },
+  "devDependencies": {
+    "axios": "0.26.1",
+    "jest": "27.5.1",
+    "standard": "16.0.4"
+  },
+  "standard": {
+    "global": ["bared", "test", "expect", "describe", "beforeEach", "beforeAll", "afterAll"]
+  }
+}
