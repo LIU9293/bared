@@ -1,28 +1,40 @@
 function insertKnexFields (t, field) {
+  let col
   switch (field.type) {
     case 'string':
-      t.string(field.name)
+      col = t.string(field.name)
       break
     case 'integer':
-      t.integer(field.name)
+      col = t.integer(field.name)
       break
     case 'boolean':
-      t.boolean(field.name)
+      col = t.boolean(field.name)
       break
     case 'text':
-      t.text(field.name)
+      col = t.text(field.name)
       break
     case 'date':
-      t.date(field.name)
+      col = t.date(field.name)
       break
     case 'datetime':
-      t.datetime(field.name)
+      col = t.datetime(field.name)
       break
     case 'enum':
-      t.enum(field.name, field.enum)
+      col = t.enum(field.name, field.enum)
+      break
+    case 'json':
+      col = t.json(field.name)
       break
     default:
       break
+  }
+
+  if (field.required) {
+    col.notNullable()
+  }
+
+  if (typeof field.default !== 'undefined') {
+    col.defaultTo(field.default)
   }
 }
 

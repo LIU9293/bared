@@ -12,6 +12,7 @@
   "author": "baredigit (hello@baredigit.com)",
   "license": "MIT",
   "dependencies": {
+    "@koa/cors": "^3.3.0",
     "@koa/router": "10.1.1",
     "dotenv": "16.0.0",
     "jsonwebtoken": "8.5.1",

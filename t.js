@@ -14,7 +14,7 @@ async function run () {
   try {
     const jwt = await login(1)
     const res = await axios({
-      url: 'http://localhost:3000/routes/post',
+      url: 'http://localhost:3000/routes/timer',
       method: 'get',
       headers: { authorization: `Bearer ${jwt}` }
       // data: {

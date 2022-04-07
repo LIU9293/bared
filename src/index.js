@@ -2,12 +2,14 @@ const Koa = require('koa')
 const glob = require('glob')
 const path = require('path')
 const bodyParser = require('koa-bodyparser')
+const cors = require('@koa/cors')
 const { getAuthType } = require('./api/user/middlewares')
 
 async function start () {
   global.bared = {}
   const app = new Koa()
 
+  app.use(cors())
   const schemas = glob.sync('./**/*.schema.js').map(addr => {
     return require(path.resolve(addr))
   })

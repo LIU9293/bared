@@ -15,9 +15,7 @@ const getService = async (tableName, query) => {
 const countService = async (tableName, query = {}) => {
   const res = await bared.knex(tableName)
     .where(builder => {
-      Object.keys(query).forEach(key => {
-        builder.where({ [key]: query[key] })
-      })
+      whereBuilder(tableName, builder, query)
     })
     .count('id')
   return res[0]['count(`id`)']
