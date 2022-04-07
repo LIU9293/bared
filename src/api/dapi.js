@@ -1,11 +1,7 @@
-
-// get all table schemas
 const Router = require('@koa/router')
 const router = new Router({ prefix: '/dapi' })
-// const { allowDeveloper } = require('./user/middlewares')
-// router.use(allowDeveloper)
-
-const { schemas } = global.bared
+const { allowDeveloper } = require('./user/middlewares')
+router.use(allowDeveloper)
 
 const getListController = schema => async ctx => {
   const { tableName } = schema
@@ -48,9 +44,10 @@ const deleteController = schema => async ctx => {
   ctx.body = res
 }
 
+const { schemas } = global.bared
 schemas.forEach(schema => {
   const { tableName } = schema
-  router.get(`/${tableName}`, (ctx, next) => getListController(schema)(ctx, next))
+  router.get(`/${tableName}`, async (ctx, next) => getListController(schema)(ctx, next))
   router.get(`/${tableName}/count`, (ctx, next) => countController(schema)(ctx, next))
   router.get(`/${tableName}/:id`, (ctx, next) => getController(schema)(ctx, next))
   router.post(`/${tableName}`, (ctx, next) => postController(schema)(ctx, next))

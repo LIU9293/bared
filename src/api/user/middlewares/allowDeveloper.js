@@ -1,8 +1,9 @@
-const allowDeveloper = (ctx, next) => {
+const allowDeveloper = async (ctx, next) => {
   if (ctx.state.authType === 'developer') {
-    next()
+    await next()
   } else {
-    ctx.throw(403, 'not allowed')
+    ctx.status = 403
+    ctx.body = 'not allowed'
   }
 }
 

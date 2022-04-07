@@ -11,15 +11,23 @@ async function login (id) {
 }
 
 async function run () {
-  const jwt = await login(1)
-  const res = await axios({
-    url: 'http://localhost:3000/ping',
-    method: 'get',
-    headers: { authorization: `Bearer ${jwt}` }
-  })
+  try {
+    const jwt = await login(4)
+    const res = await axios({
+      url: 'http://localhost:3000/papi/create-post',
+      method: 'post',
+      headers: { authorization: `Bearer ${jwt}` },
+      data: {
+        title: 'test-post',
+        cover: 'test-post.png',
+        category: 'tech'
+      }
+    })
 
-  console.log(res.data)
-  // console.log(jwt)
+    console.log(res.data)
+  } catch (error) {
+    console.log(error.message)
+  }
   process.exit(0)
 }
 

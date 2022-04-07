@@ -1,8 +1,10 @@
 const allowBasic = async (ctx, next) => {
   if (ctx.state.authType === 'basic') {
-    return next()
+    await next()
+  } else {
+    ctx.status = 403
+    ctx.body = 'not allowed'
   }
-  ctx.throw(403, 'not allowed')
 }
 
 module.exports = allowBasic

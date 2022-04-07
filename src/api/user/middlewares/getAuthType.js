@@ -27,7 +27,8 @@ const getAuthType = async (ctx, next) => {
   }
 
   ctx.state.authType = user.auth_type
-  next()
+  ctx.state.user = user
+  await next()
 }
 
 module.exports = getAuthType

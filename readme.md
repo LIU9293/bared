@@ -1,15 +1,19 @@
-## Lightweight, fast headless CMS fromework for NodeJS
+## Lightweight, headless CMS fromework for NodeJS
 
-Inspired by strapi (https://strapi.io/) but want to be more lightweighted and mobile friendly
+Inspired by strapi (https://strapi.io/) but want to be more lightweighted and mobile friendly, developer friendly.
 
 - [x] Connect mysql database
 - [x] Use knex to dynamicly create databases / tables
 - [x] Better folder structure
-- [x] Basic route for DAPI
+- [x] Services, routes for DAPI (developer api, CRUD operations)
 - [x] Basic auth process
 - [x] Register routes for application developers
-- [ ] Policy management | -> fix middleware applying to different routes
-- [ ] Plugin
+- [x] Policy management, config application router policy in router config file.
+- [ ] Basic register process
+- [ ] 3rd party auth (wechat)
+- [ ] Basic developer dashboard frontend (View and modify data)
+- [ ] Plugin system
+
 ## Global bared object
 
 * bared.services - basic query services
