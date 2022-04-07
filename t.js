@@ -1,8 +1,9 @@
 const axios = require('axios')
+const baseUrl = 'https://bared-timer-1780628-1310797887.ap-shanghai.run.tcloudbase.com'
 
 async function login (id) {
   const userResponse = await axios({
-    url: 'http://localhost:3000/auth/login/test',
+    url: baseUrl + '/auth/login/test',
     method: 'post',
     data: { id }
   })
@@ -14,14 +15,9 @@ async function run () {
   try {
     const jwt = await login(1)
     const res = await axios({
-      url: 'http://localhost:3000/routes/timer',
+      url: baseUrl + '/dapi/user',
       method: 'get',
       headers: { authorization: `Bearer ${jwt}` }
-      // data: {
-      //   title: 'test-post',
-      //   cover: 'test-post.png',
-      //   category: 'tech'
-      // }
     })
 
     console.log(res.data)

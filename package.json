@@ -1,8 +1,8 @@
 {
-  "name": "bared",
+  "name": "@bared/core",
   "version": "0.0.1",
   "description": "Headless CMS framework in NodeJS, lightweight but powerful",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "node index.js",
     "test": "jest -i",
@@ -12,7 +12,7 @@
   "author": "baredigit (hello@baredigit.com)",
   "license": "MIT",
   "dependencies": {
-    "@koa/cors": "^3.3.0",
+    "@koa/cors": "3.3.0",
     "@koa/router": "10.1.1",
     "dotenv": "16.0.0",
     "glob": "7.2.0",
