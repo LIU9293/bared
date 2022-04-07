@@ -3,18 +3,32 @@ const path = require('path')
 const Router = require('@koa/router')
 const allowBasic = require('./user/middlewares/allowBasic')
 const allowPublic = require('./user/middlewares/allowPublic')
+const allowDeveloper = require('./user/middlewares/allowDeveloper')
 
 function registerRoutes (app) {
   const routers = glob.sync('./**/*.router.js').map(addr => {
-    return require(path.resolve(addr))
+    const addrArray = addr.split('/')
+    const fileName = addrArray[addrArray.length - 1].replace('.router.js', '')
+
+    return {
+      routes: require(path.resolve(addr)),
+      name: fileName
+    }
   })
 
-  routers.forEach(contentRoutes => {
+  routers.forEach(current => {
+    const contentRoutes = current.routes
     const publicRouter = new Router()
     const privateRouter = new Router()
+    const developerRouter = new Router()
 
     privateRouter.use(allowBasic)
     publicRouter.use(allowPublic)
+    developerRouter.use(allowDeveloper)
+
+    developerRouter.get(`/routes/${current.name}`, async ctx => {
+      ctx.body = contentRoutes
+    })
 
     const publicContentRoutes = contentRoutes.filter(i => i.public)
     const privateContentRoutes = contentRoutes.filter(i => !i.public)
@@ -63,6 +77,8 @@ function registerRoutes (app) {
     app.use(publicRouter.allowedMethods())
     app.use(privateRouter.routes())
     app.use(privateRouter.allowedMethods())
+    app.use(developerRouter.routes())
+    app.use(developerRouter.allowedMethods())
   })
 }
 

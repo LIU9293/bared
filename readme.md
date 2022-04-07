@@ -9,9 +9,9 @@ Inspired by strapi (https://strapi.io/) but want to be more lightweighted and mo
 - [x] Basic auth process
 - [x] Register routes for application developers
 - [x] Policy management, config application router policy in router config file.
+- [ ] Basic developer dashboard frontend (View and modify data)
 - [ ] Basic register process
 - [ ] 3rd party auth (wechat)
-- [ ] Basic developer dashboard frontend (View and modify data)
 - [ ] Plugin system
 
 ## Global bared object
@@ -53,3 +53,4 @@ Exposed by library out of box, need authorization and user auth_type=developer
 
 `PUT - /dapi/comment/1` update data for comment where id=1
 
+`GET - /routes/post` get routes config for post, to generate API document for developer in dev dashboard

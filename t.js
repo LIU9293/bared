@@ -12,16 +12,16 @@ async function login (id) {
 
 async function run () {
   try {
-    const jwt = await login(4)
+    const jwt = await login(1)
     const res = await axios({
-      url: 'http://localhost:3000/papi/create-post',
-      method: 'post',
-      headers: { authorization: `Bearer ${jwt}` },
-      data: {
-        title: 'test-post',
-        cover: 'test-post.png',
-        category: 'tech'
-      }
+      url: 'http://localhost:3000/routes/post',
+      method: 'get',
+      headers: { authorization: `Bearer ${jwt}` }
+      // data: {
+      //   title: 'test-post',
+      //   cover: 'test-post.png',
+      //   category: 'tech'
+      // }
     })
 
     console.log(res.data)

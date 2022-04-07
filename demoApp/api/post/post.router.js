@@ -5,7 +5,12 @@ module.exports = [
     url: '/create-post',
     method: 'post',
     controller: createPost,
-    public: false
+    public: false,
+    params: {
+      title: 'string',
+      cover: 'string',
+      category: 'enum("business", "tech")'
+    }
   },
   {
     url: '/delete-post',
