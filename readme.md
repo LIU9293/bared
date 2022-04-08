@@ -9,9 +9,11 @@ Inspired by strapi (https://strapi.io/) but want to be more lightweighted and mo
 - [x] Basic auth process
 - [x] Register routes for application developers
 - [x] Policy management, config application router policy in router config file.
-- [ ] Basic developer dashboard frontend (View and modify data)
+- [x] Basic developer dashboard frontend (WIP)
 - [ ] Basic register process
 - [ ] 3rd party auth (wechat)
+- [ ] Error handling
+- [ ] Basic server security check
 - [ ] Plugin system
 
 ## Global bared object
