@@ -1,5 +1,5 @@
 const axios = require('axios')
-const baseUrl = 'http://localhost:3000'
+const baseUrl = 'bared-timer-1780628-1310797887.ap-shanghai.run.tcloudbase.com'
 
 async function login (id) {
   const userResponse = await axios({
