@@ -16,6 +16,12 @@ function registerRoutes (app) {
     }
   })
 
+  const schemaRouter = new Router()
+  schemaRouter.use(allowDeveloper)
+  schemaRouter.get('/dapi/schema/all', ctx => {
+    ctx.body = bared.schemas
+  })
+
   routers.forEach(current => {
     const contentRoutes = current.routes
     const publicRouter = new Router()
@@ -26,7 +32,7 @@ function registerRoutes (app) {
     publicRouter.use(allowPublic)
     developerRouter.use(allowDeveloper)
 
-    developerRouter.get(`/routes/${current.name}`, async ctx => {
+    developerRouter.get(`/dapi/routes/${current.name}`, async ctx => {
       ctx.body = contentRoutes
     })
 
@@ -79,6 +85,8 @@ function registerRoutes (app) {
     app.use(privateRouter.allowedMethods())
     app.use(developerRouter.routes())
     app.use(developerRouter.allowedMethods())
+    app.use(schemaRouter.routes())
+    app.use(schemaRouter.allowedMethods())
   })
 }
 

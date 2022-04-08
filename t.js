@@ -1,5 +1,5 @@
 const axios = require('axios')
-const baseUrl = 'https://bared-timer-1780628-1310797887.ap-shanghai.run.tcloudbase.com'
+const baseUrl = 'http://localhost:3000'
 
 async function login (id) {
   const userResponse = await axios({
@@ -14,8 +14,9 @@ async function login (id) {
 async function run () {
   try {
     const jwt = await login(1)
+    console.log(jwt)
     const res = await axios({
-      url: baseUrl + '/dapi/user',
+      url: baseUrl + '/dapi/schema/all',
       method: 'get',
       headers: { authorization: `Bearer ${jwt}` }
     })

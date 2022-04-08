@@ -4,9 +4,9 @@
   "description": "Headless CMS framework in NodeJS, lightweight but powerful",
   "main": "src/index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node ./demoApp/index.js",
     "test": "jest -i",
-    "dev": "nodemon index.js"
+    "dev": "nodemon ./demoApp/index.js"
   },
   "keywords": [],
   "author": "baredigit (hello@baredigit.com)",

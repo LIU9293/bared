@@ -1,5 +1,5 @@
 const Router = require('@koa/router')
-const router = new Router({ prefix: '/dapi' })
+const router = new Router()
 const { allowDeveloper } = require('./user/middlewares')
 router.use(allowDeveloper)
 
@@ -47,12 +47,12 @@ const deleteController = schema => async ctx => {
 const { schemas } = global.bared
 schemas.forEach(schema => {
   const { tableName } = schema
-  router.get(`/${tableName}`, async (ctx, next) => getListController(schema)(ctx, next))
-  router.get(`/${tableName}/count`, (ctx, next) => countController(schema)(ctx, next))
-  router.get(`/${tableName}/:id`, (ctx, next) => getController(schema)(ctx, next))
-  router.post(`/${tableName}`, (ctx, next) => postController(schema)(ctx, next))
-  router.delete(`/${tableName}/:id`, (ctx, next) => deleteController(schema)(ctx, next))
-  router.put(`/${tableName}/:id`, (ctx, next) => putController(schema)(ctx, next))
+  router.get(`/dapi/${tableName}`, async (ctx, next) => getListController(schema)(ctx, next))
+  router.get(`/dapi/${tableName}/count`, (ctx, next) => countController(schema)(ctx, next))
+  router.get(`/dapi/${tableName}/:id`, (ctx, next) => getController(schema)(ctx, next))
+  router.post(`/dapi/${tableName}`, (ctx, next) => postController(schema)(ctx, next))
+  router.delete(`/dapi/${tableName}/:id`, (ctx, next) => deleteController(schema)(ctx, next))
+  router.put(`/dapi/${tableName}/:id`, (ctx, next) => putController(schema)(ctx, next))
 })
 
 module.exports = router

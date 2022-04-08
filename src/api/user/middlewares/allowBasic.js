@@ -1,4 +1,5 @@
 const allowBasic = async (ctx, next) => {
+  console.log(ctx.state.authType)
   if (ctx.state.authType === 'basic') {
     await next()
   } else {

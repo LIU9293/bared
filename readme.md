@@ -25,9 +25,7 @@ Inspired by strapi (https://strapi.io/) but want to be more lightweighted and mo
 
 ## API category:
 
-`/api` for public API, with no auth
-
-`/papi` for private API, with auth
+`/api` for enduser, developer can define if the router need authorization or not
 
 `/dapi` for developer, general CURD operations
 
@@ -35,9 +33,9 @@ Inspired by strapi (https://strapi.io/) but want to be more lightweighted and mo
 
 Exposed by library out of box, need authorization and user auth_type=developer
 
-`GET - /dapi/post/1` get post where id=1
+`GET - /dapi/{content-type}/1` get content where id=1
 
-`GET - /dapi/user` get list of users
+`GET - /dapi/{content-type}` get list of content
   * `/dapi/user?_limit=2&_start=2` set limit and start
   * `/dapi/user?_sort=age:desc` sort
   * `/dapi/user?age~eq=21` select user age=21
@@ -45,12 +43,14 @@ Exposed by library out of box, need authorization and user auth_type=developer
   * `/dapi/user?age~lt=21` select user age<21, lte for <=
   * `/dapi/user?id~in=[1,2,3]` select user id in [1,2,3], nin for not in
 
-`GET - /dapi/user/count` count table, query same as get list
+`GET - /dapi/{content-type}/count` count table, query same as get list
 
-`POST - /dapi/comment` create a new comment item
+`POST - /dapi/{content-type}` create a new content item
 
-`DELETE - /dapi/comment/1` delete comment where id=1
+`DELETE - /dapi/{content-type}/1` delete content where id=1
 
-`PUT - /dapi/comment/1` update data for comment where id=1
+`PUT - /dapi/{content-type}/1` update data for content where id=1
 
-`GET - /routes/post` get routes config for post, to generate API document for developer in dev dashboard
+`GET - /dapi/routes/{content-type}` get routes config for post, to generate API document for developer in dev dashboard
+
+`GET - /dapi/schema/all` get routes config for post, to generate API document for developer in dev dashboard
