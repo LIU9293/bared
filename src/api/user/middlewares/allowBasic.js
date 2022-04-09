@@ -1,6 +1,7 @@
 const allowBasic = async (ctx, next) => {
-  console.log(ctx.state.authType)
-  if (ctx.state.authType === 'basic') {
+  if (ctx.state.authType === 'basic' ||
+    ctx.state.authType === 'developer'
+  ) {
     await next()
   } else {
     ctx.status = 403
