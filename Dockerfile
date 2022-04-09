@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD [ "node", "./dempApp/index.js" ]
+CMD [ "node", "./demoApp/index.js" ]
