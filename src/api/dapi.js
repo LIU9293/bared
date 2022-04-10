@@ -47,7 +47,7 @@ const deleteController = schema => async ctx => {
 const { schemas } = global.bared
 schemas.forEach(schema => {
   const { tableName } = schema
-  router.get(`/dapi/${tableName}`, async (ctx, next) => getListController(schema)(ctx, next))
+  router.get(`/dapi/${tableName}`, (ctx, next) => getListController(schema)(ctx, next))
   router.get(`/dapi/${tableName}/count`, (ctx, next) => countController(schema)(ctx, next))
   router.get(`/dapi/${tableName}/:id`, (ctx, next) => getController(schema)(ctx, next))
   router.post(`/dapi/${tableName}`, (ctx, next) => postController(schema)(ctx, next))
