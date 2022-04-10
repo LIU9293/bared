@@ -33,7 +33,7 @@ const postController = schema => async ctx => {
 const putController = schema => async ctx => {
   const { tableName } = schema
   const { id } = ctx.request.params
-  const res = await bared.services.update(tableName, { id }, ctx.request.body)
+  const res = await bared.services.update(tableName, id, ctx.request.body)
   ctx.body = res
 }
 

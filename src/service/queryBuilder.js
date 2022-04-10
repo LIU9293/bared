@@ -43,6 +43,7 @@ const whereBuilder = (tableName, builder, query) => {
           builder.whereNotIn(column, JSON.parse(query[key]))
           break
         default:
+          builder.where({ [column]: query[key] })
           break
       }
     }

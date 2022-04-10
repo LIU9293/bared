@@ -4,9 +4,7 @@ const getService = async (tableName, query) => {
   const res = await bared
     .knex(tableName)
     .where(builder => {
-      Object.keys(query).forEach(key => {
-        builder.where({ [key]: query[key] })
-      })
+      whereBuilder(tableName, builder, query)
     })
     .first()
   return res
@@ -41,27 +39,29 @@ const createService = async (tableName, query) => {
   const res = await bared
     .knex(tableName)
     .insert(query)
-  return res
+  const id = res[0]
+  const item = await getService(tableName, { id })
+  return item
 }
 
-const updateService = async (tableName, searchQuery, updateQuery) => {
-  const res = await bared
+const updateService = async (tableName, id, updateQuery) => {
+  await bared
     .knex(tableName)
-    .where(searchQuery)
+    .where({ id })
     .update({
       ...updateQuery,
       updated_at: bared.knex.fn.now()
     })
-  return res
+
+  const item = await getService(tableName, { id })
+  return item
 }
 
 const deleteService = async (tableName, query) => {
   const res = await bared
     .knex(tableName)
     .where(builder => {
-      Object.keys(query).forEach(key => {
-        builder.where({ [key]: query[key] })
-      })
+      whereBuilder(tableName, builder, query)
     })
     .del()
   return res

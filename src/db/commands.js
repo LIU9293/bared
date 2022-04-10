@@ -36,6 +36,10 @@ function insertKnexFields (t, field) {
   if (typeof field.default !== 'undefined') {
     col.defaultTo(field.default)
   }
+
+  if (field.unique) {
+    col.unique()
+  }
 }
 
 async function checkAndUpdateTableColumns (knex, tableName, fields) {

@@ -3,6 +3,8 @@ const glob = require('glob')
 const path = require('path')
 const bodyParser = require('koa-bodyparser')
 const cors = require('@koa/cors')
+const bcrypt = require('bcrypt')
+// const passport = require('./api/user/middlewares/passport')
 const { getAuthType } = require('./api/user/middlewares')
 
 async function start () {
@@ -22,6 +24,7 @@ async function start () {
 
   const { registerDatabase } = require('./db')
   app.use(bodyParser())
+  // app.use(passport.initialize())
   app.use(getAuthType)
 
   const pingApi = require('./api/ping')
@@ -32,10 +35,6 @@ async function start () {
   app.use(dapi.routes())
   app.use(dapi.allowedMethods())
 
-  const userApi = require('./api/user')
-  app.use(userApi.routes())
-  app.use(userApi.allowedMethods())
-
   const registerRoutes = require('./api/register')
   registerRoutes(app)
 
@@ -44,10 +43,12 @@ async function start () {
   const rootUser = await global.bared.services.get('user', { name: 'admin' })
 
   if (!rootUser) {
+    const hashedPassword = await bcrypt.hash('root', 10)
     await global.bared.services.create('user', {
       name: 'admin',
       avatar: 'admin.png',
-      age: 18,
+      username: 'root',
+      password: hashedPassword,
       auth_type: 'developer'
     })
   }
@@ -58,9 +59,4 @@ async function start () {
   console.log(`> server listening on port ${port}`)
 }
 
-async function stop () {
-  await global.bared._server.close()
-  global.bared = null
-}
-
-module.exports = { start, stop }
+module.exports = { start }

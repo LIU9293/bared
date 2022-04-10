@@ -1,7 +1,7 @@
 
 module.exports = {
   tableName: 'timer',
-  displayName: '计时器',
+  displayName: 'Timer',
   attributes: {
     user_id: { type: 'integer', required: true },
     title: { type: 'string', required: true },
