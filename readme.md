@@ -12,7 +12,10 @@ Inspired by strapi (https://strapi.io/) but want to be more lightweighted and mo
 - [x] Basic developer dashboard frontend (WIP)
 - [x] Basic register process
 - [ ] 3rd party auth (wechat)
+- [ ] Alert column if anything changed in schema file (required, default, unique)
 - [ ] Error handling
+- [ ] Logging
+- [ ] Expose config outside (CORS or some other configs)
 - [ ] Basic server security check
 - [ ] Plugin system
 
