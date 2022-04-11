@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt')
 const { whereBuilder } = require('./queryBuilder')
 
 const getService = async (tableName, query) => {
@@ -36,6 +37,11 @@ const getListService = async (tableName, query = {}) => {
 }
 
 const createService = async (tableName, query) => {
+  if (tableName === 'user') {
+    const hashedPassword = await bcrypt.hash(query.password, 10)
+    query.password = hashedPassword
+  }
+
   const res = await bared
     .knex(tableName)
     .insert(query)
@@ -45,6 +51,11 @@ const createService = async (tableName, query) => {
 }
 
 const updateService = async (tableName, id, updateQuery) => {
+  if (tableName === 'user' && updateQuery.password) {
+    const hashedPassword = await bcrypt.hash(updateQuery.password, 10)
+    updateQuery.password = hashedPassword
+  }
+
   await bared
     .knex(tableName)
     .where({ id })

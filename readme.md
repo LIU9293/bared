@@ -11,9 +11,11 @@ Inspired by strapi (https://strapi.io/) but want to be more lightweighted and mo
 - [x] Policy management, config application router policy in router config file.
 - [x] Basic developer dashboard frontend (WIP)
 - [x] Basic register process
-- [ ] 3rd party auth (wechat)
-- [ ] Alert column if anything changed in schema file (required, default, unique)
+- [x] Alert column if anything changed in schema file
+  * `required` and `default` is editable
+  * `type` and `unique` need migration and TBD
 - [ ] Error handling
+- [ ] 3rd party auth (wechat)
 - [ ] Logging
 - [ ] Expose config outside (CORS or some other configs)
 - [ ] Basic server security check

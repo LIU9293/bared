@@ -5,7 +5,7 @@ module.exports = {
   attributes: {
     user_id: { type: 'integer', required: true },
     title: { type: 'string', required: true },
-    cover: { type: 'string', default: '' },
+    cover: { type: 'string', required: false },
     config: { type: 'json', required: true },
     is_public: { type: 'boolean', default: false },
     timer_list_id: { type: 'integer' }
