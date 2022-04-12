@@ -14,7 +14,7 @@ const countController = schema => async ctx => {
   const { tableName } = schema
   const query = ctx.request.query
   const res = await bared.services.count(tableName, query)
-  ctx.body = res
+  ctx.body = { count: res }
 }
 
 const getController = schema => async ctx => {
@@ -41,7 +41,7 @@ const deleteController = schema => async ctx => {
   const { tableName } = schema
   const id = ctx.params.id
   const res = await bared.services.delete(tableName, { id })
-  ctx.body = res
+  ctx.body = { id: res }
 }
 
 const { schemas } = global.bared

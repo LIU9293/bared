@@ -29,10 +29,9 @@ module.exports = {
       return
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10)
     const user = await bared.services.create('user', {
       username,
-      password: hashedPassword,
+      password,
       auth_type: 'basic'
     })
 
