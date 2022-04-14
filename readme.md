@@ -52,6 +52,7 @@ Exposed by library out of box, need authorization and user auth_type=developer
   * `/dapi/user?age~gt=21` select user age>21, gte for >=
   * `/dapi/user?age~lt=21` select user age<21, lte for <=
   * `/dapi/user?id~in=[1,2,3]` select user id in [1,2,3], nin for not in
+  * `/dapi/user?_q=username:test` search users with column username contains `test`
 
 `GET - /dapi/{content-type}/count` count table, query same as get list
 

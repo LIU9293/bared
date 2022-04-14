@@ -22,20 +22,13 @@ async function register (username, password) {
 
 async function run () {
   try {
-    // const res = await register('test_3', 'test_3')
-    const res = await login('test_3', 'test_3')
-    // console.log(res)
+    const res = await login('root', 'root')
     const res2 = await axios({
-      url: baseUrl + '/papi/auth/profile/update',
-      method: 'post',
-      headers: { authorization: `Bearer ${res.jwt}` },
-      data: {
-        avatar: 'https://wx.qlogo.cn/mmhead/Q3auHgzwzM5WLmo6QYmBhT0iafxCqWLTgT1ICQjmjhs0tzuB60FUvyQ/0',
-        name: 'Test User 3'
-      }
+      url: baseUrl + '/dapi/user?id~in=[4,5,6]&id~gte=5&_q=bili2',
+      method: 'get',
+      headers: { authorization: `Bearer ${res.jwt}` }
     })
-
-    console.log(res2)
+    console.log(res2.data)
   } catch (error) {
     console.log(error.message)
   }

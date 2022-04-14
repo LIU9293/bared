@@ -19,7 +19,8 @@ module.exports = [
       title: { type: 'string', required: true },
       cover: { type: 'string', required: false },
       is_public: { type: 'boolean', default: false, required: true }
-    }
+    },
+    query: false
   },
   {
     method: 'POST',
@@ -28,7 +29,8 @@ module.exports = [
     public: false,
     params: {
       timerId: { type: 'integer', required: true }
-    }
+    },
+    query: false
   },
   {
     method: 'GET',
@@ -38,24 +40,28 @@ module.exports = [
     params: {
       start: { type: 'integer', required: false, default: 0 },
       limit: { type: 'integer', required: false, default: 20 }
-    }
+    },
+    query: false
   },
   {
     method: 'POST',
     url: '/timer/update',
     controller: updateTimer,
-    public: false
+    public: false,
+    query: false
   },
   {
     method: 'GET',
     url: '/timer/:id',
     controller: getTimerDetail,
-    public: true
+    public: true,
+    query: false
   },
   {
     method: 'GET',
     url: '/timer/top',
     controller: getTopTimers,
-    public: true
+    public: true,
+    query: true
   }
 ]

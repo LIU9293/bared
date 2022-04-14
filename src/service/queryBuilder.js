@@ -8,9 +8,10 @@ const whereBuilder = (tableName, builder, query) => {
   const schema = bared.schemas.find(i => i.tableName === tableName)
   const columns = Object.keys(schema.attributes).concat(['id'])
 
-  // query  { auth_type~eq: 'basic', age~gt: 10 }
-  const userSearchKeys = Object.keys(query).filter(i => i.slice(0, 1) !== '_')
-  userSearchKeys.forEach(key => {
+  const userQueryKeys = Object.keys(query)
+    .filter(i => i.slice(0, 1) !== '_')
+
+  userQueryKeys.forEach(key => {
     const [column, matchKey] = key.split('~')
     if (columns.indexOf(column) >= 0) {
       switch (matchKey) {
@@ -36,6 +37,7 @@ const whereBuilder = (tableName, builder, query) => {
 
         case 'in':
           // query[key] -> [1,2,3]
+          // console.log(column, JSON.parse(query[key]))
           builder.whereIn(column, JSON.parse(query[key]))
           break
 
@@ -48,6 +50,13 @@ const whereBuilder = (tableName, builder, query) => {
       }
     }
   })
+
+  if (query._q) {
+    const [key, value] = query._q.split(':')
+    if (value) {
+      builder.whereILike(key, `%${value}%`)
+    }
+  }
 }
 
 module.exports = { whereBuilder }

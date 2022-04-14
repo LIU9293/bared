@@ -25,6 +25,10 @@ const getListService = async (tableName, query = {}) => {
   const limit = query._limit || 20
   const sort = query._sort || 'created_at:desc'
 
+  /**
+   * _q=test, search should be mixed with other querys?
+   * _q=test&id_in=[1,2,3]
+   */
   const res = await bared.knex(tableName)
     .where(builder => {
       whereBuilder(tableName, builder, query)
