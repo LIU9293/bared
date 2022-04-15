@@ -4,11 +4,11 @@ const path = require('path')
 const bodyParser = require('koa-bodyparser')
 const cors = require('@koa/cors')
 const bcrypt = require('bcrypt')
-// const passport = require('./api/user/middlewares/passport')
+const respond = require('./middlewares/respond')
 const { getAuthType } = require('./api/user/middlewares')
+global.bared = {}
 
 async function start () {
-  global.bared = {}
   const app = new Koa()
 
   app.use(cors())
@@ -24,7 +24,7 @@ async function start () {
 
   const { registerDatabase } = require('./db')
   app.use(bodyParser())
-  // app.use(passport.initialize())
+  app.use(respond())
   app.use(getAuthType)
 
   const pingApi = require('./api/ping')

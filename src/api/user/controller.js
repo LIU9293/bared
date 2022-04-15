@@ -4,29 +4,31 @@ const { createJwtToken } = require('./utils/jwt')
 module.exports = {
   async loginLocal (ctx) {
     const { username, password } = ctx.request.body
+    ctx.assert(username && username.length >= 4, 400, 'username length should greater than 4')
+    ctx.assert(password && password.length >= 4, 400, 'password length should greater than 4')
+
     const user = await bared.services.get('user', { username })
     if (!user) {
-      ctx.body = 'username is not found'
-      return
+      return ctx.badRequest('username is not found')
     }
 
     const verified = await bcrypt.compare(password, user.password)
     if (!verified) {
-      ctx.body = 'username or password is not correct'
-      return
+      return ctx.badRequest('username or password is not correct')
     }
 
     const jwt = createJwtToken(user.id)
-    ctx.body = { user, jwt }
+    ctx.ok({ user, jwt })
   },
 
   async registerLocal (ctx) {
     const { username, password } = ctx.request.body
+    ctx.assert(username && username.length >= 4, 400, 'username length should greater than 4')
+    ctx.assert(password && password.length >= 4, 400, 'password length should greater than 4')
 
     const existingUser = await bared.services.get('user', { username })
     if (existingUser) {
-      ctx.body = 'username is taken'
-      return
+      return ctx.badRequest('username is taken')
     }
 
     const user = await bared.services.create('user', {
@@ -36,12 +38,12 @@ module.exports = {
     })
 
     const jwt = createJwtToken(user.id)
-    ctx.body = { user, jwt }
+    ctx.ok({ user, jwt })
   },
 
   async getProfile (ctx) {
     const { user } = ctx.state
-    ctx.body = user
+    ctx.ok(user)
   },
 
   async updateProfile (ctx) {
@@ -56,6 +58,6 @@ module.exports = {
     }
 
     const updatedUser = await bared.services.update('user', id, q)
-    ctx.body = updatedUser
+    ctx.ok(updatedUser)
   }
 }

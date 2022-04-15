@@ -19,13 +19,19 @@ module.exports = {
       is_public
     })
 
-    ctx.body = created
+    ctx.created(created)
   },
 
   async deleteTimer (ctx) {
     const { timerId } = ctx.request.body
+    const { user } = ctx.state
+
+    const timer = await bared.services.get('timer', { id: timerId })
+    ctx.assert(timer, 400, 'timer not found')
+    ctx.assert(timer.user_id === user.id, 400, 'Cannot delete timer owned by others')
+
     const res = await bared.services.delete('timer', { id: timerId })
-    ctx.body = res
+    ctx.ok(res)
   },
 
   async getMyTimers (ctx) {
@@ -44,7 +50,7 @@ module.exports = {
       user_id: user.id
     })
 
-    ctx.body = { data, count }
+    ctx.ok({ data, count })
   },
 
   async updateTimer (ctx) {

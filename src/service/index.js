@@ -79,6 +79,10 @@ const deleteService = async (tableName, query) => {
       whereBuilder(tableName, builder, query)
     })
     .del()
+
+  if (!res) {
+    throw new Error('delete item not found')
+  }
   return res
 }
 
