@@ -2,6 +2,42 @@
 
 ## Quick Start
 
+Installation -> `npm install @bared/core`
+
+File Structure, see demoApp folder as an example
+```
+/src
+  index.js
+  /database
+    config.js
+  /apis
+    /page
+      page.router.js
+      page.schema.js
+      controller.js
+
+
+# index.js
+const Bared = require('@bared/core')
+
+(async () => {
+  await Bared.start()
+})()
+
+```
+
+## Admin Panel
+
+Clone Admin panel here: https://github.com/baredigit/bared-admin
+```
+cd bared-admin
+
+npm install // or yarn
+npm start // or yarn
+```
+
+API endpoint is set when you login, for example -> `http://localhost:8080`
+
 ## Progress
 
 Inspired by strapi (https://strapi.io/) but want to be more lightweighted and mobile friendly, developer friendly.
