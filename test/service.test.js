@@ -12,7 +12,6 @@ describe('Auth related', () => {
 
   test('should count user table', async () => {
     const count = await bared.services.count('user')
-    console.log(count)
     expect(count).toBeGreaterThan(0)
   })
 

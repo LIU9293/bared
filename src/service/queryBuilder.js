@@ -36,8 +36,6 @@ const whereBuilder = (tableName, builder, query) => {
           break
 
         case 'in':
-          // query[key] -> [1,2,3]
-          // console.log(column, JSON.parse(query[key]))
           builder.whereIn(column, JSON.parse(query[key]))
           break
 

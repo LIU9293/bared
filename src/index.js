@@ -5,13 +5,16 @@ const bodyParser = require('koa-bodyparser')
 const cors = require('@koa/cors')
 const bcrypt = require('bcrypt')
 const respond = require('./middlewares/respond')
+const error = require('./middlewares/error')
 const { getAuthType } = require('./api/user/middlewares')
 global.bared = {}
 
 async function start () {
   const app = new Koa()
-
+  app.use(bodyParser())
   app.use(cors())
+  app.use(error)
+
   const schemas = glob.sync('./**/*.schema.js').map(addr => {
     return require(path.resolve(addr))
   })
@@ -23,7 +26,6 @@ async function start () {
   registerServices()
 
   const { registerDatabase } = require('./db')
-  app.use(bodyParser())
   app.use(respond())
   app.use(getAuthType)
 

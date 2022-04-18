@@ -4,11 +4,11 @@ module.exports = {
     const { user } = ctx.state
 
     if (!title) {
-      ctx.throw(400, 'timer must has a title')
+      return ctx.badRequest('timer must has a title')
     }
 
     if (config.length < 1) {
-      ctx.throw(400, 'timer must has at least a section')
+      return ctx.badRequest('timer must has at least a section')
     }
 
     const created = await bared.services.create('timer', {

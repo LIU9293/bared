@@ -18,7 +18,6 @@ describe('Auth related', () => {
       method: 'post',
       data: { id: 1 }
     })
-    // console.log(res.data)
     const { jwt, user } = res.data
     expect(jwt).toBeDefined()
     expect(user.name).toBe('admin')
