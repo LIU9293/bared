@@ -4,7 +4,7 @@
 
 Installation -> `npm install @bared/core`
 
-File Structure, see demoApp folder as an example
+File Structure, see demoApp folder as an example, we only support mysql for now, databases supported by knex should be supported in the future
 ```
 /src
   index.js
@@ -18,12 +18,10 @@ File Structure, see demoApp folder as an example
 
 
 # index.js
+require('dotenv').config()
 const Bared = require('@bared/core')
 
-(async () => {
-  await Bared.start()
-})()
-
+Bared.start()
 ```
 
 ## Admin Panel
