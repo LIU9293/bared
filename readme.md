@@ -28,6 +28,8 @@ const Bared = require('@bared/core')
 
 ## Admin Panel
 
+You can go to public admin panel site here: https://cms.baredigit.com or build your own admin panel.
+
 Clone Admin panel here: https://github.com/baredigit/bared-admin
 ```
 cd bared-admin

@@ -1,6 +1,6 @@
 {
   "name": "@bared/core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Headless CMS framework in NodeJS, lightweight but powerful",
   "main": "src/index.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "bcrypt": "5.0.1",
     "dotenv": "16.0.0",
     "glob": "7.2.0",
+    "is-string": "1.0.7",
     "jsonwebtoken": "8.5.1",
     "knex": "1.0.4",
     "koa": "2.13.4",
