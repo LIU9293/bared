@@ -6,7 +6,7 @@ router.use(allowDeveloper)
 const getListController = schema => async ctx => {
   const { tableName } = schema
   const query = ctx.request.query
-  const res = await bared.services.getList(tableName, query)
+  const res = await bared.services.getList(tableName, query, { allowPrivate: true })
   ctx.body = res
 }
 
@@ -20,20 +20,20 @@ const countController = schema => async ctx => {
 const getController = schema => async ctx => {
   const { tableName } = schema
   const id = ctx.params.id
-  const res = await bared.services.get(tableName, { id })
+  const res = await bared.services.get(tableName, { id }, { allowPrivate: true })
   ctx.body = res
 }
 
 const postController = schema => async ctx => {
   const { tableName } = schema
-  const res = await bared.services.create(tableName, ctx.request.body)
+  const res = await bared.services.create(tableName, ctx.request.body, { allowPrivate: true })
   ctx.body = res
 }
 
 const putController = schema => async ctx => {
   const { tableName } = schema
   const { id } = ctx.request.params
-  const res = await bared.services.update(tableName, id, ctx.request.body)
+  const res = await bared.services.update(tableName, id, ctx.request.body, { allowPrivate: true })
   ctx.body = res
 }
 

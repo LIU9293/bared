@@ -2,17 +2,35 @@ module.exports = {
   tableName: 'user',
   displayName: 'User',
   attributes: {
-    name: { type: 'string', default: '', required: false },
+    name: {
+      type: 'string',
+      default: '',
+      required: false,
+      tableConfig: {
+        defaultShow: true
+      }
+    },
     avatar: {
       type: 'string',
       default: '',
       required: false,
       tableConfig: {
-        showAsAvatar: true
+        showAsAvatar: true,
+        defaultShow: true
       }
     },
-    username: { type: 'string', default: '', required: false, unique: true },
-    password: { type: 'string', default: '', required: false },
+    username: {
+      type: 'string',
+      default: '',
+      required: false,
+      unique: true
+    },
+    password: {
+      type: 'string',
+      default: '',
+      required: false,
+      private: true
+    },
     auth_type: {
       required: true,
       type: 'enum',

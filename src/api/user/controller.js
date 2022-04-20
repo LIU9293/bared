@@ -7,7 +7,7 @@ module.exports = {
     ctx.assert(username && username.length >= 4, 400, 'username length should greater than 4')
     ctx.assert(password && password.length >= 4, 400, 'password length should greater than 4')
 
-    const user = await bared.services.get('user', { username })
+    const user = await bared.services.get('user', { username }, { allowPrivate: true })
     if (!user) {
       return ctx.badRequest('username is not found')
     }
@@ -18,6 +18,7 @@ module.exports = {
     }
 
     const jwt = createJwtToken(user.id)
+    delete user.password
     ctx.ok({ user, jwt })
   },
 
@@ -50,12 +51,8 @@ module.exports = {
     const { avatar, name } = ctx.request.body
     const { id } = ctx.state.user
     const q = {}
-    if (avatar) {
-      q.avatar = avatar
-    }
-    if (name) {
-      q.name = name
-    }
+    if (avatar) { q.avatar = avatar }
+    if (name) { q.name = name }
 
     const updatedUser = await bared.services.update('user', id, q)
     ctx.ok(updatedUser)
