@@ -1,7 +1,15 @@
 const bcrypt = require('bcrypt')
 const { whereBuilder } = require('./queryBuilder')
 
-const getService = async (tableName, query = {}, { allowPrivate = false } = {}) => {
+const getService = async (
+  tableName,
+  query = {},
+  {
+    allowPrivate = false,
+    populate = []
+  } = {}
+) => {
+  const schema = bared.schemas.find(i => i.tableName === tableName)
   const res = await bared
     .knex(tableName)
     .where(builder => {
@@ -10,7 +18,6 @@ const getService = async (tableName, query = {}, { allowPrivate = false } = {}) 
     .first()
 
   if (!allowPrivate) {
-    const schema = bared.schemas.find(i => i.tableName === tableName)
     for (const i in schema.attributes) {
       if (schema.attributes[i].private) {
         delete res[i]
