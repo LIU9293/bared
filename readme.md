@@ -56,6 +56,10 @@ Inspired by strapi (https://strapi.io/) but want to be more lightweighted and mo
   * `type` and `unique` need migration and TBD
 - [x] Error logging in database
 - [ ] Plugin system
+  * [x] Defined basic layout of plugin files and exports
+  * [ ] Write email plugin and register from main library
+  * [ ] Research to see if there are good ways to add custom plugin page in admin panel
+- [ ] Joins / Relation fields
 - [ ] 3rd party auth (wechat)
 - [ ] Expose config outside (CORS or some other configs)
 - [ ] Basic server security check

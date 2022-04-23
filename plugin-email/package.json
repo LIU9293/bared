@@ -1,0 +1,12 @@
+{
+  "name": "@bared/plugin-email",
+  "version": "0.0.1",
+  "description": "Email plugin for bared CMS",
+  "keywords": [],
+  "main": "src/index.js",
+  "author": "baredigit (hello@baredigit.com)",
+  "license": "MIT",
+  "dependencies": {
+    "nodemailer": "6.7.3"
+  }
+}
