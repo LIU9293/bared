@@ -1,4 +1,4 @@
-const { registerEmail, confirmEmail, sendEmail } = require('./controller')
+const { registerEmail, confirmEmail, sendEmail } = require('./controllers')
 
 module.exports = [
   {

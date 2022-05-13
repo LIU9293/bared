@@ -4,10 +4,7 @@ const { whereBuilder } = require('./queryBuilder')
 const getService = async (
   tableName,
   query = {},
-  {
-    allowPrivate = false,
-    populate = []
-  } = {}
+  { allowPrivate = false } = {}
 ) => {
   const schema = bared.schemas.find(i => i.tableName === tableName)
   const res = await bared

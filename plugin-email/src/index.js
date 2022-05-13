@@ -1,8 +1,10 @@
-module.exports = {
-  extendUserAttributes: () => {},
-  extendUserRoutes: () => {},
+const extendUserAttributes = require('./config')
+const routes = require('./email.router')
+const schemas = require('./email-provider.schema')
 
-  schemas: [],
-  routes: [],
+module.exports = {
+  extendUserAttributes,
+  routes,
+  schemas,
   services: []
 }
