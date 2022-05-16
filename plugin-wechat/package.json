@@ -1,0 +1,12 @@
+{
+  "name": "@bared/plugin-wechat",
+  "version": "0.0.1",
+  "description": "Wechat plugin for bared CMS",
+  "keywords": [],
+  "main": "src/index.js",
+  "author": "baredigit (hello@baredigit.com)",
+  "license": "MIT",
+  "dependencies": {
+    "tenpay": "2.1.18"
+  }
+}

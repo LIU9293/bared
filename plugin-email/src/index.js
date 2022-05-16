@@ -1,10 +1,8 @@
-const extendUserAttributes = require('./config')
-const routes = require('./email.router')
-const schemas = require('./email-provider.schema')
+const extendedUserSchemas = require('./user')
+// const routes = require('./email.router')
+// const schemas = require('./email-provider.schema')
 
 module.exports = {
-  extendUserAttributes,
-  routes,
-  schemas,
-  services: []
+  extendedUserSchemas
+  // bared.registerSchema(schemas)
 }

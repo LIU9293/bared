@@ -1,12 +1,11 @@
 require('dotenv').config()
 const Bared = require('../src')
-// const UserPlugin = require('bared-user-plugin')
+const EmailPlugin = require('../plugin-email/src')
 
 async function run () {
-  // Bared.use(UserPlugin({
-  //   config: {}
-  // }))
-  await Bared.start()
+  await Bared.start({
+    plugins: [EmailPlugin]
+  })
 }
 
 run()

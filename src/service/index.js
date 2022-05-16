@@ -14,7 +14,7 @@ const getService = async (
     })
     .first()
 
-  if (!allowPrivate) {
+  if (!allowPrivate && res) {
     for (const i in schema.attributes) {
       if (schema.attributes[i].private) {
         delete res[i]
