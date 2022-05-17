@@ -1,4 +1,5 @@
 const extendedUserSchemas = require('./user')
+const wechatRoutes = require('./router')
 
 module.exports = {
   extendUserSchema: schema => {
@@ -12,5 +13,11 @@ module.exports = {
   },
 
   schemas: [],
-  routers: []
+
+  routers: [
+    {
+      name: 'wechat',
+      routes: wechatRoutes
+    }
+  ]
 }
