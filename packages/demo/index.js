@@ -5,12 +5,14 @@ const timerSchema = require('./src/schema')
 const timerRoutes = require('./src/router')
 
 const EmailPlugin = require('../plugin-email/src')
+const WechatPlugin = require('../plugin-wechat/src')
 
 async function startServer () {
   await Bared({
     databaseConfig,
     plugins: [
-      EmailPlugin
+      EmailPlugin(),
+      WechatPlugin()
     ],
     schemas: [
       timerSchema

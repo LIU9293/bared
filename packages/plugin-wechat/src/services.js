@@ -25,15 +25,13 @@ module.exports =  {
       const jwt = ctx.utils.createJwtToken(user.id)
       return { user, jwt }
     } else {
-      const newUser = {
+      const newUser = await ctx.services.create('user', {
         auth_type: 'basic',
         name: 'wechat_user',
         openid,
         unionid,
         sessionKey: session_key
-      }
-
-      const newUser = await ctx.services.create('user', newUser)
+      })
       const jwt = ctx.utils.createJwtToken(newUser.id)
       return { user: newUser, jwt }
     }
