@@ -1,5 +1,6 @@
 const extendedUserSchemas = require('./user')
 const wechatRoutes = require('./router')
+const { wechatUserMiddleware } = require('./middlewares')
 
 module.exports = config => {
   return {
@@ -20,6 +21,10 @@ module.exports = config => {
         name: 'wechat',
         routes: wechatRoutes
       }
-    ]  
+    ],
+
+    middlewares: [
+      wechatUserMiddleware
+    ]
   }
 }

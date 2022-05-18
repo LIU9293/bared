@@ -71,16 +71,16 @@ async function start ({
    */
   const app = new Koa()
   app.use(bodyParser())
-  app.use(cors({ origin: _ => '*' }))
+  app.use(cors())
   app.use(error)
 
   const knex = registerDatabase(databaseConfig)
 
   // get and merge all schemas and register
-  const extendedUserSchema = userSchema
+  let extendedUserSchema = userSchema
   plugins.forEach(plugin => {
     if (plugin.extendUserSchema) {
-      plugin.extendUserSchema(extendedUserSchema)
+      extendedUserSchema = plugin.extendUserSchema(extendedUserSchema)
     }
   })
 
@@ -115,13 +115,20 @@ async function start ({
   registerDapi(app, allSchemas)
   registerSchema(app, allSchemas)
 
+  
   // register user router and plugin routers
-  registerRouter({ app, name: 'user', routes: userRoutes })
   plugins.forEach(plugin => {
+    if (plugin.middlewares && plugin.middlewares.length > 0) {
+      plugin.middlewares.forEach(middleware => {
+        app.use(middleware())
+      })
+    }
+
     if (plugin.routers) {
       plugin.routers.forEach(router => registerRouter({ app, ...router }))
     }
   })
+  registerRouter({ app, name: 'user', routes: userRoutes })
 
   routers.forEach(router => {
     registerRouter({ app, ...router })

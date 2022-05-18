@@ -1,4 +1,7 @@
-const { registerOrLogin } = require('./controllers')
+const {
+  registerOrLogin,
+  registerOrLoginNative
+} = require('./controllers')
 
 module.exports = [
   {
@@ -10,5 +13,12 @@ module.exports = [
     params: {
       code: { type: 'string', required: true },
     }
+  },
+  {
+    url: '/auth/register/wechat/native',
+    method: 'POST',
+    controller: registerOrLoginNative,
+    public: true,
+    description: 'Login by wx.cloud.callContainer'
   }
 ]

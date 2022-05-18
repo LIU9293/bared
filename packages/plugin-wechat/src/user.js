@@ -1,26 +1,28 @@
 module.exports = {
-  openId: {
+  wechatAppid: {
     type: 'string',
     default: '',
-    required: false,
-    unique: true
+    unique: false,
   },
-  unionId: {
+  wechatOpenid: {
     type: 'string',
     default: '',
     required: false,
-    unique: true
+    unique: true,
+    private: true
   },
-  sessionKey: {
+  wechatUnionid: {
     type: 'string',
     default: '',
     required: false,
-    unique: false
+    unique: true,
+    private: true
   },
-  location: {
+  wechatSessionKey: {
     type: 'string',
     default: '',
     required: false,
-    unique: false
+    unique: false,
+    private: true
   }
 }

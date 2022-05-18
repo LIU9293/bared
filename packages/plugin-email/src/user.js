@@ -2,8 +2,7 @@ module.exports = {
   email: {
     type: 'string',
     default: '',
-    required: false,
-    unique: true
+    required: false
   },
   emailConfirmed: {
     type: 'boolean',
@@ -12,7 +11,6 @@ module.exports = {
   confirmEmailToken: {
     type: 'string',
     default: '',
-    required: false,
-    unique: true
+    required: false
   }
 }

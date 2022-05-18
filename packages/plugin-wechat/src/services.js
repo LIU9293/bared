@@ -35,5 +35,9 @@ module.exports =  {
       const jwt = ctx.utils.createJwtToken(newUser.id)
       return { user: newUser, jwt }
     }
+  },
+
+  async updateUserInfo (ctx) {
+
   }
 }

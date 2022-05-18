@@ -84,14 +84,17 @@ const createService = (schemas, knex) =>
     query,
     { allowPrivate = false } = {}
   ) => {
-    if (tableName === 'user') {
+    
+    // hard code if is user table and has password
+    if (tableName === 'user' && query.password) {
       const hashedPassword = await bcrypt.hash(query.password, 10)
       query.password = hashedPassword
     }
 
     const res = await knex(tableName).insert(query)
     const id = res[0]
-    const item = await getService(tableName, { id }, { allowPrivate })
+
+    const item = await getService(schemas, knex)(tableName, { id }, { allowPrivate })
     return item
   }
 
@@ -114,7 +117,7 @@ const updateService = (schemas, knex) =>
         updated_at: knex.fn.now()
       })
 
-    const item = await getService(tableName, { id }, { allowPrivate })
+    const item = await getService(schemas, knex)(tableName, { id }, { allowPrivate })
     return item
   }
 

@@ -31,7 +31,13 @@ function alterColumn (t, field) {
 
   if (field.required) {
     col.notNullable()
+  } else {
+    col.nullable()
   }
+
+  // if (field.unique) {
+  //   col.unique()
+  // }
 
   if (typeof field.default !== 'undefined') {
     col.defaultTo(field.default)
