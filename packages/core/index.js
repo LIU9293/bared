@@ -91,7 +91,7 @@ async function start ({
     ...plugins.map(i => i.schemas)
   ])
 
-  registerSchemas(knex, allSchemas)
+  await registerSchemas(knex, allSchemas)
 
   // register services in ctx
   const baredServices = { ...services }
