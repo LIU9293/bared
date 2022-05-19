@@ -26,16 +26,7 @@ async function start ({
    * databaseConfig will be passed to knex:
    * http://knexjs.org/#Installation-client
    */
-  databaseConfig = {
-    client: 'mysql',
-    connection: {
-      host: '127.0.0.1',
-      port: 3306,
-      user: 'root',
-      password: '',
-      database: 'bared'
-    }
-  },
+  databaseConfig = {},
 
   /**
    * Plugins are loaded before user code, to ensure user can access services provided by plugins
