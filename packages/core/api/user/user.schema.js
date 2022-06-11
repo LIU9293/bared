@@ -19,6 +19,15 @@ module.exports = {
         defaultShow: true
       }
     },
+    gender: {
+      type: "integer",
+      default: 0,
+      required: false,
+      tableConfig: {
+        showAsAvatar: false,
+        defaultShow: false
+      }
+    },
     username: {
       type: 'string',
       default: '',

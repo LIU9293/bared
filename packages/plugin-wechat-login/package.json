@@ -1,15 +1,13 @@
 {
-  "name": "@bared/plugin-wechat",
+  "name": "@bared/plugin-wechat-login",
   "version": "0.0.2",
-  "description": "Wechat plugin for bared CMS",
+  "description": "Wechat login for bared CMS",
   "keywords": [],
   "main": "src/index.js",
   "author": "baredigit (hello@baredigit.com)",
   "license": "MIT",
   "dependencies": {
     "axios": "0.27.2",
-    "koa-xml-body": "2.2.0",
-    "tenpay": "2.1.18",
-    "xml-js": "1.6.11"
+    "ramda": "0.28.0"
   }
 }

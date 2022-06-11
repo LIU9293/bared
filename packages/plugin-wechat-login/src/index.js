@@ -1,8 +1,9 @@
 const extendedUserSchemas = require('./user')
 const wechatRoutes = require('./router')
 const { wechatUserMiddleware } = require('./middlewares')
+const wechatAppSchema = require('./wechatAppSchema')
 
-module.exports = config => {
+module.exports = () => {
   return {
     extendUserSchema: schema => {
       return {
@@ -14,7 +15,7 @@ module.exports = config => {
       }
     },
   
-    schemas: [],
+    schemas: [wechatAppSchema],
   
     routers: [
       {
