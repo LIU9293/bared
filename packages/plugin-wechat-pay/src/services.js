@@ -14,14 +14,13 @@ module.exports = {
    */
   async getPaymentParams (ctx, {
     description,
-    orderId,
     amount,
     callbackServiceJson
   }) {
     const { user } = ctx.state
     const { appId, wechatOpenId } = user
 
-    const merchant = await ctx.services.get('wechat_merchant', { appId })
+    const merchant = await ctx.queries.get('wechat_merchant', { appId })
 
     if (!merchant) {
       return ctx.badRequest('merchant not found')
@@ -39,7 +38,7 @@ module.exports = {
     })
 
     const orderId = nanoid()
-    const order = await ctx.services.create('wechat_pay_order', {
+    const order = await ctx.queries.create('wechat_pay_order', {
       orderId,
       userId: user.id,
       amount,

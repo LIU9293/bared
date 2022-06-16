@@ -60,14 +60,6 @@ module.exports = {
       tableConfig: {
         defaultShow: false
       }
-    },
-    notifyUrl: {
-      type: 'string',
-      default: '',
-      private: true,
-      tableConfig: {
-        defaultShow: false
-      }
     }
   }
 }

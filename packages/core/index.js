@@ -6,7 +6,7 @@ const respond = require('./middlewares/respond')
 const error = require('./middlewares/error')
 const { getAuthType } = require('./api/user/middlewares')
 
-const services = require('./service')
+const queries = require('./service')
 const { createJwtToken } = require('./api/user/utils/jwt')
 
 const registerRouter = require('./register/registerRouter')
@@ -19,7 +19,10 @@ const userRoutes = require('./api/user/user.router')
 
 const registerDapi = require('./api/dapi')
 const registerPing = require('./api/ping')
-const registerSchema = require('./api/schema')
+const {
+  registerSchemaApi,
+  registerServicesApi
+} = require('./api/interalApi')
 
 async function start ({
   /**
@@ -57,17 +60,16 @@ async function start ({
    */
   routers = []
 }) {
-  /**
-   * load necessery koa plugins, should let user pass more config in
-   */
+
+  
+  /***************** basic koa setup *****************/
   const app = new Koa()
   app.use(bodyParser())
   app.use(cors())
-  app.use(error)
 
   const knex = registerDatabase(databaseConfig)
 
-  // get and merge all schemas and register
+  /***************** load all schemas, extend user schemas *****************/
   let extendedUserSchema = userSchema
   plugins.forEach(plugin => {
     if (plugin.extendUserSchema) {
@@ -83,35 +85,50 @@ async function start ({
   ])
 
   await registerSchemas(knex, allSchemas)
+  /***************** done load schemas *****************/
 
-  // register services in ctx
-  const baredServices = { ...services }
+
+  /***************** register services *****************/
+  const pluginServices = R.pipe(
+    R.map(i => i.services),
+    R.flatten,
+    R.filter(i => !!i)
+  )(plugins)
+    
   app.use(async (ctx, next) => {
-    for (const i in services) {
-      baredServices[i] = services[i](allSchemas, knex)
+    const q = {}
+    for (const i in queries) {
+      q[i] = queries[i](allSchemas, knex)
     }
 
-    ctx.services = baredServices
+    ctx.queries = q
+    ctx.services = {}
+    pluginServices.forEach(pluginService => {
+      const { name, service } = pluginService
+      ctx.services[name] = service
+    })
+
     ctx.schemas = allSchemas
     ctx.knex = knex
     ctx.utils = { createJwtToken }
     await next()
   })
 
+  app.use(error)
   app.use(respond())
   app.use(getAuthType)
 
   // register internal APIs
   registerPing(app)
   registerDapi(app, allSchemas)
-  registerSchema(app, allSchemas)
-
+  registerSchemaApi(app, allSchemas)
+  registerServicesApi(app, pluginServices)
   
   // register user router and plugin routers
   plugins.forEach(plugin => {
     if (plugin.middlewares && plugin.middlewares.length > 0) {
       plugin.middlewares.forEach(middleware => {
-        app.use(middleware())
+        // app.use(middleware())
       })
     }
 
@@ -119,16 +136,17 @@ async function start ({
       plugin.routers.forEach(router => registerRouter({ app, ...router }))
     }
   })
+  
   registerRouter({ app, name: 'user', routes: userRoutes })
 
   routers.forEach(router => {
     registerRouter({ app, ...router })
   })
 
-  const rootUser = await services.get(allSchemas, knex)('user', { name: 'admin' })
+  const rootUser = await queries.get(allSchemas, knex)('user', { name: 'admin' })
   if (!rootUser) {
     // hack here
-    await services.create(allSchemas, knex)('user', {
+    await queries.create(allSchemas, knex)('user', {
       name: 'admin',
       avatar: 'https://avatars.githubusercontent.com/u/101969885?v=4',
       username: 'root',

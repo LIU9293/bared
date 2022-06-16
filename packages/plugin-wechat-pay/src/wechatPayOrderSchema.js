@@ -1,6 +1,6 @@
 module.exports = {
   tableName: 'wechat_pay_order',
-  displayName: 'wechatPayOrder',
+  displayName: 'WechatPayOrder',
   isPluginSchema: true,
   attributes: {
     orderId: {

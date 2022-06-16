@@ -11,7 +11,7 @@ module.exports = {
       return ctx.badRequest('timer must has at least a section')
     }
 
-    const created = await ctx.services.create('timer', {
+    const created = await ctx.queries.create('timer', {
       user_id: user.id,
       title,
       cover,
@@ -26,11 +26,11 @@ module.exports = {
     const { timerId } = ctx.request.body
     const { user } = ctx.state
 
-    const timer = await ctx.services.get('timer', { id: timerId })
+    const timer = await ctx.queries.get('timer', { id: timerId })
     ctx.assert(timer, 400, 'timer not found')
     ctx.assert(timer.user_id === user.id, 400, 'Cannot delete timer owned by others')
 
-    const res = await ctx.services.delete('timer', { id: timerId })
+    const res = await ctx.queries.delete('timer', { id: timerId })
     ctx.ok(res)
   },
 
@@ -38,13 +38,13 @@ module.exports = {
     const { start = 0, limit = 20 } = ctx.request.body
     const { user } = ctx.state
 
-    const data = await ctx.services.getList('timer', {
+    const data = await ctx.queries.getList('timer', {
       _start: start,
       _limit: limit,
       user_id: user.id
     })
 
-    const count = await ctx.services.count('timer', {
+    const count = await ctx.queries.count('timer', {
       _start: start,
       _limit: limit,
       user_id: user.id

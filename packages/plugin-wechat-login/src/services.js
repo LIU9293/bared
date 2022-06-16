@@ -17,16 +17,16 @@ module.exports =  {
       throw new Error(errmsg)
     }
 
-    const user = await ctx.services.get('user', { openid })
+    const user = await ctx.queries.get('user', { openid })
 
     if (user) {
       setTimeout(async () => {
-        await ctx.services.update('user', { id: user.id }, { sessionKey: session_key })
+        await ctx.queries.update('user', { id: user.id }, { sessionKey: session_key })
       })
       const jwt = ctx.utils.createJwtToken(user.id)
       return { user, jwt }
     } else {
-      const newUser = await ctx.services.create('user', {
+      const newUser = await ctx.queries.create('user', {
         auth_type: 'basic',
         name: 'wechat_user',
         openid,
@@ -47,7 +47,7 @@ module.exports =  {
       return ctx.badRequest(`update field not allowed, allowed keys are ${allowedFields.concat(',')}`)
     }
 
-    const updatedUser = await ctx.services.update('user', { id: user.id })
+    const updatedUser = await ctx.queries.update('user', { id: user.id })
     return updatedUser
   }
 }

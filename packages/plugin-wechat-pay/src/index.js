@@ -20,7 +20,12 @@ module.exports = () => {
     services: [
       {
         name: 'getPaymentParams',
-        service: getPaymentParams
+        service: getPaymentParams,
+        params: {
+          description: 'string',
+          amount: 'integer',
+          callbackServiceJson: 'string'
+        }
       }
     ]
   }

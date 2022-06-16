@@ -13,7 +13,7 @@ module.exports = {
   description: 'Email configuration for nodemailer to send emails',
   attributes: {
     providerName: {
-      memo: "string",
+      type: "string",
       tableConfig: {
         defaultShow: true
       }
@@ -31,6 +31,10 @@ module.exports = {
       tableConfig: {
         defaultShow: true
       }
+    },
+    senderName: {
+      type: "string",
+      required: false,
     },
     senderAddress: {
       type: 'string',

@@ -9,7 +9,7 @@
   "dependencies": {
     "axios": "0.27.2",
     "ramda": "0.28.0",
-    "nanoid": "4.0.0",
+    "nanoid": "3.3.4",
     "wechatpay-node-v3": "https://e.coding.net/mogroom/mogroom-frontend/wechat-pay-sdk.git"
   }
 }

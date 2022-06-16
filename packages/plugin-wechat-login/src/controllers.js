@@ -3,7 +3,7 @@ const { registerOrLogin } = require('./services')
 module.exports = { 
   async registerOrLogin (ctx) {
     const { code, appId } = ctx.request.body
-    const wechatApp = await ctx.services.get('wechat_app', { appId })
+    const wechatApp = await ctx.queries.get('wechat_app', { appId })
 
     if (!wechatApp) {
       return ctx.badRequest(`appId ${appId} is not added in wechat_app`)

@@ -3,10 +3,12 @@ async function errorMiddleware (ctx, next) {
   try {
     await next()
   } catch (error) {
+    if(process.env.IS_DEV){
+      console.log(error)
+    }
     try {
       setTimeout(async () => {
         const request = JSON.parse(JSON.stringify(ctx.request))
-        console.log(error.message)
         const query = {
           code: error.statusCode || error.status || 500,
           url: ctx.request.url,
@@ -19,7 +21,7 @@ async function errorMiddleware (ctx, next) {
         if (ctx.state.user) {
           query.user_id = ctx.state.user.id
         }
-        await ctx.services.create('error', query)
+        await ctx.queries.create('error', query)
       })
     } catch (e) {
       console.error(e)

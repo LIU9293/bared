@@ -8,10 +8,10 @@ const wechatUserMiddleware = () => async (ctx, next) => {
   const appid = ctx.request.headers['X-WX-APPID'] || ctx.request.headers['x-wx-appid']
 
   if (openid) {
-    const user = await ctx.services.get('user', { wechatOpenid: openid })
+    const user = await ctx.queries.get('user', { wechatOpenid: openid })
     if (!user) {
 
-      const newUser = await ctx.services.create('user', {
+      const newUser = await ctx.queries.create('user', {
         auth_type: 'basic',
         name: 'wechat_user',
         wechatAppid: appid,

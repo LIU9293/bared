@@ -4,41 +4,41 @@ const { allowDeveloper } = require('./user/middlewares')
 const getListController = async (ctx, schema) => {
   const { tableName } = schema
   const query = ctx.request.query
-  const res = await ctx.services.getList(tableName, query, { allowPrivate: true })
+  const res = await ctx.queries.getList(tableName, query, { allowPrivate: true })
   ctx.body = res
 }
 
 const countController = async (ctx, schema) => {
   const { tableName } = schema
   const query = ctx.request.query
-  const res = await ctx.services.count(tableName, query)
+  const res = await ctx.queries.count(tableName, query)
   ctx.body = { count: res }
 }
 
 const getController = async (ctx, schema) => {
   const { tableName } = schema
   const id = ctx.params.id
-  const res = await ctx.services.get(tableName, { id }, { allowPrivate: true })
+  const res = await ctx.queries.get(tableName, { id }, { allowPrivate: true })
   ctx.body = res
 }
 
 const postController = async (ctx, schema) => {
   const { tableName } = schema
-  const res = await ctx.services.create(tableName, ctx.request.body, { allowPrivate: true })
+  const res = await ctx.queries.create(tableName, ctx.request.body, { allowPrivate: true })
   ctx.body = res
 }
 
 const putController = async (ctx, schema) => {
   const { tableName } = schema
   const { id } = ctx.request.params
-  const res = await ctx.services.update(tableName, id, ctx.request.body, { allowPrivate: true })
+  const res = await ctx.queries.update(tableName, id, ctx.request.body, { allowPrivate: true })
   ctx.body = res
 }
 
 const deleteController = async (ctx, schema) => {
   const { tableName } = schema
   const id = ctx.params.id
-  const res = await ctx.services.delete(tableName, { id })
+  const res = await ctx.queries.delete(tableName, { id })
   ctx.body = { id: res }
 }
 

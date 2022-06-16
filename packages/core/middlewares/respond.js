@@ -37,7 +37,7 @@ function makeRespond (opts) {
           if (ctx.state.user) {
             query.user_id = ctx.state.user.id
           }
-          await ctx.services.create('error', query)
+          await ctx.queries.create('error', query)
         })
       } catch (error) {
         console.error(error)

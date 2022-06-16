@@ -63,15 +63,15 @@ Inspired by strapi (https://strapi.io/) but want to be more lightweighted and mo
 - [ ] Expose config outside (CORS or some other configs)
 - [ ] Basic server security check
 
-## Services in Bared CMS
+## Built-in queries in Bared CMS
 
 * Default services are bound into koa ctx, and you can use following services directly anywhere in your application:
-  * `get` - ctx.servies.get("user", { id: 1 })
-  * `getList` - ctx.servies.getList("user")
-  * `create` - ctx.servies.create("user", { ... })
-  * `update` - ctx.servies.update("user", { ... })
-  * `count` - ctx.servies.count("user", { ... })
-  * `delete` - ctx.servies.delete("user", { ... })
+  * `get` - ctx.queries.get("user", { id: 1 })
+  * `getList` - ctx.queries.getList("user")
+  * `create` - ctx.queries.create("user", { ... })
+  * `update` - ctx.queries.update("user", { ... })
+  * `count` - ctx.queries.count("user", { ... })
+  * `delete` - ctx.queries.delete("user", { ... })
 
 ## API category:
 
