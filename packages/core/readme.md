@@ -6,22 +6,21 @@ Installation -> `npm install @bared/core`
 
 File Structure, see demoApp folder as an example, we only support mysql for now, databases supported by knex should be supported in the future
 ```
-/src
-  index.js
-  /database
-    config.js
-  /apis
-    /page
-      page.router.js
-      page.schema.js
-      controller.js
-
-
-# index.js
-require('dotenv').config()
 const Bared = require('@bared/core')
+const WechatLogin = require('@bared/plugin-wechat-login')
 
-Bared.start()
+async function startServer () {
+  await Bared({
+    databaseConfig: {},
+    plugins: [
+      WechatLogin(),
+    ],
+    schemas: [],
+    routers: []
+  })
+}
+
+startServer()
 ```
 
 ## Admin Panel
@@ -36,7 +35,7 @@ npm install // or yarn
 npm start // or yarn
 ```
 
-API endpoint is set when you login, for example -> `http://localhost:8080`
+API endpoint is set when you login, for example default API expose -> `http://localhost:9293`
 
 ## Progress
 
@@ -60,26 +59,24 @@ Inspired by strapi (https://strapi.io/) but want to be more lightweighted and mo
   * [ ] Write email plugin and register from main library
   * [ ] Research to see if there are good ways to add custom plugin page in admin panel
 - [ ] Joins / Relation fields
-- [ ] 3rd party auth (wechat)
+- [x] 3rd party auth (wechat)
 - [ ] Expose config outside (CORS or some other configs)
 - [ ] Basic server security check
 
-## Global bared object
+## Services in Bared CMS
 
-* bared.services - basic query services
-  * `bared.services.get('post', { id: 1 })` Get post for ID = 1
-  * `bared.services.getList('post', { _sort: 'created_at:desc' })` Get list with query, _limit, _start, _sort
-  * `bared.services.getList('user', { age~gt: 17 })` Get user where age > 17
-
-* bared.knex - knex instance
-* bared.app - koa app instance
+* Default services are bound into koa ctx, and you can use following services directly anywhere in your application:
+  * `get` - ctx.servies.get("user", { id: 1 })
+  * `getList` - ctx.servies.getList("user")
+  * `create` - ctx.servies.create("user", { ... })
+  * `update` - ctx.servies.update("user", { ... })
+  * `count` - ctx.servies.count("user", { ... })
+  * `delete` - ctx.servies.delete("user", { ... })
 
 ## API category:
 
 `/api` for enduser, public API, all users can access
-
 `/papi` for enduser, private API, need to login (with authorization header "Bearer xxxxx")
-
 `/dapi` for developer, general CURD operations
 
 ## DAPI (Developer API endpoint):

@@ -1,7 +1,8 @@
 const extendedUserSchemas = require('./user')
 const routes = require('./router')
+const emailProviderSchema = require('./emailProviderSchema')
 
-module.exports = config => {
+module.exports = () => {
   return {
     extendUserSchema: schema => {
       return {
@@ -13,7 +14,7 @@ module.exports = config => {
       }
     },
   
-    schemas: [],
+    schemas: [emailProviderSchema],
   
     routers: [
       {

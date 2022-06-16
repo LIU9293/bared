@@ -1,6 +1,7 @@
 module.exports = {
   tableName: 'wechat_app',
   displayName: 'WechatApp',
+  isPluginSchema: true,
   attributes: {
     name: {
       type: "string",

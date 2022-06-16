@@ -1,3 +1,8 @@
+const wechatMerchantSchema = require('./wechatMerchantSchema')
+const wechatPayOrderSchema = require('./wechatPayOrderSchema')
+const {
+  getPaymentParams
+} =  require('./services')
 
 module.exports = () => {
   return {
@@ -6,8 +11,17 @@ module.exports = () => {
         ...schema
       }
     },
-    schemas: [],
+    schemas: [
+      wechatMerchantSchema,
+      wechatPayOrderSchema
+    ],
     routers: [],
-    middlewares: []
+    middlewares: [],
+    services: [
+      {
+        name: 'getPaymentParams',
+        service: getPaymentParams
+      }
+    ]
   }
 }
