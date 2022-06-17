@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer')
 
 module.exports = {
-  sendEmail: async function (ctx, { providerId, to, title, body }) {
+  async sendEmail (ctx, { providerId, to, title, body }) {
     const emailProvider = await ctx.queries.get('email_provider', { id: providerId }, { allowPrivate: true })
 
     if (!emailProvider) {

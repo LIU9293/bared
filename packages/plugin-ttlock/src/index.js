@@ -2,6 +2,8 @@ const ttlockUserSchema = require('./ttlockUserSchema')
 const ttlockDeveloperSchema = require('./ttlockDeveloperSchema')
 const ttlockLockSchema = require('./ttlockLockSchema')
 
+const routes = require('./router')
+
 const {
   fetchTtlockAccessToken,
   refreshTtlockToken,
@@ -16,7 +18,12 @@ module.exports = () => {
       ttlockDeveloperSchema,
       ttlockLockSchema
     ],
-    routers: [],
+    routers: [
+      {
+        name: 'ttlock_lock',
+        routes
+      }
+    ],
     middlewares: [],
     services: [
       {
