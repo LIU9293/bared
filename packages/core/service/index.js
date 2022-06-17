@@ -139,11 +139,28 @@ const deleteService = (schemas, knex) =>
     return res
   }
 
+const upsertService = (schemas, knex) => async (
+  tableName,
+  query,
+  data,
+  { allowPrivate = false } = {}
+) => {
+  const existing = await getService(schemas, knex)(tableName, query, { allowPrivate })
+  if (!existing) {
+    const item = await createService(schemas, knex)(tableName, data, { allowPrivate })
+    return item
+  } else {
+    const updated = await updateService(schemas, knex)(tableName, existing.id, query, { allowPrivate })
+    return updated
+  }
+}
+
 module.exports = {
   getList: getListService,
   get: getService,
   update: updateService,
   count: countService,
   delete: deleteService,
-  create: createService
+  create: createService,
+  upsert: upsertService
 }

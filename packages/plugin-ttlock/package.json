@@ -1,0 +1,14 @@
+{
+  "name": "@bared/plugin-ttlock",
+  "version": "0.0.1",
+  "description": "Ttlock service for bared CMS",
+  "keywords": [],
+  "main": "src/index.js",
+  "author": "baredigit (hello@baredigit.com)",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "0.27.2",
+    "ramda": "0.28.0",
+    "nanoid": "3.3.4"
+  }
+}
