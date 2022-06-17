@@ -10,11 +10,7 @@ const {
 
 module.exports = () => {
   return {
-    extendUserSchema: schema => {
-      return {
-        ...schema
-      }
-    },
+    extendUserSchema: schema => schema,
     schemas: [
       ttlockUserSchema,
       ttlockDeveloperSchema,

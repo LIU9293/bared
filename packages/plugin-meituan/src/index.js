@@ -4,11 +4,7 @@ const meituanShopSchema = require('./meituanShopSchema')
 
 module.exports = () => {
   return {
-    extendUserSchema: schema => {
-      return {
-        ...schema
-      }
-    },
+    extendUserSchema: schema => schema,
     schemas: [
       meituanAppSchema,
       meituanShopSchema
