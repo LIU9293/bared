@@ -1,28 +1,26 @@
 module.exports = {
-  tableName: 'ttlock_user',
-  displayName: 'TtlockUser',
+  tableName: 'meituan_app',
+  displayName: 'MeituanApp',
   isPluginSchema: true,
   attributes: {
-    alias: {
-      type: 'string'
+    name: {
+      type: 'string',
+      tableConfig: {
+        defaultShow: true
+      }
     },
-    username: {
+    appKey: {
       type: 'string',
       required: true,
       unique: true,
       tableConfig: {
-        showAsAvatar: false,
         defaultShow: true
       }
     },
-    password: {
+    appSecret: {
       type: 'string',
       required: true,
       private: true
-    },
-    developerId: {
-      type: 'integer',
-      required: true
     },
     accessToken: {
       type: 'string',
@@ -32,7 +30,7 @@ module.exports = {
       type: 'string',
       private: true
     },
-    uid: {
+    bid: {
       type: 'string',
     },
     lastUpdateTime: {

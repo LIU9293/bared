@@ -12,19 +12,19 @@
   "dependencies": {
     "@koa/cors": "3.3.0",
     "@koa/router": "10.1.1",
+    "axios": "0.27.2",
     "bcrypt": "5.0.1",
-    "dotenv": "16.0.0",
+    "dotenv": "16.0.1",
     "is-string": "1.0.7",
     "jsonwebtoken": "8.5.1",
-    "knex": "2.0.0",
+    "knex": "2.1.0",
     "koa": "2.13.4",
     "koa-bodyparser": "4.3.0",
     "mysql2": "2.3.3",
     "ramda": "0.28.0"
   },
   "devDependencies": {
-    "axios": "0.27.2",
-    "jest": "28.1.0",
+    "jest": "28.1.1",
     "nodemon": "2.0.16",
     "standard": "17.0.0"
   },
