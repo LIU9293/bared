@@ -60,7 +60,7 @@ Inspired by strapi (https://strapi.io/) but want to be more lightweighted and mo
   * [ ] Research to see if there are good ways to add custom plugin page in admin panel
 - [ ] Joins / Relation fields
 - [x] 3rd party auth (wechat)
-- [ ] Expose config outside (CORS or some other configs)
+- [x] Expose config outside (CORS or some other configs)
 - [ ] Basic server security check
 
 ## Built-in queries in Bared CMS
@@ -68,10 +68,11 @@ Inspired by strapi (https://strapi.io/) but want to be more lightweighted and mo
 * Default services are bound into koa ctx, and you can use following services directly anywhere in your application:
   * `get` - ctx.queries.get("user", { id: 1 })
   * `getList` - ctx.queries.getList("user")
-  * `create` - ctx.queries.create("user", { ... })
-  * `update` - ctx.queries.update("user", { ... })
-  * `count` - ctx.queries.count("user", { ... })
-  * `delete` - ctx.queries.delete("user", { ... })
+  * `create` - ctx.queries.create("user", { name: "" })
+  * `update` - ctx.queries.update("user", 1, { name: "" })
+  * `count` - ctx.queries.count("user")
+  * `delete` - ctx.queries.delete("user", { id: 1 })
+  * `upsert` - ctx.queries.upsert("user", { id: 1 }, { name: "" })
 
 ## API category:
 
