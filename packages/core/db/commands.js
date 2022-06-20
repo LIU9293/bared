@@ -7,6 +7,9 @@ function alterColumn (t, field) {
     case 'integer':
       col = t.integer(field.name)
       break
+    case 'bigint':
+      col = t.bigint(field.name)
+      break
     case 'boolean':
       col = t.boolean(field.name)
       break

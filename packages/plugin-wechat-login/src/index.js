@@ -5,6 +5,7 @@ const wechatAppSchema = require('./wechatAppSchema')
 
 module.exports = () => {
   return {
+    pluginName: 'wechat-login',
     extendUserSchema: schema => {
       return {
         ...schema,

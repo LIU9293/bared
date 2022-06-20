@@ -89,12 +89,20 @@ async function start ({
 
 
   /***************** register services *****************/
+  // plugin: [{
+  //   services: [
+  //     { name, serivce, params }
+  //   ]
+  // }]
   const pluginServices = R.pipe(
-    R.map(i => i.services),
+    R.map(i => i.services 
+      ? i.services.map(j => ({ ...j, pluginName: i.pluginName }))
+      : []
+    ),
     R.flatten,
     R.filter(i => !!i)
   )(plugins)
-    
+  
   app.use(async (ctx, next) => {
     const q = {}
     for (const i in queries) {

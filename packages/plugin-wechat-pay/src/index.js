@@ -6,6 +6,7 @@ const {
 
 module.exports = () => {
   return {
+    pluginName: 'wechat-pay',
     extendUserSchema: schema => {
       return {
         ...schema

@@ -1,0 +1,12 @@
+{
+  "name": "@bared/plugin-aqara",
+  "version": "0.0.1",
+  "description": "Aqara IoT plugin for bared CMS",
+  "keywords": [],
+  "main": "src/index.js",
+  "author": "baredigit (hello@baredigit.com)",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "0.27.2"
+  }
+}

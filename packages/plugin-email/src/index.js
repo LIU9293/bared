@@ -5,6 +5,7 @@ const { sendEmail} = require('./services')
 
 module.exports = () => {
   return {
+    pluginName: 'email',
     extendUserSchema: schema => {
       return {
         ...schema,

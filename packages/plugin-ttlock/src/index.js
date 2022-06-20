@@ -12,6 +12,7 @@ const {
 
 module.exports = () => {
   return {
+    pluginName: 'ttlock',
     extendUserSchema: schema => schema,
     schemas: [
       ttlockUserSchema,
