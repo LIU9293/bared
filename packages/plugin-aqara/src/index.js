@@ -4,7 +4,10 @@ const aqaraDeviceSchema = require('./aqaraDeviceSchema')
 const {
   generateApiAuth,
   getAccessTokenByAuthCode,
-  getDevicesAndUpdate
+  getDevicesAndUpdate,
+  getResourcesForDevice,
+  getResourceCurrentValues,
+  turnSwitch
 } = require('./services')
 
 module.exports = () => {
@@ -44,6 +47,34 @@ module.exports = () => {
         showInAdmin: true,
         params: {
           aqaraUserId: 'integer'
+        }
+      },
+      {
+        name: 'getResourcesForDevice',
+        service: getResourcesForDevice,
+        showInAdmin: true,
+        params: {
+          did: 'string',
+          resourceId: 'string'
+        }
+      },
+      {
+        name: 'turnSwitch',
+        service: turnSwitch,
+        showInAdmin: true,
+        params: {
+          on: 'boolean',
+          did: 'string',
+          resourceId: 'string'
+        }
+      },
+      {
+        name: 'getResourceCurrentValues',
+        service: getResourceCurrentValues,
+        showInAdmin: true,
+        params: {
+          did: 'string',
+          resourceId: 'string'
         }
       }
     ]

@@ -29,12 +29,12 @@ async function request ({ intent, data = {}, method = 'POST', accessToken, appId
     data: { intent, data }
   })
 
-  // console.log(res.data)
   if (res.data && (res.data.code === 0 || res.data.code === 200)) {
     return res.data.result
   }
 
   console.log(`aqara api error: ${res.data.msgDetails || res.data.messageDetail}`)
+  console.log(res.data)
   throw new Error(res.data.msgDetails || res.data.messageDetail || res.data)
 }
 
@@ -185,5 +185,99 @@ module.exports = {
     }
 
     return { success: true }
+  },
+
+  async getResourcesForDevice (ctx, { did, resourceId }) {
+    const prepareInfo = await ctx.knex('aqara_device')
+    .join('aqara_user', 'aqara_device.aqaraUserId', '=', 'aqara_user.id')
+    .join('aqara_developer', 'aqara_user.developerId', '=', 'aqara_developer.id')
+    .select('aqara_device.model', 'aqara_device.did', 'aqara_user.accessToken', 'aqara_developer.appId', 'aqara_developer.appKey', 'aqara_developer.keyId')
+    .where('aqara_device.did', did)
+    .first()
+
+    if (!prepareInfo) {
+      throw new Error(`Resource not found for did ${did}`)
+    }
+
+    const { model, accessToken, appId, appKey, keyId } = prepareInfo
+
+    const res = await request({
+      intent: 'query.resource.info',
+      data: {
+        model,
+        resourceId,
+      },
+      appId,
+      appKey,
+      keyId,
+      accessToken
+    })
+
+    return res
+  },
+
+  async turnSwitch (ctx, { did, resourceId, on = false }) {
+    const prepareInfo = await ctx.knex('aqara_device')
+      .join('aqara_user', 'aqara_device.aqaraUserId', '=', 'aqara_user.id')
+      .join('aqara_developer', 'aqara_user.developerId', '=', 'aqara_developer.id')
+      .select('aqara_device.id', 'aqara_device.did', 'aqara_user.accessToken', 'aqara_developer.appId', 'aqara_developer.appKey', 'aqara_developer.keyId')
+      .where('aqara_device.did', did)
+      .first()
+
+    if (!prepareInfo) {
+      throw new Error(`Resource not found for did ${did}`)
+    }
+
+    const { accessToken, appId, appKey, keyId } = prepareInfo
+    const res = await request({
+      intent: 'write.resource.device',
+      data: {
+        subjectId: did,
+        resources: [
+          {
+            resourceId,
+            value: on ? '1' : '0'    
+          }
+        ],
+      },
+      appId,
+      appKey,
+      keyId,
+      accessToken
+    })
+
+    return res
+  },
+
+  async getResourceCurrentValues (ctx, { did, resourceId }) {
+    const prepareInfo = await ctx.knex('aqara_device')
+      .join('aqara_user', 'aqara_device.aqaraUserId', '=', 'aqara_user.id')
+      .join('aqara_developer', 'aqara_user.developerId', '=', 'aqara_developer.id')
+      .select('aqara_device.id', 'aqara_device.did', 'aqara_user.accessToken', 'aqara_developer.appId', 'aqara_developer.appKey', 'aqara_developer.keyId')
+      .where('aqara_device.did', did)
+      .first()
+
+    if (!prepareInfo) {
+      throw new Error(`Resource not found for did ${did}`)
+    }
+
+    const { accessToken, appId, appKey, keyId } = prepareInfo
+    const res = await request({
+      intent: 'query.resource.value',
+      data: {
+        resources: [
+          {
+            subjectId: did,
+            resourceIds: [resourceId]
+          }
+        ]
+      },
+      appId,
+      appKey,
+      keyId,
+      accessToken
+    })
+
+    return res
   }
 }

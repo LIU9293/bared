@@ -30,7 +30,10 @@ const registerRouter = ({ app, name = '', routes = [] }) => {
 
   if (publicContentRoutes && publicContentRoutes.length > 0) {
     publicContentRoutes.forEach(r => {
-      console.log(`registering public ${r.method} route: /api${r.url}`)
+
+      if (process.env.IS_DEV) {
+        console.log(`registering public ${r.method} route: /api${r.url}`)
+      }
       switch (r.method.toLowerCase()) {
         case 'get':
           publicRouter.get('/api' + r.url, r.controller)
@@ -56,7 +59,9 @@ const registerRouter = ({ app, name = '', routes = [] }) => {
 
   if (privateContentRoutes && privateContentRoutes.length > 0) {
     privateContentRoutes.forEach(r => {
-      console.log(`registering private ${r.method} route: /papi${r.url}`)
+      if (process.env.IS_DEV) {
+        console.log(`registering private ${r.method} route: /papi${r.url}`)
+      }
       switch (r.method.toLowerCase()) {
         case 'get':
           privateRouter.get('/papi' + r.url, r.controller)

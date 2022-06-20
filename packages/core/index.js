@@ -81,7 +81,7 @@ async function start ({
     extendedUserSchema,
     errorSchema,
     ...[schemas],
-    ...plugins.map(i => i.schemas)
+    ...plugins.map(i => i.schemas.map(s => ({ ...s, pluginName: i.pluginName })))
   ])
 
   await registerSchemas(knex, allSchemas)
@@ -89,11 +89,6 @@ async function start ({
 
 
   /***************** register services *****************/
-  // plugin: [{
-  //   services: [
-  //     { name, serivce, params }
-  //   ]
-  // }]
   const pluginServices = R.pipe(
     R.map(i => i.services 
       ? i.services.map(j => ({ ...j, pluginName: i.pluginName }))
