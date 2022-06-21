@@ -1,7 +1,7 @@
 const qs = require('querystring')
 const crypto = require('crypto')
 const axios = require('axios')
-const { format } = require('date-fns')
+const { formatInTimeZone } = require('date-fns-tz')
 
 function genMd5 (text) {
   return crypto.createHash('md5').update(text, 'utf-8').digest('hex')
@@ -65,9 +65,10 @@ module.exports = {
   async getMeituanShopsAndUpdate (ctx, { meituanAppId, page = 1 }) {
     const meituanApp = await ctx.queries.get('meituan_app', { id: meituanAppId }, { allowPrivate: true })
     const { appKey, accessToken, bid, appSecret } = meituanApp
+    const ts = formatInTimeZone(new Date(), 'Asia/Shanghai', 'yyyy-MM-dd HH:mm:ss')
     const params = {
       app_key: appKey,
-      timestamp: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+      timestamp: ts,
       session: accessToken,
       bid,
       format: 'json',
@@ -83,7 +84,8 @@ module.exports = {
     const { code, data } = result.data
 
     if (code !== 200) {
-      throw new Error(result.data)
+      console.log(`ts - ${ts}`)
+      throw new Error(result.data.msg)
     }
 
     for (const shop of data) {
