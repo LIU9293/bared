@@ -7,6 +7,8 @@ const WechatLoginPlugin = require('../plugin-wechat-login/src')
 const WechatPayPlugin = require('../plugin-wechat-pay/src')
 const ttlockPlugin = require('../plugin-ttlock/src')
 const aqaraPlugin = require('../plugin-aqara/src')
+const aliyunSmsPlugin = require('../plugin-aliyun-sms/src')
+const meituanPlugin = require('../plugin-meituan/src')
 
 async function startServer () {
   await Bared({
@@ -16,7 +18,9 @@ async function startServer () {
       WechatLoginPlugin(),
       WechatPayPlugin(),
       ttlockPlugin(),
-      aqaraPlugin()
+      aqaraPlugin(),
+      aliyunSmsPlugin(),
+      meituanPlugin()
     ],
     schemas: [],
     routers: []
