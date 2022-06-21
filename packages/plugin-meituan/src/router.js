@@ -3,7 +3,7 @@ const { authCallback } = require('./controller')
 
 module.exports = [
   {
-    url: '/meituan/auth/callback/:appid',
+    url: '/meituan/auth/callback/:meituanAppId',
     description: 'Callback from meituan when user authorize, to get accessToken',
     method: 'GET',
     controller: authCallback,

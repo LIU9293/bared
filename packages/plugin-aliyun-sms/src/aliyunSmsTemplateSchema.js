@@ -1,30 +1,30 @@
 module.exports = {
-  tableName: 'meituan_shop',
-  displayName: 'MeituanShop',
+  tableName: 'aliyun_sms_template',
+  displayName: 'AliyunSmsTemplate',
   isPluginSchema: true,
   attributes: {
-    name: {
-      type: 'string',
-      tableConfig: {
-        defaultShow: true
-      }
+    developerId: {
+      type: 'integer',
+      required: true,
     },
-    uuid: {
+    templateName: {
       type: 'string',
       required: true,
-      unique: true,
       tableConfig: {
         defaultShow: true
       }
     },
-    meituanAppId: {
-      type: 'integer',
-      required: true
+    templateCode: {
+      type: 'string',
+      required: true,
+      tableConfig: {
+        defaultShow: true
+      }
     },
-    city: {
-      type: 'string'
+    templateContent: {
+      type: 'string',
     },
-    address: {
+    auditStatus: {
       type: 'string'
     }
   }

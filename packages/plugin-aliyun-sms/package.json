@@ -1,0 +1,14 @@
+{
+  "name": "@bared/plugin-aliyun-sms",
+  "version": "0.0.1",
+  "description": "Aliyun SMS plugin for bared CMS",
+  "keywords": [],
+  "main": "src/index.js",
+  "author": "baredigit (hello@baredigit.com)",
+  "license": "MIT",
+  "dependencies": {
+    "@alicloud/dysmsapi20170525": "^2.0.10",
+    "@alicloud/openapi-client": "^0.4.1",
+    "axios": "0.27.2"
+  }
+}

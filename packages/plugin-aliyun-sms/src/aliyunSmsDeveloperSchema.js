@@ -1,6 +1,6 @@
 module.exports = {
-  tableName: 'meituan_shop',
-  displayName: 'MeituanShop',
+  tableName: 'aliyun_sms_developer',
+  displayName: 'AliyunSmsDeveloper',
   isPluginSchema: true,
   attributes: {
     name: {
@@ -9,7 +9,7 @@ module.exports = {
         defaultShow: true
       }
     },
-    uuid: {
+    accessKeyId: {
       type: 'string',
       required: true,
       unique: true,
@@ -17,15 +17,14 @@ module.exports = {
         defaultShow: true
       }
     },
-    meituanAppId: {
-      type: 'integer',
+    accessKeySecret: {
+      type: 'string',
+      required: true,
+      private: true
+    },
+    endpoint: {
+      type: 'string',
       required: true
     },
-    city: {
-      type: 'string'
-    },
-    address: {
-      type: 'string'
-    }
   }
 }

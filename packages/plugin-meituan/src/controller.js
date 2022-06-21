@@ -1,12 +1,12 @@
 module.exports  = {
   async authCallback (ctx) {
     const code = ctx.query.auth_code
-    const meituanAppId = ctx.params.appid
-    const provider = await strapi.queries.get('meituan_app', { id: meituanAppId })
+    const meituanAppId = ctx.params.meituanAppId
+    const meituanApp = await strapi.queries.get('meituan_app', { id: meituanAppId })
 
     const str = qs.encode({
-      app_key: provider.appKey,
-      app_secret: provider.appSecret,
+      app_key: meituanApp.appKey,
+      app_secret: meituanApp.appSecret,
       grant_type: 'authorization_code',
       auth_code: code,
       redirect_url: `${process.env.BASE_URL || 'https://mogroom.com'}/api/meituan/auth/callback/${meituanAppId}`
