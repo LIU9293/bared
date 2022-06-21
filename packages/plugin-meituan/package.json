@@ -1,13 +1,13 @@
 {
   "name": "@bared/plugin-meituan",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Ttlock service for bared CMS",
   "keywords": [],
   "main": "src/index.js",
   "author": "baredigit (hello@baredigit.com)",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.27.2",
-    "date-fns": "^2.28.0"
+    "axios": "0.27.2",
+    "date-fns": "2.28.0"
   }
 }

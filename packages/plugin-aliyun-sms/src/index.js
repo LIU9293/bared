@@ -3,7 +3,8 @@ const aliyunSmsTemplateSchema = require('./aliyunSmsTemplateSchema')
 const aliyunSmsSignSchema = require('./aliyunSmsSignSchema')
 const {
   getTemplatesAndUpdate,
-  getSignAndUpdate
+  getSignAndUpdate,
+  sendSms
 } = require('./services')
 
 module.exports = () => {
