@@ -54,7 +54,7 @@ module.exports = {
     if (avatar) { q.avatar = avatar }
     if (name) { q.name = name }
 
-    const updatedUser = await ctx.queries.update('user', id, q)
+    const updatedUser = await ctx.queries.update('user', { id }, q)
     ctx.ok(updatedUser)
   }
 }

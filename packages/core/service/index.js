@@ -64,7 +64,6 @@ const getListService = (schemas, knex) =>
       .orderBy(sort.split(':')[0], sort.split(':')[1])
 
     if (!allowPrivate) {
-      const schema = schemas.find(i => i.tableName === tableName)
       for (const i in schema.attributes) {
         if (schema.attributes[i].private) {
           res = res.map(item => {
@@ -101,7 +100,7 @@ const createService = (schemas, knex) =>
 const updateService = (schemas, knex) =>
   async (
     tableName,
-    id,
+    query,
     updateQuery,
     { allowPrivate = false } = {}
   ) => {
@@ -110,8 +109,12 @@ const updateService = (schemas, knex) =>
       updateQuery.password = hashedPassword
     }
 
+    const schema = schemas.find(i => i.tableName === tableName)
+
     await knex(tableName)
-      .where({ id })
+      .where(builder => {
+        whereBuilder(schema, builder, query)
+      })
       .update({
         ...updateQuery,
         updated_at: knex.fn.now()

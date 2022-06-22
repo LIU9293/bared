@@ -47,7 +47,7 @@ module.exports =  {
       return ctx.badRequest(`update field not allowed, allowed keys are ${allowedFields.concat(',')}`)
     }
 
-    const updatedUser = await ctx.queries.update('user', { id: user.id })
+    const updatedUser = await ctx.queries.get('user', { id: user.id })
     return updatedUser
   }
 }

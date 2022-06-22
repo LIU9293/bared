@@ -31,7 +31,7 @@ const postController = async (ctx, schema) => {
 const putController = async (ctx, schema) => {
   const { tableName } = schema
   const { id } = ctx.request.params
-  const res = await ctx.queries.update(tableName, id, ctx.request.body, { allowPrivate: true })
+  const res = await ctx.queries.update(tableName, { id }, ctx.request.body, { allowPrivate: true })
   ctx.body = res
 }
 

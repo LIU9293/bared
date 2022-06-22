@@ -56,7 +56,7 @@ module.exports = {
 
       return { success: true, data }
     } else {
-      throw new Error(data)
+      return data
     }
   },
   
@@ -96,7 +96,7 @@ module.exports = {
 
       return { success: true, data }
     } else {
-      throw new Error(data)
+      return data
     }
   },
 
