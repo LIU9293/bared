@@ -40,9 +40,6 @@ module.exports = {
     },
     expireIn: {
       type: 'integer',
-    },
-    refreshCount: {
-      type: 'integer',
     }
   }
 }

@@ -120,7 +120,7 @@ const updateService = (schemas, knex) =>
         updated_at: knex.fn.now()
       })
 
-    const item = await getService(schemas, knex)(tableName, { id }, { allowPrivate })
+    const item = await getService(schemas, knex)(tableName, query, { allowPrivate })
     return item
   }
 
