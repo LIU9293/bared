@@ -5,17 +5,13 @@ module.exports = {
   attributes: {
     name: {
       type: 'string',
-      tableConfig: {
-        defaultShow: true
-      }
+      tableConfig: { defaultShow: true }
     },
     appKey: {
       type: 'string',
       required: true,
       unique: true,
-      tableConfig: {
-        defaultShow: true
-      }
+      tableConfig: { defaultShow: true }
     },
     appSecret: {
       type: 'string',
@@ -30,17 +26,21 @@ module.exports = {
       type: 'string',
       private: true
     },
-    bid: {
-      type: 'string',
+    bid: { type: 'string' },
+    lastUpdateTime: { type: 'integer' },
+    expireIn: { type: 'integer' },
+    refreshCount: { type: 'integer'  }
+  },
+  rowActions: [
+    {
+      text: 'Refresh Token',
+      serviceName: 'meituanRefreshToken',
+      paramsMap: { meituanAppId: 'id' }
     },
-    lastUpdateTime: {
-      type: 'integer',
-    },
-    expireIn: {
-      type: 'integer',
-    },
-    refreshCount: {
-      type: 'integer',
+    {
+      text: 'Token Time',
+      serviceName: 'meituanGetTokenValidTime',
+      paramsMap: { meituanAppId: 'id' }
     }
-  }
+  ]
 }

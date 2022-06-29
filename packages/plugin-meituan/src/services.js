@@ -22,7 +22,7 @@ function sign (param, appsecret) {
 }
 
 module.exports = {
-  async refreshMeituanAccessToken(ctx, { meituanAppId }) {
+  async meituanRefreshToken(ctx, { meituanAppId }) {
     const meituanApp = await ctx.queries.get('meituan_app', { id: meituanAppId }, { allowPrivate: true })
     const { refreshToken, appKey, appSecret, name } = meituanApp
 
@@ -58,11 +58,12 @@ module.exports = {
       return res
     } else {
       console.log(`${new Date().toLocaleTimeString()} - [ERROR] - refresh dianping token for ${name || meituanAppId} error`)
+      console.log(result.data)
       throw new Error(result.data)
     }
   },
 
-  async getMeituanShopsAndUpdate (ctx, { meituanAppId, page = 1 }) {
+  async meituanFetchShops (ctx, { meituanAppId, page = 1 }) {
     const meituanApp = await ctx.queries.get('meituan_app', { id: meituanAppId }, { allowPrivate: true })
     const { appKey, accessToken, bid, appSecret } = meituanApp
     const ts = formatInTimeZone(new Date(), 'Asia/Shanghai', 'yyyy-MM-dd HH:mm:ss')
@@ -102,7 +103,19 @@ module.exports = {
     return data
   },
 
-  async verifyCode(ctx, { meituanShopId, code }) {
+  async meituanVerifyCode(ctx, { meituanShopId, code }) {
     return 'wip'
   },
+
+  async meituanGetTokenValidTime(ctx, { meituanAppId }) {
+    const meituanApp = await ctx.queries.get('meituan_app', { id: meituanAppId })
+    const { expireIn, lastUpdateTime } = meituanApp
+
+    const now = new Date().getTime()
+    const expireTime = new Date((parseInt(lastUpdateTime) + parseInt(expireIn)) * 1000).getTime()
+    const diff = expireTime - now
+
+    // hours - 1.43
+    return { hours: parseFloat((diff / (60 * 60 * 1000)).toFixed(2)) }
+  }
 }
