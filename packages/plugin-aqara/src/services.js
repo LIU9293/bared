@@ -189,11 +189,11 @@ module.exports = {
 
   async getResourcesForDevice (ctx, { did, resourceId }) {
     const prepareInfo = await ctx.knex('aqara_device')
-    .join('aqara_user', 'aqara_device.aqaraUserId', '=', 'aqara_user.id')
-    .join('aqara_developer', 'aqara_user.developerId', '=', 'aqara_developer.id')
-    .select('aqara_device.model', 'aqara_device.did', 'aqara_user.accessToken', 'aqara_developer.appId', 'aqara_developer.appKey', 'aqara_developer.keyId')
-    .where('aqara_device.did', did)
-    .first()
+      .join('aqara_user', 'aqara_device.aqaraUserId', '=', 'aqara_user.id')
+      .join('aqara_developer', 'aqara_user.developerId', '=', 'aqara_developer.id')
+      .select('aqara_device.model', 'aqara_device.did', 'aqara_user.accessToken', 'aqara_developer.appId', 'aqara_developer.appKey', 'aqara_developer.keyId')
+      .where('aqara_device.did', did)
+      .first()
 
     if (!prepareInfo) {
       throw new Error(`Resource not found for did ${did}`)

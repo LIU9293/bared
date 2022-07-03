@@ -27,5 +27,19 @@ module.exports = {
     address: {
       type: 'string'
     }
-  }
+  },
+  rowActions: [
+    {
+      text: 'Get Coupon Info',
+      serviceName: 'meituanGetCouponInfo',
+      paramsMap: { meituanShopId: 'id' },
+      inputParams: { code: 'string' }
+    },
+    {
+      text: 'Verify Code',
+      serviceName: 'meituanVerifyCode',
+      paramsMap: { meituanShopId: 'id' },
+      inputParams: { code: 'string' }
+    }
+  ]
 }

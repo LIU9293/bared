@@ -2,7 +2,13 @@ const meituanRoutes = require('./router')
 const meituanAppSchema = require('./meituanAppSchema')
 const meituanShopSchema = require('./meituanShopSchema')
 
-const { meituanFetchShops, meituanGetTokenValidTime, meituanRefreshToken} = require('./services')
+const {
+  meituanFetchShops,
+  meituanGetTokenValidTime,
+  meituanRefreshToken,
+  meituanGetCouponInfo,
+  meituanVerifyCode
+} = require('./services')
 
 module.exports = () => {
   return {
@@ -23,7 +29,7 @@ module.exports = () => {
     ],
 
     middlewares: [],
-    
+
     services: [
       {
         name: 'meituanFetchShops',
@@ -44,6 +50,23 @@ module.exports = () => {
         service: meituanRefreshToken,
         params: {
           meituanAppId: 'integer'
+        }
+      },
+      {
+        name: 'meituanGetCouponInfo',
+        service: meituanGetCouponInfo,
+        params: {
+          meituanShopId: 'integer',
+          code: 'string'
+        }
+      },
+      {
+        name: 'meituanVerifyCode',
+        service: meituanVerifyCode,
+        params: {
+          meituanShopId: 'integer',
+          code: 'string',
+          count: 'integer'
         }
       }
     ]

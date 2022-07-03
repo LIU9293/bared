@@ -1,4 +1,4 @@
-const qs = require('querystring')
+const qs = require('qs')
 const crypto = require('crypto')
 const axios = require('axios')
 const { formatInTimeZone } = require('date-fns-tz')
@@ -79,7 +79,7 @@ module.exports = {
       limit: 100
     }
     const sig = sign(params, appSecret)
-    const str = qs.encode({ ...params, sign: sig })
+    const str = qs.stringify({ ...params, sign: sig })
     const result = await axios.get(`https://openapi.dianping.com/router/oauth/session/scope?${str}`)
 
     const { code, data } = result.data
@@ -103,10 +103,6 @@ module.exports = {
     return data
   },
 
-  async meituanVerifyCode(ctx, { meituanShopId, code }) {
-    return 'wip'
-  },
-
   async meituanGetTokenValidTime(ctx, { meituanAppId }) {
     const meituanApp = await ctx.queries.get('meituan_app', { id: meituanAppId })
     const { expireIn, lastUpdateTime } = meituanApp
@@ -117,5 +113,81 @@ module.exports = {
 
     // hours - 1.43
     return { hours: parseFloat((diff / (60 * 60 * 1000)).toFixed(2)) }
-  }
+  },
+
+  async meituanGetCouponInfo(ctx, { meituanShopId, code }) {
+    const meituanAppInfo = await ctx.knex('meituan_shop')
+      .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
+      .select('meituan_app.appKey', 'meituan_app.appSecret', 'meituan_app.accessToken', 'meituan_shop.uuid', 'meituan_shop.id')
+      .where('meituan_shop.id', meituanShopId)
+      .first()
+
+    const { appKey, appSecret, accessToken, uuid } = meituanAppInfo
+    const ts = formatInTimeZone(new Date(), 'Asia/Shanghai', 'yyyy-MM-dd HH:mm:ss')
+
+    const prepareParams = {
+      app_key: appKey,
+      timestamp: ts,
+      session: accessToken,
+      format: 'json',
+      v: 1,
+      sign_method: 'MD5',
+      receipt_code: code,
+      open_shop_uuid: uuid
+    }
+
+    const prepareSig = sign(prepareParams, appSecret)
+    const prepareResult = await axios({
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      url: 'https://openapi.dianping.com/router/tuangou/receipt/prepare',
+      data: qs.stringify({ ...prepareParams, sign: prepareSig })
+    })
+
+    if (prepareResult.data && prepareResult.data.code === 200) {
+      return { success: true, data: prepareResult.data.data }
+    } else {
+      return { success: false, message: prepareResult.data.msg, code: prepareResult.data.code }
+    }
+  },
+  
+  async meituanVerifyCode(ctx, { meituanShopId, code, count = 1 }) {
+    const meituanAppInfo = await ctx.knex('meituan_shop')
+      .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
+      .select('meituan_app.appKey', 'meituan_app.appSecret', 'meituan_app.accessToken', 'meituan_shop.uuid', 'meituan_shop.id')
+      .where('meituan_shop.id', meituanShopId)
+      .first()
+
+    const { appKey, appSecret, accessToken, uuid } = meituanAppInfo
+    const ts = formatInTimeZone(new Date(), 'Asia/Shanghai', 'yyyy-MM-dd HH:mm:ss')
+
+    const params = {
+      app_key: appKey,
+      timestamp: ts,
+      session: accessToken,
+      format: 'json',
+      v: 1,
+      sign_method: 'MD5',
+      receipt_code: code,
+      open_shop_uuid: uuid,
+      requestid: code,
+      count,
+      app_shop_account: 'moghub',
+      app_shop_accountname: 'moghub'
+    }
+
+    const sig = sign(params, appSecret)
+    const result = await axios({
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      url: 'https://openapi.dianping.com/router/tuangou/receipt/consume',
+      data: qs.stringify({ ...params, sign: sig })
+    })
+
+    if (result.data && result.data.code === 200) {
+      return { success: true, data: result.data.data }
+    } else {
+      return { success: false, message: result.data.msg, code: result.data.code }
+    }
+  },
 }

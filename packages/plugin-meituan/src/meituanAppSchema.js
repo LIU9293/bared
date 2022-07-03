@@ -41,6 +41,11 @@ module.exports = {
       text: 'Token Time',
       serviceName: 'meituanGetTokenValidTime',
       paramsMap: { meituanAppId: 'id' }
+    },
+    {
+      text: 'Refresh Shops',
+      serviceName: 'meituanFetchShops',
+      paramsMap: { meituanAppId: 'id' }
     }
   ]
 }
