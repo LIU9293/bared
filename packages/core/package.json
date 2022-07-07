@@ -1,6 +1,6 @@
 {
   "name": "@bared/core",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Headless CMS framework in NodeJS, lightweight but powerful",
   "main": "index.js",
   "scripts": {
