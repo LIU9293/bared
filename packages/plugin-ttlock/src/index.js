@@ -21,7 +21,7 @@ module.exports = () => {
     ],
     routers: [
       {
-        name: 'ttlock_lock',
+        name: 'TTLock',
         routes
       }
     ],

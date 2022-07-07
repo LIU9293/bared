@@ -23,8 +23,8 @@ module.exports = () => {
 
     routers: [
       {
-        name: 'meituan_app',
-        routers: meituanRoutes
+        name: 'Meituan',
+        routes: meituanRoutes
       }
     ],
 

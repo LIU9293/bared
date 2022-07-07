@@ -35,7 +35,7 @@ module.exports = () => {
 
     routers: [
       {
-        name: 'email',
+        name: 'Email',
         routes
       }
     ]

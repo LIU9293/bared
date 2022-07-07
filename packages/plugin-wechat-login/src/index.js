@@ -20,7 +20,7 @@ module.exports = () => {
   
     routers: [
       {
-        name: 'wechat_app',
+        name: 'WechatLogin',
         routes: wechatRoutes
       }
     ],

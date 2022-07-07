@@ -12,6 +12,7 @@ const { createJwtToken } = require('./api/user/utils/jwt')
 const registerRouter = require('./register/registerRouter')
 const registerDatabase = require('./register/registerDatabase')
 const registerSchemas = require('./register/registerSchema')
+const registerAllRouters = require('./register/registerAllRouters')
 
 const userSchema = require('./api/user/user.schema')
 const errorSchema = require('./api/error/error.schema')
@@ -136,15 +137,31 @@ async function start ({
     }
 
     if (plugin.routers) {
+      /**
+       * [{ name: '', routes: '' }]
+       */
       plugin.routers.forEach(router => registerRouter({ app, ...router }))
     }
   })
   
-  registerRouter({ app, name: 'user', routes: userRoutes })
+  registerRouter({ app, name: 'User', routes: userRoutes })
 
   routers.forEach(router => {
     registerRouter({ app, ...router })
   })
+
+  let allPluginRouters = plugins
+    .filter(i => i.routers && i.routers.length > 0)
+    .map(i => {
+      const { routers } = i
+      return routers.map(j => ({ ...j, pluginName: i.pluginName }))
+    })
+  
+  
+  allPluginRouters = R.flatten(allPluginRouters)
+  const appRouters = [{ routes: userRoutes, name: 'user' }].concat(routers)
+
+  registerAllRouters(app, allPluginRouters.concat(appRouters))
 
   const rootUser = await queries.get(allSchemas, knex)('user', { name: 'admin' })
   if (!rootUser) {
