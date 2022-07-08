@@ -61,6 +61,9 @@ function insertKnexFields (t, field) {
     case 'bigint':
       col = t.bigint(field.name)
       break
+    case 'float':
+      col = t.float(field.name)
+      break
     case 'boolean':
       col = t.boolean(field.name)
       break

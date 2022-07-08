@@ -5,12 +5,11 @@ module.exports = {
   isPluginSchema: true,
   attributes: {
     title: { type: 'string', tableConfig: { defaultShow: true } },
-    shopId: { type: 'integer' },
-    dealId: { type: 'string' },
-    dealGroupId: { type: 'string' },
-    price: { type: 'number' }
+    meituanShopId: { type: 'integer' },
+    dealId: { type: 'bigint' },
+    dealGroupId: { type: 'bigint' },
+    price: { type: 'float' },
+    saleStatus: { type: 'integer' }
   },
-  rowActions: [
-
-  ]
+  rowActions: []
 }

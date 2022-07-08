@@ -104,6 +104,56 @@ module.exports = {
     return data
   },
 
+  async meituanFetchCoupons (ctx, { meituanShopId, page = 1 }) {
+    const prepareInfo = await ctx.knex('meituan_shop')
+      .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
+      .select(
+        'meituan_shop.uuid',
+        'meituan_app.appKey',
+        'meituan_app.appSecret',
+        'meituan_app.bid',
+        'meituan_app.accessToken'
+      )
+      .where('meituan_shop.id', meituanShopId)
+      .first()
+
+    const { appKey, accessToken, appSecret, uuid } = prepareInfo
+    const ts = formatInTimeZone(new Date(), 'Asia/Shanghai', 'yyyy-MM-dd HH:mm:ss')
+    const params = {
+      app_key: appKey,
+      timestamp: ts,
+      session: accessToken,
+      format: 'json',
+      v: 1,
+      sign_method: 'MD5',
+      open_shop_uuid: uuid,
+      // offset: (page - 1) * 100,
+      limit: 100
+    }
+    const sig = sign(params, appSecret)
+    const str = qs.stringify({ ...params, sign: sig })
+    const result = await axios.get(`https://openapi.dianping.com/tuangou/deal/queryshopdeal?${str}`)
+
+    const { code, data } = result.data
+    if (code !== 200) {
+      throw new Error(result.data.msg)
+    }
+
+    for (const coupon of data) {
+      const { title, price } = coupon
+      await ctx.queries.upsert('meituan_coupon', { dealId: coupon.deal_id }, {
+        title,
+        meituanShopId,
+        price,
+        dealId: coupon.deal_id,
+        dealGroupId: coupon.dealgroup_id,
+        saleStatus: coupon.sale_status
+      })
+    }
+
+    return data
+  },
+
   async meituanGetTokenValidTime (ctx, { meituanAppId }) {
     const meituanApp = await ctx.queries.get('meituan_app', { id: meituanAppId })
     const { expireIn, lastUpdateTime } = meituanApp

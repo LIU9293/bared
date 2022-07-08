@@ -30,6 +30,11 @@ module.exports = {
   },
   rowActions: [
     {
+      text: 'Fetch Coupons',
+      serviceName: 'meituanFetchCoupons',
+      paramsMap: { meituanShopId: 'id' }
+    },
+    {
       text: 'Get Coupon Info',
       serviceName: 'meituanGetCouponInfo',
       paramsMap: { meituanShopId: 'id' },

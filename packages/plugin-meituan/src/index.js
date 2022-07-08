@@ -8,7 +8,8 @@ const {
   meituanGetTokenValidTime,
   meituanRefreshToken,
   meituanGetCouponInfo,
-  meituanVerifyCode
+  meituanVerifyCode,
+  meituanFetchCoupons
 } = require('./services')
 
 module.exports = () => {
@@ -69,6 +70,13 @@ module.exports = () => {
           meituanShopId: 'integer',
           code: 'string',
           count: 'integer'
+        }
+      },
+      {
+        name: 'meituanFetchCoupons',
+        service: meituanFetchCoupons,
+        params: {
+          meituanShopId: 'integer'
         }
       }
     ]
