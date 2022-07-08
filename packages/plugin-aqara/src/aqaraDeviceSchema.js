@@ -20,12 +20,8 @@ module.exports = {
         defaultShow: true
       }
     },
-    positionId: {
-      type: 'string'
-    },
-    parentDid: {
-      type: 'string'
-    },
+    positionId: { type: 'string' },
+    parentDid: { type: 'string' },
     model: {
       type: 'string',
       tableConfig: {
