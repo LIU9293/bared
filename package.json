@@ -3,7 +3,8 @@
   "version": "0.0.8",
   "description": "Headless NodeJS CMS for better developer experience",
   "scripts": {
-    "start": "node ./packages/demo/index.js"
+    "start": "node ./packages/demo/index.js",
+    "format": "standard --fix"
   },
   "keywords": [
     "NodeJS",
