@@ -61,16 +61,14 @@ async function start ({
    */
   routers = []
 }) {
-
-  
-  /***************** basic koa setup *****************/
+  /** *************** basic koa setup *****************/
   const app = new Koa()
   app.use(bodyParser())
   app.use(cors())
 
   const knex = registerDatabase(databaseConfig)
 
-  /***************** load all schemas, extend user schemas *****************/
+  /** *************** load all schemas, extend user schemas *****************/
   let extendedUserSchema = userSchema
   plugins.forEach(plugin => {
     if (plugin.extendUserSchema) {
@@ -86,19 +84,18 @@ async function start ({
   ])
 
   await registerSchemas(knex, allSchemas)
-  /***************** done load schemas *****************/
+  /** *************** done load schemas *****************/
 
-
-  /***************** register services *****************/
+  /** *************** register services *****************/
   const pluginServices = R.pipe(
-    R.map(i => i.services 
+    R.map(i => i.services
       ? i.services.map(j => ({ ...j, pluginName: i.pluginName }))
       : []
     ),
     R.flatten,
     R.filter(i => !!i)
   )(plugins)
-  
+
   app.use(async (ctx, next) => {
     const q = {}
     for (const i in queries) {
@@ -127,7 +124,7 @@ async function start ({
   registerDapi(app, allSchemas)
   registerSchemaApi(app, allSchemas)
   registerServicesApi(app, pluginServices)
-  
+
   // register user router and plugin routers
   plugins.forEach(plugin => {
     if (plugin.middlewares && plugin.middlewares.length > 0) {
@@ -143,7 +140,7 @@ async function start ({
       plugin.routers.forEach(router => registerRouter({ app, ...router }))
     }
   })
-  
+
   registerRouter({ app, name: 'User', routes: userRoutes })
 
   routers.forEach(router => {
@@ -156,8 +153,7 @@ async function start ({
       const { routers } = i
       return routers.map(j => ({ ...j, pluginName: i.pluginName }))
     })
-  
-  
+
   allPluginRouters = R.flatten(allPluginRouters)
   const appRouters = [{ routes: userRoutes, name: 'user' }].concat(routers)
 

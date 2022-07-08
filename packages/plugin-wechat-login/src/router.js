@@ -11,7 +11,7 @@ module.exports = [
     public: true,
     description: 'Register a user with wechat - wx.login()',
     params: {
-      code: { type: 'string', required: true },
+      code: { type: 'string', required: true }
     }
   },
   {

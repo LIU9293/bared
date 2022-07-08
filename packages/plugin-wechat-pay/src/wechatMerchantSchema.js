@@ -4,7 +4,7 @@ module.exports = {
   isPluginSchema: true,
   attributes: {
     name: {
-      type: "string",
+      type: 'string',
       required: true,
       tableConfig: {
         showAsAvatar: false,
@@ -12,7 +12,7 @@ module.exports = {
       }
     },
     appId: {
-      type: "string",
+      type: 'string',
       required: true,
       tableConfig: {
         defaultShow: true

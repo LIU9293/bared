@@ -5,7 +5,7 @@ module.exports = {
   attributes: {
     developerId: {
       type: 'integer',
-      required: true,
+      required: true
     },
     signName: {
       type: 'string',
@@ -15,10 +15,10 @@ module.exports = {
       }
     },
     orderId: {
-      type: 'string',
+      type: 'string'
     },
     businessType: {
-      type: 'string',
+      type: 'string'
     },
     auditStatus: {
       type: 'string'

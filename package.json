@@ -5,7 +5,14 @@
   "scripts": {
     "start": "node ./packages/demo/index.js"
   },
-  "keywords": ["NodeJS", "Koa", "CMS"],
+  "keywords": [
+    "NodeJS",
+    "Koa",
+    "CMS"
+  ],
   "author": "baredigit (hello@baredigit.com)",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "standard": "17.0.0"
+  }
 }

@@ -5,14 +5,14 @@ module.exports = {
   description: 'Email templates',
   attributes: {
     templateName: {
-      type: "string",
+      type: 'string',
       tableConfig: {
         defaultShow: true
       }
     },
     template: {
-      type: "text",
-      required: true,
-    },
+      type: 'text',
+      required: true
+    }
   }
 }

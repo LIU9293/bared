@@ -20,7 +20,7 @@ module.exports = {
       }
     },
     gender: {
-      type: "integer",
+      type: 'integer',
       default: 0,
       required: false,
       tableConfig: {

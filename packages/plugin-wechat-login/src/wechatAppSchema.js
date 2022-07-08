@@ -4,7 +4,7 @@ module.exports = {
   isPluginSchema: true,
   attributes: {
     name: {
-      type: "string",
+      type: 'string',
       required: true,
       tableConfig: {
         showAsAvatar: false,

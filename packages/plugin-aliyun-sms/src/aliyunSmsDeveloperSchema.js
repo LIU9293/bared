@@ -25,6 +25,6 @@ module.exports = {
     endpoint: {
       type: 'string',
       required: true
-    },
+    }
   }
 }

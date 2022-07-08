@@ -1,6 +1,6 @@
 const { registerOrLogin } = require('./services')
 
-module.exports = { 
+module.exports = {
   async registerOrLogin (ctx) {
     const { code, appId } = ctx.request.body
     const wechatApp = await ctx.queries.get('wechat_app', { appId })

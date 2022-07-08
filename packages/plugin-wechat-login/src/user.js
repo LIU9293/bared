@@ -2,7 +2,7 @@ module.exports = {
   wechatAppid: {
     type: 'string',
     default: '',
-    unique: false,
+    unique: false
   },
   wechatOpenid: {
     type: 'string',

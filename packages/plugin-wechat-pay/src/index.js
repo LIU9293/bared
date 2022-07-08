@@ -2,7 +2,7 @@ const wechatMerchantSchema = require('./wechatMerchantSchema')
 const wechatPayOrderSchema = require('./wechatPayOrderSchema')
 const {
   getPaymentParams
-} =  require('./services')
+} = require('./services')
 
 module.exports = () => {
   return {

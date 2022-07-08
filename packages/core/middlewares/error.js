@@ -3,7 +3,7 @@ async function errorMiddleware (ctx, next) {
   try {
     await next()
   } catch (error) {
-    if(process.env.IS_DEV){
+    if (process.env.IS_DEV) {
       console.log(error)
     }
     try {

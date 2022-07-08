@@ -1,8 +1,11 @@
-module.exports  = {
+const axios = require('axios')
+const qs = require('qs')
+
+module.exports = {
   async authCallback (ctx) {
     const code = ctx.query.auth_code
     const meituanAppId = ctx.params.meituanAppId
-    const meituanApp = await strapi.queries.get('meituan_app', { id: meituanAppId })
+    const meituanApp = await ctx.queries.get('meituan_app', { id: meituanAppId })
 
     const str = qs.encode({
       app_key: meituanApp.appKey,
@@ -14,9 +17,9 @@ module.exports  = {
 
     const result = await axios.get(`https://openapi.dianping.com/router/oauth/token?${str}`)
     if (result.data.code && result.data.code === 200) {
-      await strapi.queries.update('meituan_app', { id: meituanAppId }, {
-        accessToken: result.data.access_token,
-        refreshToken: result.data.refresh_token,
+      await ctx.queries.update('meituan_app', { id: meituanAppId }, {
+        accessToken: result.data.access_token, // eslint-disable-line
+        refreshToken: result.data.refresh_token, // eslint-disable-line
         bid: result.data.bid,
         refreshCount: result.data.remain_refresh_count,
         lastUpdateTime: new Date().getTime() / 1000,

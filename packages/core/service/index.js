@@ -83,7 +83,6 @@ const createService = (schemas, knex) =>
     query,
     { allowPrivate = false } = {}
   ) => {
-    
     // hard code if is user table and has password
     if (tableName === 'user' && query.password) {
       const hashedPassword = await bcrypt.hash(query.password, 10)

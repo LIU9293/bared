@@ -13,28 +13,28 @@ module.exports = {
   description: 'Email configuration for nodemailer to send emails',
   attributes: {
     providerName: {
-      type: "string",
+      type: 'string',
       tableConfig: {
         defaultShow: true
       }
     },
     host: {
-      type: "string",
+      type: 'string',
       required: true,
       tableConfig: {
         defaultShow: true
       }
     },
     port: {
-      type: "integer",
+      type: 'integer',
       required: true,
       tableConfig: {
         defaultShow: true
       }
     },
     senderName: {
-      type: "string",
-      required: false,
+      type: 'string',
+      required: false
     },
     senderAddress: {
       type: 'string',
@@ -46,7 +46,7 @@ module.exports = {
     senderPassword: {
       type: 'string',
       required: true,
-      private: true,
+      private: true
     }
   }
 }

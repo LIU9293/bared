@@ -1,6 +1,7 @@
 const meituanRoutes = require('./router')
 const meituanAppSchema = require('./meituanAppSchema')
 const meituanShopSchema = require('./meituanShopSchema')
+const meituanCouponSchema = require('./meituanCouponSchema')
 
 const {
   meituanFetchShops,
@@ -18,7 +19,8 @@ module.exports = () => {
 
     schemas: [
       meituanAppSchema,
-      meituanShopSchema
+      meituanShopSchema,
+      meituanCouponSchema
     ],
 
     routers: [

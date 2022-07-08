@@ -26,6 +26,6 @@ module.exports = {
       type: 'string',
       required: true,
       private: true
-    },
+    }
   }
 }

@@ -23,6 +23,6 @@ module.exports = {
     },
     userId: {
       type: 'integer'
-    },
+    }
   }
 }

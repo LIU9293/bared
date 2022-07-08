@@ -2,7 +2,7 @@ const { decodeJwtToken } = require('../utils/jwt')
 
 const getAuthType = async (ctx, next) => {
   const { authorization } = ctx.request.header
-  
+
   if (!authorization) {
     ctx.state.authType = 'public'
     return await next()

@@ -2,7 +2,7 @@ const crypto = require('crypto')
 const axios = require('axios')
 
 async function request ({ intent, data = {}, method = 'POST', accessToken, appId, keyId, appKey }) {
-  const ts = Math.round(new Date().getTime())  
+  const ts = Math.round(new Date().getTime())
   const str = accessToken
     ? `Accesstoken=${accessToken}&Appid=${appId}&Keyid=${keyId}&Nonce=${ts}&time=${ts}${appKey}`.toLowerCase()
     : `Appid=${appId}&Keyid=${keyId}&Nonce=${ts}&time=${ts}${appKey}`.toLowerCase()
@@ -23,7 +23,7 @@ async function request ({ intent, data = {}, method = 'POST', accessToken, appId
   }
 
   const res = await axios({
-    url: `https://open-cn.aqara.com/v3.0/open/api`,
+    url: 'https://open-cn.aqara.com/v3.0/open/api',
     method,
     headers,
     data: { intent, data }
@@ -39,7 +39,7 @@ async function request ({ intent, data = {}, method = 'POST', accessToken, appId
 }
 
 module.exports = {
-  async getOauthUrl (ctx, { aqaraDeveloperId, }) {
+  async getOauthUrl (ctx, { aqaraDeveloperId }) {
     const aqaraApp = await ctx.queries.get('aqara_developer', { id: aqaraDeveloperId })
 
     if (!aqaraApp) {
@@ -47,7 +47,7 @@ module.exports = {
     }
 
     const { appId } = aqaraApp
-    const redirectUrl = `${process.env.BASE_URL || 'https://mogroom.com'}/api/aqara/auth/callback` 
+    const redirectUrl = `${process.env.BASE_URL || 'https://mogroom.com'}/api/aqara/auth/callback`
     const url = `https://open-cn.aqara.com/v3.0/open/authorize?client_id=${appId}&response_type=code&redirect_uri=${redirectUrl}&state=${aqaraDeveloperId}`
     return url
   },
@@ -80,12 +80,12 @@ module.exports = {
       params
     })
 
-    const { access_token, refresh_token, openId, expires_in } = result.data
+    const { access_token, refresh_token, openId, expires_in } = result.data // eslint-disable-line
     const aqaraUser = await ctx.queries.upsert('aqara_user', { openId }, {
-      accessToken: access_token,
-      refreshToken: refresh_token,
+      accessToken: access_token, // eslint-disable-line
+      refreshToken: refresh_token, // eslint-disable-line
       openId,
-      expiresIn: expires_in,
+      expiresIn: expires_in, // eslint-disable-line
       developerId: id
     })
 
@@ -106,7 +106,7 @@ module.exports = {
       data: {
         account,
         accountType: 0,
-        accessTokenValidity: "1y"
+        accessTokenValidity: '1y'
       },
       appId,
       appKey,
@@ -181,7 +181,7 @@ module.exports = {
 
     if (totalCount > page * pageSize) {
       console.log(`device length ${totalCount}, current got ${page * pageSize}, loading next 100`)
-      await getDevicesAndUpdate(ctx, { aqaraUserId, page: page + 1 })
+      await this.getDevicesAndUpdate(ctx, { aqaraUserId, page: page + 1 })
     }
 
     return { success: true }
@@ -205,7 +205,7 @@ module.exports = {
       intent: 'query.resource.info',
       data: {
         model,
-        resourceId,
+        resourceId
       },
       appId,
       appKey,
@@ -236,9 +236,9 @@ module.exports = {
         resources: [
           {
             resourceId,
-            value: on ? '1' : '0'    
+            value: on ? '1' : '0'
           }
-        ],
+        ]
       },
       appId,
       appKey,

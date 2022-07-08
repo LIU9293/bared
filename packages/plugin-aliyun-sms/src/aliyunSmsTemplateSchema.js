@@ -5,7 +5,7 @@ module.exports = {
   attributes: {
     developerId: {
       type: 'integer',
-      required: true,
+      required: true
     },
     templateName: {
       type: 'string',
@@ -22,7 +22,7 @@ module.exports = {
       }
     },
     templateContent: {
-      type: 'string',
+      type: 'string'
     },
     auditStatus: {
       type: 'string'

@@ -8,7 +8,6 @@ module.exports = [
     method: 'GET',
     controller: authCallback,
     public: true,
-    description: 'Meituan auth callback',
     query: true
-  },
+  }
 ]

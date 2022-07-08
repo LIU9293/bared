@@ -5,7 +5,7 @@ module.exports = {
   attributes: {
     aqaraUserId: {
       type: 'integer',
-      required: true,
+      required: true
     },
     deviceName: {
       type: 'string',
@@ -21,7 +21,7 @@ module.exports = {
       }
     },
     positionId: {
-      type: 'string',
+      type: 'string'
     },
     parentDid: {
       type: 'string'

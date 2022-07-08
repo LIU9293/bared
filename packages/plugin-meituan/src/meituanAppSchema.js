@@ -29,7 +29,7 @@ module.exports = {
     bid: { type: 'string' },
     lastUpdateTime: { type: 'integer' },
     expireIn: { type: 'integer' },
-    refreshCount: { type: 'integer'  }
+    refreshCount: { type: 'integer' }
   },
   rowActions: [
     {

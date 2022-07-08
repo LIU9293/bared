@@ -32,20 +32,20 @@ module.exports = {
     params.append('client_secret', clientSecret)
     params.append('username', username)
     params.append('password', crypto.createHash('md5').update(password).digest('hex'))
-  
+
     const result = await axios({
       method: 'POST',
       url: 'https://api.ttlock.com/oauth2/token',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       params
     })
-  
+
     const { data } = result
     if (data.access_token) {
       if (process.env.IS_DEV) {
         console.log(`${new Date().toLocaleTimeString()} - get ttlock token for ${ttlockUser.username} succeed`)
       }
-  
+
       await ctx.queries.update('ttlock_user', { id: ttlockUserId }, {
         accessToken: data.access_token,
         refreshToken: data.refresh_token,
@@ -59,7 +59,7 @@ module.exports = {
       return data
     }
   },
-  
+
   async refreshTtlockToken (ctx, { ttlockUserId }) {
     const ttlockUser = await ctx.queries.get('ttlock_user', { id: ttlockUserId }, { allowPrivate: true })
     const { refreshToken, developerId } = ttlockUser
@@ -72,20 +72,20 @@ module.exports = {
     params.append('client_secret', clientSecret)
     params.append('grant_type', 'refresh_token')
     params.append('refresh_token', refreshToken)
-  
+
     const result = await axios({
       method: 'POST',
       url: 'https://api.ttlock.com/oauth2/token',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       params
     })
-  
+
     const { data } = result
     if (data.access_token) {
       if (process.env.IS_DEV) {
         console.log(`${new Date().toLocaleTimeString()} - refresh ttlock token for ${ttlockUser.username} succeed`)
       }
-  
+
       await ctx.queries.update('ttlock_user', { id: ttlockUserId }, {
         accessToken: data.access_token,
         refreshToken: data.refresh_token,
@@ -106,11 +106,16 @@ module.exports = {
     const ttlockDeveloper = await ctx.queries.get('ttlock_developer', { id: developerId }, { allowPrivate: true })
     const { clientId } = ttlockDeveloper
 
-    const data = await ttlockRequest({ clientId, accessToken, url: '/v3/lock/list', data: {
-      pageNo: page,
-      pageSize,
-      date: new Date().getTime()
-    } })
+    const data = await ttlockRequest({
+      clientId,
+      accessToken,
+      url: '/v3/lock/list',
+      data: {
+        pageNo: page,
+        pageSize,
+        date: new Date().getTime()
+      }
+    })
 
     const { list } = data
 

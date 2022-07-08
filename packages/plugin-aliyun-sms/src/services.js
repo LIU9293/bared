@@ -11,7 +11,7 @@ async function getOpenApiClient (ctx, { developerId }) {
 }
 
 module.exports = {
-  async getTemplatesAndUpdate (ctx, { developerId, page = 1,  }) {
+  async getTemplatesAndUpdate (ctx, { developerId, page = 1 }) {
     const pageSize = 50
     const client = await getOpenApiClient(ctx, { developerId })
     const request = new QuerySmsTemplateListRequest({
@@ -65,7 +65,7 @@ module.exports = {
     const sign = await ctx.queries.get('aliyun_sms_sign', { id: signId })
     const template = await ctx.queries.get('aliyun_sms_template', { id: templateId })
 
-    const client = await getOpenApiClient(ctx, { developerId })
+    const client = await getOpenApiClient(ctx, { developerId: sign.developerId })
     const smsRequest = new SendSmsRequest({
       phoneNumbers: phoneNumber,
       signName: sign.signName,

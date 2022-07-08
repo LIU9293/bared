@@ -1,6 +1,5 @@
 
 const wechatUserMiddleware = () => async (ctx, next) => {
-
   // cloud run
   // we don't care about request not in cloud run, as it will be handled by core auth middleware
   const openid = ctx.request.headers['X-WX-OPENID'] || ctx.request.headers['x-wx-openid']
@@ -10,7 +9,6 @@ const wechatUserMiddleware = () => async (ctx, next) => {
   if (openid) {
     const user = await ctx.queries.get('user', { wechatOpenid: openid })
     if (!user) {
-
       const newUser = await ctx.queries.create('user', {
         auth_type: 'basic',
         name: 'wechat_user',
@@ -18,7 +16,7 @@ const wechatUserMiddleware = () => async (ctx, next) => {
         wechatOpenid: openid,
         wechatUnionid: unionid || ''
       })
-      
+
       ctx.state.user = newUser
     } else {
       ctx.state.user = user
@@ -26,7 +24,6 @@ const wechatUserMiddleware = () => async (ctx, next) => {
   }
 
   await next()
-  
 }
 
 module.exports = { wechatUserMiddleware }

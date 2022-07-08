@@ -30,7 +30,6 @@ const registerRouter = ({ app, name = '', routes = [] }) => {
 
   if (publicContentRoutes && publicContentRoutes.length > 0) {
     publicContentRoutes.forEach(r => {
-
       if (process.env.IS_DEV) {
         console.log(`registering public ${r.method} route: /api${r.url}`)
       }

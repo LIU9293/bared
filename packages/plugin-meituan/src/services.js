@@ -22,7 +22,7 @@ function sign (param, appsecret) {
 }
 
 module.exports = {
-  async meituanRefreshToken(ctx, { meituanAppId }) {
+  async meituanRefreshToken (ctx, { meituanAppId }) {
     const meituanApp = await ctx.queries.get('meituan_app', { id: meituanAppId }, { allowPrivate: true })
     const { refreshToken, appKey, appSecret, name } = meituanApp
 
@@ -45,7 +45,7 @@ module.exports = {
         console.log(`-- refresh dianping token for id ${meituanAppId} succeed --`)
         console.log(result.data)
       }
-      
+
       const res = await ctx.queries.update('meituan_app', { id: meituanAppId }, {
         accessToken: result.data.access_token,
         refreshToken: result.data.refresh_token,
@@ -54,7 +54,7 @@ module.exports = {
         lastUpdateTime: new Date().getTime() / 1000,
         expireIn: result.data.expires_in
       })
-  
+
       return res
     } else {
       console.log(`${new Date().toLocaleTimeString()} - [ERROR] - refresh dianping token for ${name || meituanAppId} error`)
@@ -90,10 +90,11 @@ module.exports = {
     }
 
     for (const shop of data) {
-      const { open_shop_uuid, shopname, shopaddress, cityname } = shop
-      await ctx.queries.upsert('meituan_shop', { uuid: open_shop_uuid }, {
+      const { shopname, shopaddress, cityname } = shop
+      const uuid = shop.open_shop_uuid
+      await ctx.queries.upsert('meituan_shop', { uuid }, {
         name: shopname,
-        uuid: open_shop_uuid,
+        uuid,
         meituanAppId,
         city: cityname,
         address: shopaddress
@@ -103,7 +104,7 @@ module.exports = {
     return data
   },
 
-  async meituanGetTokenValidTime(ctx, { meituanAppId }) {
+  async meituanGetTokenValidTime (ctx, { meituanAppId }) {
     const meituanApp = await ctx.queries.get('meituan_app', { id: meituanAppId })
     const { expireIn, lastUpdateTime } = meituanApp
 
@@ -115,7 +116,7 @@ module.exports = {
     return { hours: parseFloat((diff / (60 * 60 * 1000)).toFixed(2)) }
   },
 
-  async meituanGetCouponInfo(ctx, { meituanShopId, code }) {
+  async meituanGetCouponInfo (ctx, { meituanShopId, code }) {
     const meituanAppInfo = await ctx.knex('meituan_shop')
       .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
       .select('meituan_app.appKey', 'meituan_app.appSecret', 'meituan_app.accessToken', 'meituan_shop.uuid', 'meituan_shop.id')
@@ -150,8 +151,8 @@ module.exports = {
       return { success: false, message: prepareResult.data.msg, code: prepareResult.data.code }
     }
   },
-  
-  async meituanVerifyCode(ctx, { meituanShopId, code, count = 1 }) {
+
+  async meituanVerifyCode (ctx, { meituanShopId, code, count = 1 }) {
     const meituanAppInfo = await ctx.knex('meituan_shop')
       .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
       .select('meituan_app.appKey', 'meituan_app.appSecret', 'meituan_app.accessToken', 'meituan_shop.uuid', 'meituan_shop.id')
@@ -189,5 +190,5 @@ module.exports = {
     } else {
       return { success: false, message: result.data.msg, code: result.data.code }
     }
-  },
+  }
 }

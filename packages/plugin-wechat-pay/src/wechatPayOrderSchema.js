@@ -4,7 +4,7 @@ module.exports = {
   isPluginSchema: true,
   attributes: {
     orderId: {
-      type: "string",
+      type: 'string',
       required: true,
       unique: true,
       tableConfig: {
@@ -13,14 +13,14 @@ module.exports = {
       }
     },
     userId: {
-      type: "integer",
+      type: 'integer',
       required: true,
       tableConfig: {
         defaultShow: true
       }
     },
     amount: {
-      type: "integer",
+      type: 'integer',
       required: true,
       tableConfig: {
         defaultShow: true

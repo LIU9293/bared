@@ -3,7 +3,7 @@ const { customAlphabet } = require('nanoid')
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 const nanoid = customAlphabet(alphabet, 12)
 
-module.exports = { 
+module.exports = {
   /**
    *  1. User code call this service
    *  2. This service generate a order record in database

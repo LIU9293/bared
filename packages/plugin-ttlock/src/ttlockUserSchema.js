@@ -33,13 +33,13 @@ module.exports = {
       private: true
     },
     uid: {
-      type: 'string',
+      type: 'string'
     },
     lastUpdateTime: {
-      type: 'integer',
+      type: 'integer'
     },
     expireIn: {
-      type: 'integer',
+      type: 'integer'
     }
   }
 }

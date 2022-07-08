@@ -15,9 +15,9 @@ module.exports = () => {
         }
       }
     },
-  
+
     schemas: [wechatAppSchema],
-  
+
     routers: [
       {
         name: 'WechatLogin',

@@ -11,7 +11,7 @@ module.exports = {
     },
     account: {
       type: 'string',
-      required: true,
+      required: true
     },
     developerId: {
       type: 'integer',
@@ -27,7 +27,7 @@ module.exports = {
       type: 'string'
     },
     openId: {
-      type: 'string',
+      type: 'string'
     },
     expiresIn: {
       type: 'bigint'

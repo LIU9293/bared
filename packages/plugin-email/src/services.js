@@ -19,12 +19,11 @@ module.exports = {
       }
     })
 
-
     await transporter.sendMail({
       from: senderName ? `"${senderName}" <${senderAddress}>` : senderAddress,
       to,
       subject: title,
-      html: body,
+      html: body
     })
 
     return { success: true }
