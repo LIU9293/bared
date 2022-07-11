@@ -1,4 +1,4 @@
-const WxPay = require('wechatpay-node-v3')
+const WxPay = require('@bared/wechatpay-node-v3')
 const { customAlphabet } = require('nanoid')
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 const nanoid = customAlphabet(alphabet, 12)

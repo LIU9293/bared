@@ -1,6 +1,6 @@
 {
   "name": "@bared/plugin-wechat-pay",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Wechat payment for bared CMS",
   "keywords": [],
   "main": "src/index.js",
@@ -10,6 +10,6 @@
     "axios": "0.27.2",
     "ramda": "0.28.0",
     "nanoid": "3.3.4",
-    "wechatpay-node-v3": "https://e.coding.net/mogroom/mogroom-frontend/wechat-pay-sdk.git"
+    "@bared/wechatpay-node-v3": "1.3.3"
   }
 }
