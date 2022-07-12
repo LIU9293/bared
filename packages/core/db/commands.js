@@ -10,6 +10,9 @@ function alterColumn (t, field) {
     case 'bigint':
       col = t.bigint(field.name)
       break
+    case 'float':
+      col = t.float(field.name)
+      break
     case 'boolean':
       col = t.boolean(field.name)
       break
@@ -30,6 +33,10 @@ function alterColumn (t, field) {
       break
     default:
       break
+  }
+
+  if (!col) {
+    return
   }
 
   if (field.required) {
