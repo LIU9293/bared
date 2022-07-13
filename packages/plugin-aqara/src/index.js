@@ -5,9 +5,10 @@ const {
   generateApiAuth,
   getAccessTokenByAuthCode,
   getDevicesAndUpdate,
-  getResourcesForDevice,
+  getResourceDetail,
   getResourceCurrentValues,
-  turnSwitch
+  turnSwitch,
+  getResourceNames
 } = require('./services')
 
 module.exports = () => {
@@ -50,8 +51,25 @@ module.exports = () => {
         }
       },
       {
-        name: 'getResourcesForDevice',
-        service: getResourcesForDevice,
+        name: 'getResourceNames',
+        service: getResourceNames,
+        showInAdmin: true,
+        params: {
+          did: 'string'
+        }
+      },
+      {
+        name: 'getResourceDetail',
+        service: getResourceDetail,
+        showInAdmin: true,
+        params: {
+          did: 'string',
+          resourceId: 'string'
+        }
+      },
+      {
+        name: 'getResourceCurrentValues',
+        service: getResourceCurrentValues,
         showInAdmin: true,
         params: {
           did: 'string',
@@ -64,15 +82,6 @@ module.exports = () => {
         showInAdmin: true,
         params: {
           on: 'boolean',
-          did: 'string',
-          resourceId: 'string'
-        }
-      },
-      {
-        name: 'getResourceCurrentValues',
-        service: getResourceCurrentValues,
-        showInAdmin: true,
-        params: {
           did: 'string',
           resourceId: 'string'
         }

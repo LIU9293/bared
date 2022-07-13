@@ -34,5 +34,12 @@ module.exports = {
         defaultShow: true
       }
     }
-  }
+  },
+  rowActions: [
+    {
+      text: 'Get Device Resources',
+      serviceName: 'getResourceNames',
+      paramsMap: { did: 'did' }
+    }
+  ]
 }
