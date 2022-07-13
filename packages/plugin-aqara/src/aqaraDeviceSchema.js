@@ -1,6 +1,7 @@
 module.exports = {
   tableName: 'aqara_device',
   displayName: 'AqaraDevice',
+  description: '所有的Aqara设备，用来管理和控制Aqara开关，通过aqara_user来刷新设备列表',
   isPluginSchema: true,
   attributes: {
     aqaraUserId: {
@@ -40,6 +41,20 @@ module.exports = {
       text: 'Get Device Resources',
       serviceName: 'getResourceNames',
       paramsMap: { did: 'did' }
+    },
+    {
+      text: 'Turn Switch 1',
+      serviceName: 'turnSwitch',
+      paramsMap: { did: 'did' },
+      fixedParams: { resourceId: '4.1.85' },
+      inputParams: { on: 'boolean' }
+    },
+    {
+      text: 'Turn Switch 2',
+      serviceName: 'turnSwitch',
+      paramsMap: { did: 'did' },
+      fixedParams: { resourceId: '4.2.85' },
+      inputParams: { on: 'boolean' }
     }
   ]
 }

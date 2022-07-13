@@ -33,9 +33,7 @@ async function request ({ intent, data = {}, method = 'POST', accessToken, appId
     return res.data.result
   }
 
-  console.log(`aqara api error: ${res.data.msgDetails || res.data.messageDetail}`)
-  console.log(res.data)
-  throw new Error(res.data.msgDetails || res.data.messageDetail || res.data)
+  throw new Error('aqara api error:' + ' ' + (res.data.msgDetails || res.data.message))
 }
 
 module.exports = {
@@ -113,7 +111,6 @@ module.exports = {
       keyId
     })
 
-    console.log(result)
     return result
   },
 
@@ -258,7 +255,7 @@ module.exports = {
     const { accessToken, appId, appKey, keyId } = prepareInfo
     const res = await request({
       intent: 'write.resource.device',
-      data: {
+      data: [{
         subjectId: did,
         resources: [
           {
@@ -266,7 +263,7 @@ module.exports = {
             value: on ? '1' : '0'
           }
         ]
-      },
+      }],
       appId,
       appKey,
       keyId,
