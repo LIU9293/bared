@@ -168,12 +168,28 @@ module.exports = {
     return { hours: parseFloat((diff / (60 * 60 * 1000)).toFixed(2)) }
   },
 
-  async meituanGetCouponInfo (ctx, { meituanShopId, code }) {
-    const meituanAppInfo = await ctx.knex('meituan_shop')
-      .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
-      .select('meituan_app.appKey', 'meituan_app.appSecret', 'meituan_app.accessToken', 'meituan_shop.uuid', 'meituan_shop.id')
-      .where('meituan_shop.id', meituanShopId)
-      .first()
+  async meituanGetCouponInfo (ctx, { meituanShopId, meituanShopUuid, code }) {
+    let meituanAppInfo
+
+    if (meituanShopId) {
+      meituanAppInfo = await ctx.knex('meituan_shop')
+        .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
+        .select('meituan_app.appKey', 'meituan_app.appSecret', 'meituan_app.accessToken', 'meituan_shop.uuid', 'meituan_shop.id')
+        .where('meituan_shop.id', meituanShopId)
+        .first()
+    }
+
+    if (meituanShopUuid) {
+      meituanAppInfo = await ctx.knex('meituan_shop')
+        .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
+        .select('meituan_app.appKey', 'meituan_app.appSecret', 'meituan_app.accessToken', 'meituan_shop.uuid', 'meituan_shop.id')
+        .where('meituan_shop.uuid', meituanShopUuid)
+        .first()
+    }
+
+    if (!meituanAppInfo) {
+      throw new Error('meituanAppInfo not found, meituanShopId or meituanShopUuid is required')
+    }
 
     const { appKey, appSecret, accessToken, uuid } = meituanAppInfo
     const ts = formatInTimeZone(new Date(), 'Asia/Shanghai', 'yyyy-MM-dd HH:mm:ss')
@@ -204,12 +220,28 @@ module.exports = {
     }
   },
 
-  async meituanVerifyCode (ctx, { meituanShopId, code, count = 1 }) {
-    const meituanAppInfo = await ctx.knex('meituan_shop')
-      .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
-      .select('meituan_app.appKey', 'meituan_app.appSecret', 'meituan_app.accessToken', 'meituan_shop.uuid', 'meituan_shop.id')
-      .where('meituan_shop.id', meituanShopId)
-      .first()
+  async meituanVerifyCode (ctx, { meituanShopId, meituanShopUuid, code, count = 1 }) {
+    let meituanAppInfo
+
+    if (meituanShopId) {
+      meituanAppInfo = await ctx.knex('meituan_shop')
+        .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
+        .select('meituan_app.appKey', 'meituan_app.appSecret', 'meituan_app.accessToken', 'meituan_shop.uuid', 'meituan_shop.id')
+        .where('meituan_shop.id', meituanShopId)
+        .first()
+    }
+
+    if (meituanShopUuid) {
+      meituanAppInfo = await ctx.knex('meituan_shop')
+        .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
+        .select('meituan_app.appKey', 'meituan_app.appSecret', 'meituan_app.accessToken', 'meituan_shop.uuid', 'meituan_shop.id')
+        .where('meituan_shop.uuid', meituanShopUuid)
+        .first()
+    }
+
+    if (!meituanAppInfo) {
+      throw new Error('meituanAppInfo not found, meituanShopId or meituanShopUuid is required')
+    }
 
     const { appKey, appSecret, accessToken, uuid } = meituanAppInfo
     const ts = formatInTimeZone(new Date(), 'Asia/Shanghai', 'yyyy-MM-dd HH:mm:ss')

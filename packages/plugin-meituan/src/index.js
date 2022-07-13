@@ -58,16 +58,20 @@ module.exports = () => {
       {
         name: 'meituanGetCouponInfo',
         service: meituanGetCouponInfo,
+        description: '点评查看券码信息，meituanShopId或meituanShopUuid必须有一个（代表验券店铺）',
         params: {
           meituanShopId: 'integer',
+          meituanShopUuid: 'string',
           code: 'string'
         }
       },
       {
         name: 'meituanVerifyCode',
         service: meituanVerifyCode,
+        description: '点评验券，meituanShopId或meituanShopUuid必须有一个（代表验券店铺）',
         params: {
           meituanShopId: 'integer',
+          meituanShopUuid: 'string',
           code: 'string',
           count: 'integer'
         }
