@@ -139,7 +139,9 @@ module.exports = {
       throw new Error(result.data.msg)
     }
 
-    await ctx.queries.delete('meituan_coupon', { meituanShopId })
+    try {
+      await ctx.queries.delete('meituan_coupon', { meituanShopId })
+    } catch (error) {}
 
     for (const coupon of data) {
       const { title, price } = coupon
