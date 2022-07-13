@@ -45,9 +45,7 @@ module.exports = () => {
         name: 'getLocksAndUpdate',
         service: getLocksAndUpdate,
         params: {
-          ttlockUserId: 'integer',
-          page: 'integer',
-          pageSize: 'integer'
+          ttlockUserId: 'integer'
         }
       }
     ]

@@ -41,5 +41,17 @@ module.exports = {
     expireIn: {
       type: 'integer'
     }
-  }
+  },
+  rowActions: [
+    {
+      text: 'Refresh Token',
+      service: 'refreshTtlockToken',
+      paramsMap: { ttlockUserId: 'id' }
+    },
+    {
+      text: 'Get Locks',
+      service: 'getLocksAndUpdate',
+      paramsMap: { ttlockUserId: 'id' }
+    }
+  ]
 }

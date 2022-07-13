@@ -119,10 +119,12 @@ module.exports = {
 
     const { list } = data
 
+    await ctx.queries.delete('ttlock_lock', { ttlockUserId })
+
     if (list && list.length > 0) {
       for (const lock of list) {
         const { lockAlias, lockId, lockData, electricQuantity } = lock
-        await ctx.queries.upsert('ttlock_lock', { lockId }, {
+        await ctx.queries.insert('ttlock_lock', {
           ttlockUserId,
           name: lockAlias,
           lockId,
