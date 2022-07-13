@@ -45,12 +45,12 @@ module.exports = {
   rowActions: [
     {
       text: 'Refresh Token',
-      service: 'refreshTtlockToken',
+      serviceName: 'refreshTtlockToken',
       paramsMap: { ttlockUserId: 'id' }
     },
     {
       text: 'Get Locks',
-      service: 'getLocksAndUpdate',
+      serviceName: 'getLocksAndUpdate',
       paramsMap: { ttlockUserId: 'id' }
     }
   ]
