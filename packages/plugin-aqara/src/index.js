@@ -8,7 +8,8 @@ const {
   getResourceDetail,
   getResourceCurrentValues,
   turnSwitch,
-  getResourceNames
+  getResourceNames,
+  getSwitchStatus
 } = require('./services')
 
 module.exports = () => {
