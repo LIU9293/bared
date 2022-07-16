@@ -38,8 +38,8 @@ module.exports = {
   },
   rowActions: [
     {
-      text: 'Get Device Resources',
-      serviceName: 'getResourceNames',
+      text: 'Get Switch State',
+      serviceName: 'getSwitchStatus',
       paramsMap: { did: 'did' }
     },
     {

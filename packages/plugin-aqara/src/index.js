@@ -77,6 +77,14 @@ module.exports = () => {
         }
       },
       {
+        name: 'getSwitchStatus',
+        service: getSwitchStatus,
+        showInAdmin: true,
+        params: {
+          did: 'string'
+        }
+      },
+      {
         name: 'turnSwitch',
         service: turnSwitch,
         showInAdmin: true,
