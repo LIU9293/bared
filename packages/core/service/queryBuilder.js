@@ -4,7 +4,8 @@
  */
 const whereBuilder = (schema, builder, query) => {
   const columns = Object.keys(schema.attributes).concat(['id'])
-  const userQueryKeys = Object.keys(query)
+  const userQueryKeys = Object
+    .keys(query)
     .filter(i => i.slice(0, 1) !== '_')
 
   userQueryKeys.forEach(key => {
@@ -32,11 +33,21 @@ const whereBuilder = (schema, builder, query) => {
           break
 
         case 'in':
-          builder.whereIn(column, JSON.parse(query[key]))
+          builder.whereIn(
+            column,
+            typeof query[key] === "string"
+              ? JSON.parse(query[key])
+              : query[key]
+            )
           break
 
         case 'nin':
-          builder.whereNotIn(column, JSON.parse(query[key]))
+          builder.whereNotIn(
+            column,
+            typeof query[key] === "string"
+              ? JSON.parse(query[key])
+              : query[key]
+            )
           break
         default:
           builder.where({ [column]: query[key] })

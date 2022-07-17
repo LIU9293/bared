@@ -43,6 +43,20 @@ async function start ({
   schemas = [],
 
   /**
+   * {
+   *   name: 'user',
+   *   services: [
+   *     {
+   *       name,
+   *       service,
+   *       params
+   *     } 
+   *   ]
+   * }
+   */
+  services = [],
+
+  /**
    * Routes defined by user, each router should look like:
    * {
    *   name: 'table',
@@ -96,6 +110,12 @@ async function start ({
     R.filter(i => !!i)
   )(plugins)
 
+  const appServices = R.pipe(
+    R.map(i => i.services.map(j => ({ ...j, groupName: i.name }))),
+    R.flatten(),
+    R.filter(i => !!i)
+  )(services)
+
   app.use(async (ctx, next) => {
     const q = {}
     for (const i in queries) {
@@ -106,6 +126,10 @@ async function start ({
     ctx.services = {}
     pluginServices.forEach(pluginService => {
       const { name, service } = pluginService
+      ctx.services[name] = service
+    })
+    appServices.forEach(appService => {
+      const { name, service } = appService
       ctx.services[name] = service
     })
 
@@ -123,7 +147,7 @@ async function start ({
   registerPing(app)
   registerDapi(app, allSchemas)
   registerSchemaApi(app, allSchemas)
-  registerServicesApi(app, pluginServices)
+  registerServicesApi(app, pluginServices.concat(appServices))
 
   // register user router and plugin routers
   plugins.forEach(plugin => {

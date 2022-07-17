@@ -26,7 +26,7 @@ const registerServicesApi = (app, services) => {
   callServicesRouter.use(allowDeveloper)
 
   services.forEach(s => {
-    const { name, params, service } = s // eslint-disable-line
+    const { name, service } = s
     if (process.env.IS_DEV) {
       console.log(`registing internal api: post - /dapi/service/${name.toLowerCase()}`)
     }
