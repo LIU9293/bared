@@ -152,7 +152,7 @@ const upsertService = (schemas, knex) => async (
     const item = await createService(schemas, knex)(tableName, data, { allowPrivate })
     return item
   } else {
-    const updated = await updateService(schemas, knex)(tableName, existing.id, query, { allowPrivate })
+    const updated = await updateService(schemas, knex)(tableName, query, data, { allowPrivate })
     return updated
   }
 }

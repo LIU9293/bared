@@ -27,5 +27,19 @@ module.exports = {
       required: true,
       private: true
     }
-  }
+  },
+  rowActions: [
+    {
+      text: 'Send Auth Code',
+      action: 'aqaraAccountAuth',
+      paramsMap: { aqaraDeveloperId: 'id' },
+      inputParams: { account: 'string' }
+    },
+    {
+      text: 'Verify Auth Code',
+      action: 'aqaraVerifyAuthCode',
+      paramsMap: { aqaraDeveloperId: 'id' },
+      inputParams: { account: 'string', authCode: 'string' }
+    }
+  ]
 }

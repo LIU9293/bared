@@ -2,14 +2,14 @@ const aqaraDeveloperSchema = require('./aqaraDeveloperSchema')
 const aqaraUserSchema = require('./aqaraUserSchema')
 const aqaraDeviceSchema = require('./aqaraDeviceSchema')
 const {
-  generateApiAuth,
-  getAccessTokenByAuthCode,
-  getDevicesAndUpdate,
-  getResourceDetail,
-  getResourceCurrentValues,
-  turnSwitch,
-  getResourceNames,
-  getSwitchStatus
+  aqaraAccountAuth,
+  aqaraVerifyAuthCode,
+  aqaraUpdateDevicesForAccount,
+  aqaraGetDeviceResoureDetail,
+  aqaraGetDeviceResoureValue,
+  aqaraTurnSwitch,
+  aqaraGetDeviceResoures,
+  aqaraGetSwitchStatus
 } = require('./services')
 
 module.exports = () => {
@@ -25,8 +25,8 @@ module.exports = () => {
     middlewares: [],
     services: [
       {
-        name: 'generateApiAuth',
-        service: generateApiAuth,
+        name: 'aqaraAccountAuth',
+        service: aqaraAccountAuth,
         showInAdmin: true,
         params: {
           aqaraDeveloperId: 'integer',
@@ -34,8 +34,8 @@ module.exports = () => {
         }
       },
       {
-        name: 'getAccessTokenByAuthCode',
-        service: getAccessTokenByAuthCode,
+        name: 'aqaraVerifyAuthCode',
+        service: aqaraVerifyAuthCode,
         showInAdmin: true,
         params: {
           aqaraDeveloperId: 'integer',
@@ -44,50 +44,50 @@ module.exports = () => {
         }
       },
       {
-        name: 'getDevicesAndUpdate',
-        service: getDevicesAndUpdate,
+        name: 'aqaraUpdateDevicesForAccount',
+        service: aqaraUpdateDevicesForAccount,
         showInAdmin: true,
         params: {
           aqaraUserId: 'integer'
         }
       },
       {
-        name: 'getResourceNames',
-        service: getResourceNames,
-        showInAdmin: true,
+        name: 'aqaraGetDeviceResoures',
+        service: aqaraGetDeviceResoures,
+        showInAdmin: false,
         params: {
           did: 'string'
         }
       },
       {
-        name: 'getResourceDetail',
-        service: getResourceDetail,
-        showInAdmin: true,
+        name: 'aqaraGetDeviceResoureDetail',
+        service: aqaraGetDeviceResoureDetail,
+        showInAdmin: false,
         params: {
           did: 'string',
           resourceId: 'string'
         }
       },
       {
-        name: 'getResourceCurrentValues',
-        service: getResourceCurrentValues,
-        showInAdmin: true,
+        name: 'aqaraGetDeviceResoureValue',
+        service: aqaraGetDeviceResoureValue,
+        showInAdmin: false,
         params: {
           did: 'string',
           resourceId: 'string'
         }
       },
       {
-        name: 'getSwitchStatus',
-        service: getSwitchStatus,
+        name: 'aqaraGetSwitchStatus',
+        service: aqaraGetSwitchStatus,
         showInAdmin: true,
         params: {
           did: 'string'
         }
       },
       {
-        name: 'turnSwitch',
-        service: turnSwitch,
+        name: 'aqaraTurnSwitch',
+        service: aqaraTurnSwitch,
         showInAdmin: true,
         params: {
           on: 'boolean',

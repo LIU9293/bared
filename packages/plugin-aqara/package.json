@@ -1,6 +1,6 @@
 {
   "name": "@bared/plugin-aqara",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Aqara IoT plugin for bared CMS",
   "keywords": [],
   "main": "src/index.js",

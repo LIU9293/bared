@@ -12,7 +12,7 @@ module.exports = {
       app_secret: meituanApp.appSecret,
       grant_type: 'authorization_code',
       auth_code: code,
-      redirect_url: `${process.env.BASE_URL || 'https://mogroom.com'}/api/meituan/auth/callback/${meituanAppId}`
+      redirect_url: `${process.env.BASE_URL}/api/meituan/auth/callback/${meituanAppId}`
     })
 
     const result = await axios.get(`https://openapi.dianping.com/router/oauth/token?${str}`)

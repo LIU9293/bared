@@ -39,19 +39,19 @@ module.exports = {
   rowActions: [
     {
       text: 'Get Switch State',
-      serviceName: 'getSwitchStatus',
+      serviceName: 'aqaraGetSwitchStatus',
       paramsMap: { did: 'did' }
     },
     {
       text: 'Turn Switch 1',
-      serviceName: 'turnSwitch',
+      serviceName: 'aqaraTurnSwitch',
       paramsMap: { did: 'did' },
       fixedParams: { resourceId: '4.1.85' },
       inputParams: { on: 'boolean' }
     },
     {
       text: 'Turn Switch 2',
-      serviceName: 'turnSwitch',
+      serviceName: 'aqaraTurnSwitch',
       paramsMap: { did: 'did' },
       fixedParams: { resourceId: '4.2.85' },
       inputParams: { on: 'boolean' }
