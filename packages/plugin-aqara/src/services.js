@@ -239,8 +239,8 @@ module.exports = {
           {
             subjectId: did,
             resourceIds: [
-              "4.1.85",
-              "4.2.85",
+              '4.1.85',
+              '4.2.85'
             ]
           }
         ]
@@ -267,6 +267,39 @@ module.exports = {
     }
 
     const { accessToken, appId, appKey, keyId } = prepareInfo
+    const res = await request({
+      intent: 'write.resource.device',
+      data: [{
+        subjectId: did,
+        resources: [
+          {
+            resourceId,
+            value: on ? '1' : '0'
+          }
+        ]
+      }],
+      appId,
+      appKey,
+      keyId,
+      accessToken
+    })
+
+    return res
+  },
+
+  async aqaraTurnSwitchById (ctx, { id, resourceId, on = false }) {
+    const prepareInfo = await ctx.knex('aqara_device')
+      .join('aqara_user', 'aqara_device.aqaraUserId', '=', 'aqara_user.id')
+      .join('aqara_developer', 'aqara_user.developerId', '=', 'aqara_developer.id')
+      .select('aqara_device.id', 'aqara_device.did', 'aqara_user.accessToken', 'aqara_developer.appId', 'aqara_developer.appKey', 'aqara_developer.keyId')
+      .where('aqara_device.id', id)
+      .first()
+
+    if (!prepareInfo) {
+      throw new Error(`Device not found for id ${id}`)
+    }
+
+    const { did, accessToken, appId, appKey, keyId } = prepareInfo
     const res = await request({
       intent: 'write.resource.device',
       data: [{

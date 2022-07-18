@@ -8,6 +8,7 @@ const {
   aqaraGetDeviceResoureDetail,
   aqaraGetDeviceResoureValue,
   aqaraTurnSwitch,
+  aqaraTurnSwitchById,
   aqaraGetDeviceResoures,
   aqaraGetSwitchStatus
 } = require('./services')
@@ -92,6 +93,16 @@ module.exports = () => {
         params: {
           on: 'boolean',
           did: 'string',
+          resourceId: 'string'
+        }
+      },
+      {
+        name: 'aqaraTurnSwitchById',
+        service: aqaraTurnSwitchById,
+        showInAdmin: true,
+        params: {
+          on: 'boolean',
+          id: 'integer',
           resourceId: 'string'
         }
       }
