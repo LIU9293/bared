@@ -31,13 +31,13 @@ module.exports = {
   rowActions: [
     {
       text: 'Send Auth Code',
-      action: 'aqaraAccountAuth',
+      serviceName: 'aqaraAccountAuth',
       paramsMap: { aqaraDeveloperId: 'id' },
       inputParams: { account: 'string' }
     },
     {
       text: 'Verify Auth Code',
-      action: 'aqaraVerifyAuthCode',
+      serviceName: 'aqaraVerifyAuthCode',
       paramsMap: { aqaraDeveloperId: 'id' },
       inputParams: { account: 'string', authCode: 'string' }
     }
