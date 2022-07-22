@@ -117,16 +117,12 @@ module.exports = {
       }
     })
 
-    const { list } = data
-
-    try {
-      await ctx.queries.delete('ttlock_lock', { ttlockUserId })
-    } catch (error) {}
+    const { list, pageNo, pages } = data
 
     if (list && list.length > 0) {
       for (const lock of list) {
         const { lockAlias, lockId, lockData, electricQuantity } = lock
-        await ctx.queries.create('ttlock_lock', {
+        await ctx.queries.upsert('ttlock_lock', { lockId }, {
           ttlockUserId,
           name: lockAlias,
           lockId,
@@ -136,6 +132,20 @@ module.exports = {
       }
     }
 
-    return data
+    if (pageNo < pages) {
+      await ctx.services.getLocksAndUpdate(ctx, { ttlockUserId, page: pageNo + 1, pageSize })
+    }
+
+    return { success: true }
+  },
+
+  async refreshAllLocks (ctx, { developerId }) {
+    const users = await ctx.queries.get('ttlock_user', { developerId }, { allowPrivate: true })
+
+    for (const user of users) {
+      await ctx.services.getLocksAndUpdate(ctx, { ttlockUserId: user.id })
+    }
+
+    return { success: true }
   }
 }

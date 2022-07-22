@@ -22,5 +22,12 @@ module.exports = {
         defaultShow: true
       }
     }
-  }
+  },
+  rowActions: [
+    {
+      text: 'Refresh all locks',
+      serviceName: 'refreshAllLocks',
+      paramsMap: { developerId: 'id' }
+    }
+  ]
 }

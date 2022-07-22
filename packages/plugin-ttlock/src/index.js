@@ -7,7 +7,8 @@ const routes = require('./router')
 const {
   fetchTtlockAccessToken,
   refreshTtlockToken,
-  getLocksAndUpdate
+  getLocksAndUpdate,
+  refreshAllLocks
 } = require('./services')
 
 module.exports = () => {
@@ -46,6 +47,13 @@ module.exports = () => {
         service: getLocksAndUpdate,
         params: {
           ttlockUserId: 'integer'
+        }
+      },
+      {
+        name: 'refreshAllLocks',
+        service: refreshAllLocks,
+        params: {
+          developerId: 'integer'
         }
       }
     ]
