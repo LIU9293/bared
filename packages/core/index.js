@@ -73,12 +73,14 @@ async function start ({
    *   ]
    * }
    */
-  routers = []
+  routers = [],
+  
+  corsConfig = {},
 }) {
   /** *************** basic koa setup *****************/
   const app = new Koa()
   app.use(bodyParser())
-  app.use(cors())
+  app.use(cors(corsConfig))
 
   const knex = registerDatabase(databaseConfig)
 
