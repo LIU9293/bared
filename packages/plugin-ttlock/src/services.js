@@ -49,7 +49,7 @@ module.exports = {
       await ctx.queries.update('ttlock_user', { id: ttlockUserId }, {
         accessToken: data.access_token,
         refreshToken: data.refresh_token,
-        uid: data.uid.toString(),
+        // uid: data.uid.toString(),
         lastUpdateTime: parseInt(new Date().getTime() / 1000),
         expireIn: parseInt(data.expires_in)
       })
@@ -89,7 +89,7 @@ module.exports = {
       await ctx.queries.update('ttlock_user', { id: ttlockUserId }, {
         accessToken: data.access_token,
         refreshToken: data.refresh_token,
-        uid: data.uid.toString(),
+        // uid: data.uid.toString(),
         lastUpdateTime: parseInt(new Date().getTime() / 1000),
         expireIn: parseInt(data.expires_in)
       })
@@ -98,6 +98,28 @@ module.exports = {
     } else {
       return data
     }
+  },
+
+  async getLockByLockId (ctx, { lockId }) {
+    const prepareData = await ctx.knex('ttlock_lock')
+      .join('ttlock_user', 'ttlock_lock.ttlockUserId', '=', 'ttlock_user.id')
+      .join('ttlock_developer', 'ttlock_user.developerId', '=', 'ttlock_developer.id')
+      .select('ttlock_developer.clientId', 'ttlock_user.accessToken')
+      .where('ttlock_lock.lockId', lockId)
+      .first()
+
+    const { accessToken, clientId } = prepareData
+    const data = await ttlockRequest({
+      clientId,
+      accessToken,
+      url: '/v3/key/get',
+      data: {
+        date: new Date().getTime(),
+        lockId
+      }
+    })
+
+    return data
   },
 
   async getLocksAndUpdate (ctx, { ttlockUserId, page = 1, pageSize = 100 }) {
@@ -140,12 +162,19 @@ module.exports = {
   },
 
   async refreshAllLocks (ctx, { developerId }) {
-    const users = await ctx.queries.get('ttlock_user', { developerId }, { allowPrivate: true })
+    const users = await ctx.queries.getList('ttlock_user', { developerId }, { allowPrivate: true })
 
     for (const user of users) {
       await ctx.services.getLocksAndUpdate(ctx, { ttlockUserId: user.id })
     }
 
     return { success: true }
+  },
+
+  async getExpireTime (ctx, { id }) {
+    const user = await ctx.queries.get('ttlock_user', { id }, { allowPrivate: true })
+    const { expireIn, lastUpdateTime } = user
+    const expireTime = lastUpdateTime + expireIn
+    return { success: true, expireTime: new Date(expireTime * 1000).toLocaleString() }
   }
 }

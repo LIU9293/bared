@@ -1,14 +1,15 @@
 const ttlockUserSchema = require('./ttlockUserSchema')
 const ttlockDeveloperSchema = require('./ttlockDeveloperSchema')
 const ttlockLockSchema = require('./ttlockLockSchema')
-
-const routes = require('./router')
+// const routes = require('./router')
 
 const {
   fetchTtlockAccessToken,
   refreshTtlockToken,
   getLocksAndUpdate,
-  refreshAllLocks
+  refreshAllLocks,
+  getLockByLockId,
+  getExpireTime
 } = require('./services')
 
 module.exports = () => {
@@ -20,12 +21,7 @@ module.exports = () => {
       ttlockDeveloperSchema,
       ttlockLockSchema
     ],
-    routers: [
-      {
-        name: 'TTLock',
-        routes
-      }
-    ],
+    routers: [],
     middlewares: [],
     services: [
       {
@@ -54,6 +50,20 @@ module.exports = () => {
         service: refreshAllLocks,
         params: {
           developerId: 'integer'
+        }
+      },
+      {
+        name: 'getLockByLockId',
+        service: getLockByLockId,
+        params: {
+          lockId: 'string'
+        }
+      },
+      {
+        name: 'getExpireTime',
+        service: getExpireTime,
+        params: {
+          id: 'integer'
         }
       }
     ]

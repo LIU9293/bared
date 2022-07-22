@@ -44,6 +44,16 @@ module.exports = {
   },
   rowActions: [
     {
+      text: 'Get Expire Time',
+      serviceName: 'getExpireTime',
+      paramsMap: { id: 'id' }
+    },
+    {
+      text: 'Fetch Token',
+      serviceName: 'fetchTtlockAccessToken',
+      paramsMap: { ttlockUserId: 'id' }
+    },
+    {
       text: 'Refresh Token',
       serviceName: 'refreshTtlockToken',
       paramsMap: { ttlockUserId: 'id' }

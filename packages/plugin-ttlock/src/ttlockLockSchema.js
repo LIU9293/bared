@@ -26,5 +26,12 @@ module.exports = {
     electricQuantity: {
       type: 'integer'
     }
-  }
+  },
+  rowActions: [
+    {
+      text: 'Get Lock Data',
+      serviceName: 'getLockByLockId',
+      paramsMap: { lockId: 'lockId' }
+    }
+  ]
 }
