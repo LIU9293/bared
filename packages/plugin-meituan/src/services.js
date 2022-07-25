@@ -139,13 +139,9 @@ module.exports = {
       throw new Error(result.data.msg)
     }
 
-    try {
-      await ctx.queries.delete('meituan_coupon', { meituanShopId })
-    } catch (error) {}
-
     for (const coupon of data) {
       const { title, price } = coupon
-      await ctx.queries.create('meituan_coupon', {
+      await ctx.queries.upsert('meituan_coupon', { dealId: coupon.deal_id }, {
         title,
         meituanShopId,
         price,
