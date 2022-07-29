@@ -82,7 +82,7 @@ module.exports = {
     })
 
     const { accessToken, openId, refreshToken, expiresIn } = result
-    const aqaraUser = await ctx.queries.create('aqara_user', {
+    const aqaraUser = await ctx.queries.upsert('aqara_user', { openId }, {
       accessToken,
       openId,
       refreshToken,
