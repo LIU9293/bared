@@ -10,7 +10,6 @@ module.exports = {
     appKey: {
       type: 'string',
       required: true,
-      unique: true,
       tableConfig: { defaultShow: true }
     },
     appSecret: {
@@ -26,7 +25,11 @@ module.exports = {
       type: 'string',
       private: true
     },
-    bid: { type: 'string' },
+    bid: {
+      type: 'string',
+      private: true,
+      unique: true
+    },
     lastUpdateTime: { type: 'integer' },
     expireIn: { type: 'integer' },
     refreshCount: { type: 'integer' }

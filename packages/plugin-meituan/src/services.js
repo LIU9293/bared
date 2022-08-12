@@ -63,7 +63,7 @@ module.exports = {
     }
   },
 
-  async meituanFetchShops (ctx, { meituanAppId, page = 1 }) {
+  async meituanFetchShops (ctx, { meituanAppId, upsert = true }) {
     const meituanApp = await ctx.queries.get('meituan_app', { id: meituanAppId }, { allowPrivate: true })
     const { appKey, accessToken, bid, appSecret } = meituanApp
     const ts = formatInTimeZone(new Date(), 'Asia/Shanghai', 'yyyy-MM-dd HH:mm:ss')
@@ -75,8 +75,8 @@ module.exports = {
       format: 'json',
       v: 1,
       sign_method: 'MD5',
-      offset: (page - 1) * 100,
-      limit: 100
+      offset: 0,
+      limit: 500
     }
     const sig = sign(params, appSecret)
     const str = qs.stringify({ ...params, sign: sig })
@@ -89,22 +89,24 @@ module.exports = {
       throw new Error(result.data.msg)
     }
 
-    for (const shop of data) {
-      const { shopname, shopaddress, cityname } = shop
-      const uuid = shop.open_shop_uuid
-      await ctx.queries.upsert('meituan_shop', { uuid }, {
-        name: shopname,
-        uuid,
-        meituanAppId,
-        city: cityname,
-        address: shopaddress
-      })
+    if (upsert) {
+      for (const shop of data) {
+        const { shopname, shopaddress, cityname } = shop
+        const uuid = shop.open_shop_uuid
+        await ctx.queries.upsert('meituan_shop', { uuid }, {
+          name: shopname,
+          uuid,
+          meituanAppId,
+          city: cityname,
+          address: shopaddress
+        })
+      }
     }
 
     return data
   },
 
-  async meituanFetchCoupons (ctx, { meituanShopId, page = 1 }) {
+  async meituanFetchCoupons (ctx, { meituanShopId, upsert = true }) {
     const prepareInfo = await ctx.knex('meituan_shop')
       .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
       .select(
@@ -127,8 +129,7 @@ module.exports = {
       v: 1,
       sign_method: 'MD5',
       open_shop_uuid: uuid,
-      // offset: (page - 1) * 100,
-      limit: 100
+      limit: 500
     }
     const sig = sign(params, appSecret)
     const str = qs.stringify({ ...params, sign: sig })
@@ -139,16 +140,18 @@ module.exports = {
       throw new Error(result.data.msg)
     }
 
-    for (const coupon of data) {
-      const { title, price } = coupon
-      await ctx.queries.upsert('meituan_coupon', { dealId: coupon.deal_id }, {
-        title,
-        meituanShopId,
-        price,
-        dealId: coupon.deal_id,
-        dealGroupId: coupon.dealgroup_id,
-        saleStatus: coupon.sale_status
-      })
+    if (upsert) {
+      for (const coupon of data) {
+        const { title, price } = coupon
+        await ctx.queries.upsert('meituan_coupon', { dealId: coupon.deal_id }, {
+          title,
+          meituanShopId,
+          price,
+          dealId: coupon.deal_id,
+          dealGroupId: coupon.dealgroup_id,
+          saleStatus: coupon.sale_status
+        })
+      }
     }
 
     return data
@@ -162,7 +165,7 @@ module.exports = {
     const expireTime = new Date((parseInt(lastUpdateTime) + parseInt(expireIn)) * 1000).getTime()
     const diff = expireTime - now
 
-    // hours - 1.43
+    // need to return an object to show in admin panel
     return { hours: parseFloat((diff / (60 * 60 * 1000)).toFixed(2)) }
   },
 
