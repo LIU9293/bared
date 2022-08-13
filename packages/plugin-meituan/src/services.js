@@ -143,6 +143,11 @@ module.exports = {
 
     const { code, data } = result.data
     if (code !== 200) {
+
+      if (result.data.msg === '该门店下没有团购信息') {
+        return []
+      }
+
       throw new Error(result.data.msg)
     }
 
