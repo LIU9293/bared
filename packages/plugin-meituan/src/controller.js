@@ -4,15 +4,11 @@ const qs = require('qs')
 module.exports = {
   async authCallback (ctx) {
     const code = ctx.query.auth_code
-
-    console.log('=== dianping auth callback ===')
-    console.log(JSON.stringify(ctx.query))
-
     if (!code) {
       return ctx.badRequest('missing auth_code')
     }
 
-    const str = qs.encode({
+    const str = qs.stringify({
       app_key: '7e87366594ca0450',
       app_secret: '2af57b040bc83da633017f0a79f43cf59479c14c',
       grant_type: 'authorization_code',
