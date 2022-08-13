@@ -9,6 +9,12 @@ module.exports = {
         defaultShow: true
       }
     },
+    branch: {
+      type: 'string',
+      tableConfig: {
+        defaultShow: true
+      }
+    },
     uuid: {
       type: 'string',
       required: true,

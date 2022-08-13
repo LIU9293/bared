@@ -89,21 +89,27 @@ module.exports = {
       throw new Error(result.data.msg)
     }
 
+    let returnData = []
+
     if (upsert) {
       for (const shop of data) {
-        const { shopname, shopaddress, cityname } = shop
+        const { shopname, branchname, shopaddress, cityname } = shop
         const uuid = shop.open_shop_uuid
-        await ctx.queries.upsert('meituan_shop', { uuid }, {
+        
+        const res = await ctx.queries.upsert('meituan_shop', { uuid }, {
           name: shopname,
+          branch: branchname,
           uuid,
           meituanAppId,
           city: cityname,
           address: shopaddress
         })
+
+        returnData.push(res)
       }
     }
 
-    return data
+    return returnData.length > 0 ? returnData : data
   },
 
   async meituanFetchCoupons (ctx, { meituanShopId, upsert = true }) {
