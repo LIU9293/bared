@@ -1,4 +1,3 @@
-const meituanRoutes = require('./router')
 const meituanAppSchema = require('./meituanAppSchema')
 const meituanShopSchema = require('./meituanShopSchema')
 const meituanCouponSchema = require('./meituanCouponSchema')
@@ -24,12 +23,7 @@ module.exports = () => {
       meituanCouponSchema
     ],
 
-    routers: [
-      {
-        name: 'Meituan',
-        routes: meituanRoutes
-      }
-    ],
+    routers: [],
 
     middlewares: [],
 
