@@ -119,7 +119,6 @@ module.exports = {
         'meituan_shop.uuid',
         'meituan_app.appKey',
         'meituan_app.appSecret',
-        'meituan_app.bid',
         'meituan_app.accessToken'
       )
       .where('meituan_shop.id', meituanShopId)
@@ -135,10 +134,11 @@ module.exports = {
       v: 1,
       sign_method: 'MD5',
       open_shop_uuid: uuid,
-      limit: 500
+      limit: 100
     }
     const sig = sign(params, appSecret)
     const str = qs.stringify({ ...params, sign: sig })
+
     const result = await axios.get(`https://openapi.dianping.com/tuangou/deal/queryshopdeal?${str}`)
 
     const { code, data } = result.data
