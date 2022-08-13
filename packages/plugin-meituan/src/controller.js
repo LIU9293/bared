@@ -18,6 +18,9 @@ module.exports = {
 
     const result = await axios.get(`https://openapi.dianping.com/router/oauth/token?${str}`)
     if (result.data.code && result.data.code === 200) {
+      console.log('== meituan callback ==')
+      console.log(result.data)
+
       const meituanApp = await ctx.queries.upsert('meituan_app', { bid: result.data.bid }, {
         accessToken: result.data.access_token,
         refreshToken: result.data.refresh_token,
@@ -27,7 +30,12 @@ module.exports = {
         expireIn: result.data.expires_in
       })
 
+      console.log('-- meituan app --')
+      console.log(meituanApp)
+
       const shops = await ctx.services.meituanFetchShops(ctx, { meituanAppId: meituanApp.id })
+
+      console.log(shops)
       for (const shop of shops) {
         await ctx.services.meituanFetchCoupons(ctx, { meituanShopId: shop.id })
       }
