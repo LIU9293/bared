@@ -4,6 +4,10 @@
   "description": "Ttlock service for bared CMS",
   "keywords": [],
   "main": "src/index.js",
+  "scripts": {
+    "build": "yarn"
+  },
+  "private": true,
   "author": "baredigit (hello@baredigit.com)",
   "license": "MIT",
   "dependencies": {

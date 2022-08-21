@@ -4,8 +4,10 @@
   "description": "Headless CMS framework in NodeJS, lightweight but powerful",
   "main": "index.js",
   "scripts": {
-    "test": "jest -i"
+    "test": "jest -i",
+    "build": "yarn"
   },
+  "private": true,
   "keywords": [],
   "author": "baredigit (hello@baredigit.com)",
   "license": "MIT",

@@ -27,7 +27,7 @@ module.exports = {
       }
     },
     merchantKey: {
-      type: 'string',
+      type: 'text',
       default: '',
       required: false,
       private: true,
@@ -44,7 +44,7 @@ module.exports = {
       }
     },
     merchantCert: {
-      type: 'string',
+      type: 'text',
       default: '',
       required: false,
       private: true,

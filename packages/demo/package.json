@@ -4,17 +4,27 @@
   "description": "Headless CMS framework in NodeJS, lightweight but powerful",
   "main": "index.js",
   "scripts": {
+    "build": "yarn",
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
+  "private": true,
   "keywords": [],
   "author": "baredigit (hello@baredigit.com)",
   "license": "MIT",
   "dependencies": {
+    "@bared/core": "*",
+    "@bared/plugin-aliyun-sms": "*",
+    "@bared/plugin-aqara": "*",
+    "@bared/plugin-email": "*",
+    "@bared/plugin-meituan": "*",
+    "@bared/plugin-ttlock": "*",
+    "@bared/plugin-wechat-login": "*",
+    "@bared/plugin-wechat-pay": "*",
     "dotenv": "16.0.1"
   },
   "devDependencies": {
-    "axios": "^0.27.2",
+    "axios": "0.27.2",
     "nodemon": "2.0.15"
   }
 }

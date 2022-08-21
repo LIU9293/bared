@@ -4,7 +4,7 @@ module.exports = {
     host: process.env.DATABASE_HOST,
     port: process.env.DATABASE_PORT,
     user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASS,
-    database: process.env.DATABASE
+    password: process.env.DATABASE_PASS || '12345',
+    database: process.env.DATABASE || 'moghub'
   }
 }
