@@ -1,6 +1,6 @@
 {
   "name": "bared",
-  "version": "0.0.24",
+  "private": true,
   "description": "Headless NodeJS CMS for better developer experience",
   "scripts": {
     "start": "node ./packages/demo/index.js",
@@ -8,7 +8,7 @@
     "dev": "lerna run dev --scope=@bared/demo",
     "build": "lerna run build",
     "patch": "lerna version --conventional-commits",
-    "publish": "lerna publish --no-private"
+    "pub": "lerna publish --no-private"
   },
   "keywords": [
     "NodeJS",
@@ -28,5 +28,6 @@
   ],
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "version": "0.0.0"
 }
