@@ -8,7 +8,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
-  "private": true,
+  "private": false,
   "keywords": [],
   "author": "baredigit (hello@baredigit.com)",
   "license": "MIT",

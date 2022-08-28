@@ -7,7 +7,7 @@
   "scripts": {
     "build": "yarn"
   },
-  "private": true,
+  "private": false,
   "author": "baredigit (hello@baredigit.com)",
   "license": "MIT",
   "dependencies": {
