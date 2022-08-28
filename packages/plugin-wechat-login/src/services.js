@@ -39,14 +39,14 @@ module.exports = {
 
   async updateUserInfo (ctx) {
     const { user } = ctx.state
-    const updateFields = { ...ctx.request.body }
-    const allowedFields = ['name', 'avatar', 'gender']
+    const { field, value } = ctx.request.body
+    const allowedFields = ['name', 'avatar', 'gender', 'description']
 
-    if (R.uniq(Object.keys(updateFields).concat(allowedFields)) > allowedFields.length) {
+    if (allowedFields.includes(field)) {
       return ctx.badRequest(`update field not allowed, allowed keys are ${allowedFields.concat(',')}`)
     }
 
-    const updatedUser = await ctx.queries.get('user', { id: user.id })
+    const updatedUser = await ctx.queries.update('user', { id: user.id }, { field: value })
     return updatedUser
   }
 }

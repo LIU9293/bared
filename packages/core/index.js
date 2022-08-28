@@ -74,6 +74,8 @@ async function start ({
    * }
    */
   routers = [],
+
+  middlewares = [],
   
   corsConfig = {},
 }) {
@@ -144,6 +146,9 @@ async function start ({
   app.use(error)
   app.use(respond())
   app.use(getAuthType)
+  for (const middleware of middlewares) {
+    app.use(middleware)
+  }
 
   // register internal APIs
   registerPing(app)
