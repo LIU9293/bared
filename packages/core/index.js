@@ -160,7 +160,7 @@ async function start ({
   plugins.forEach(plugin => {
     if (plugin.middlewares && plugin.middlewares.length > 0) {
       plugin.middlewares.forEach(middleware => {
-        // app.use(middleware())
+        app.use(middleware)
       })
     }
 
