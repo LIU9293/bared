@@ -10,17 +10,12 @@ module.exports = {
   }) {
     const url = `${WEXIN_API_BASE_URL}/sns/jscode2session?appid=${appId}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`
     const res = await axios.get(url)
-    const { openid, unionid = '', session_key, errcode, errmsg } = res.data // eslint-disable-line
-
-    if (errcode !== 0) {
-      throw new Error(errmsg)
-    }
-
+    const { openid, unionid = '', session_key } = res.data // eslint-disable-line
     const user = await ctx.queries.get('user', { openid })
 
     if (user) {
       setTimeout(async () => {
-        await ctx.queries.update('user', { id: user.id }, { sessionKey: session_key }) // eslint-disable-line
+        await ctx.queries.update('user', { id: user.id }, { wechatSessionKey: session_key }) // eslint-disable-line
       })
       const jwt = ctx.utils.createJwtToken(user.id)
       return { user, jwt }
@@ -28,9 +23,10 @@ module.exports = {
       const newUser = await ctx.queries.create('user', {
         auth_type: 'basic',
         name: 'wechat_user',
-        openid,
-        unionid,
-        sessionKey: session_key // eslint-disable-line
+        wechatAppid: appId,
+        wechatOpenid: openid,
+        wechatUnionid: unionid,
+        wechatSessionKey: session_key // eslint-disable-line
       })
       const jwt = ctx.utils.createJwtToken(newUser.id)
       return { user: newUser, jwt }

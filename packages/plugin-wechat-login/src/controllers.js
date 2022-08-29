@@ -2,14 +2,19 @@ const { registerOrLogin } = require('./services')
 
 module.exports = {
   async registerOrLogin (ctx) {
-    const { code, appId } = ctx.request.body
-    const wechatApp = await ctx.queries.get('wechat_app', { appId })
+    const { code } = ctx.request.body
+    const { app } = ctx.state
 
-    if (!wechatApp) {
-      return ctx.badRequest(`appId ${appId} is not added in wechat_app`)
+    if (!app) {
+      return ctx.badRequest(`need to specify appId in http header or url query`)
     }
 
-    const result = await registerOrLogin(ctx, { code, appId, appSecret: wechatApp.appSecret })
+    const appWithSecret = await ctx.queries.get('app', { id: app.id }, { allowPrivate: true })
+    const result = await registerOrLogin(ctx, {
+      code,
+      appId: app.appId,
+      appSecret: appWithSecret.appSecret
+    })
     ctx.ok(result)
   },
 

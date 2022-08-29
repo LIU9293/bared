@@ -28,4 +28,17 @@ const wechatUserMiddleware = async (ctx, next) => {
   await next()
 }
 
-module.exports = { wechatUserMiddleware }
+
+const wechatAppInfoMiddleware = async (ctx, next) => {
+  const appId = ctx.request.headers['appid'] || ctx.request.headers['appId'] || ctx.request.query.appId || ctx.request.query.appid
+  if (appId) {
+    const app = await ctx.queries.get('app', { appId })
+    ctx.state.app = app
+  }
+  await next()
+}
+
+module.exports = {
+  wechatUserMiddleware,
+  wechatAppInfoMiddleware
+}
