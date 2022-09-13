@@ -1,6 +1,6 @@
 {
   "name": "@bared/plugin-ttlock",
-  "version": "0.0.31",
+  "version": "0.0.33",
   "description": "Ttlock service for bared CMS",
   "keywords": [],
   "main": "src/index.js",

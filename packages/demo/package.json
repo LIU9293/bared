@@ -1,6 +1,6 @@
 {
   "name": "@bared/demo",
-  "version": "0.0.31",
+  "version": "0.0.33",
   "description": "Headless CMS framework in NodeJS, lightweight but powerful",
   "main": "index.js",
   "scripts": {
@@ -13,14 +13,14 @@
   "author": "baredigit (hello@baredigit.com)",
   "license": "MIT",
   "dependencies": {
-    "@bared/core": "^0.0.31",
-    "@bared/plugin-aliyun-sms": "^0.0.31",
-    "@bared/plugin-aqara": "^0.0.31",
-    "@bared/plugin-email": "^0.0.31",
-    "@bared/plugin-meituan": "^0.0.31",
-    "@bared/plugin-ttlock": "^0.0.31",
-    "@bared/plugin-wechat-login": "^0.0.31",
-    "@bared/plugin-wechat-pay": "^0.0.31",
+    "@bared/core": "^0.0.33",
+    "@bared/plugin-aliyun-sms": "^0.0.33",
+    "@bared/plugin-aqara": "^0.0.33",
+    "@bared/plugin-email": "^0.0.33",
+    "@bared/plugin-meituan": "^0.0.33",
+    "@bared/plugin-ttlock": "^0.0.33",
+    "@bared/plugin-wechat-login": "^0.0.33",
+    "@bared/plugin-wechat-pay": "^0.0.33",
     "dotenv": "16.0.1"
   },
   "devDependencies": {
