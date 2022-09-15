@@ -11,7 +11,7 @@ module.exports = {
     const url = `${WEXIN_API_BASE_URL}/sns/jscode2session?appid=${appId}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`
     const res = await axios.get(url)
     const { openid, unionid = '', session_key } = res.data // eslint-disable-line
-    const user = await ctx.queries.get('user', { openid })
+    const user = await ctx.queries.get('user', { 'wechatOpenid~eq': openid })
 
     if (user) {
       setTimeout(async () => {
@@ -22,6 +22,7 @@ module.exports = {
     } else {
       const newUser = await ctx.queries.create('user', {
         auth_type: 'basic',
+        username: `wechat_${openid}`,
         name: 'wechat_user',
         wechatAppid: appId,
         wechatOpenid: openid,
@@ -36,7 +37,7 @@ module.exports = {
   async updateUserInfo (ctx) {
     const { user } = ctx.state
     const { field, value } = ctx.request.body
-    const allowedFields = ['name', 'avatar', 'gender', 'description']
+    const allowedFields = ['name', 'avatar', 'gender', 'description', 'gps']
 
     if (allowedFields.includes(field)) {
       return ctx.badRequest(`update field not allowed, allowed keys are ${allowedFields.concat(',')}`)

@@ -1,6 +1,6 @@
 {
   "name": "@bared/plugin-wechat-login",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "description": "Wechat login for bared CMS",
   "keywords": [],
   "main": "src/index.js",
