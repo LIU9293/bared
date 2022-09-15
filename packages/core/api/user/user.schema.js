@@ -43,6 +43,7 @@ module.exports = {
     auth_type: {
       required: true,
       type: 'enum',
+      default: 'basic',
       enum: ['basic', 'developer']
     }
   }

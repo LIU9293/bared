@@ -52,9 +52,9 @@ const getListService = (schemas, knex) =>
     const schema = schemas.find(i => i.tableName === tableName)
 
     /**
-   * _q=test, search should be mixed with other querys?
-   * _q=test&id_in=[1,2,3]
-   */
+     * _q=test, search should be mixed with other querys?
+     * _q=test&id_in=[1,2,3]
+     */
     let res = await knex(tableName)
       .where(builder => {
         whereBuilder(schema, builder, query)

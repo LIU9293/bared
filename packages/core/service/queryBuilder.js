@@ -16,6 +16,10 @@ const whereBuilder = (schema, builder, query) => {
           builder.where({ [column]: query[key] })
           break
 
+        case 'ne':
+          builder.where(column, '!=', query[key])
+          break
+
         case 'gt':
           builder.where(column, '>', query[key])
           break

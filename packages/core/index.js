@@ -78,6 +78,9 @@ async function start ({
   middlewares = [],
   
   corsConfig = {},
+
+  // extend original user schema
+  extendUserSchema = null
 }) {
   /** *************** basic koa setup *****************/
   const app = new Koa()
@@ -88,6 +91,10 @@ async function start ({
 
   /** *************** load all schemas, extend user schemas *****************/
   let extendedUserSchema = userSchema
+  if (extendUserSchema) {
+    extendedUserSchema = extendUserSchema(userSchema)
+  }
+
   plugins.forEach(plugin => {
     if (plugin.extendUserSchema) {
       extendedUserSchema = plugin.extendUserSchema(extendedUserSchema)
