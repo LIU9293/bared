@@ -42,7 +42,7 @@ module.exports = {
         serial_no: merchantSp.serialNo
       })
 
-      await ctx.queries.create('wechat_pay_order', {
+      const payOrder = await ctx.queries.create('wechat_pay_order', {
         orderId,
         userId: user.id,
         amount,
@@ -63,7 +63,7 @@ module.exports = {
         payer: { sub_openid: user.wechatOpenid }
       })
 
-      return result
+      return { ...result, payOrderId: payOrder.id }
     }
 
     const wxpay = new WxPay({
@@ -73,7 +73,7 @@ module.exports = {
       privateKey: merchant.merchantPrivateKey
     })
 
-    const order = await ctx.queries.create('wechat_pay_order', {
+    const payOrder = await ctx.queries.create('wechat_pay_order', {
       orderId,
       userId: user.id,
       amount,
@@ -90,7 +90,7 @@ module.exports = {
       payer: { openid: user.wechatOpenid }
     })
 
-    return result
+    return { ...result, payOrderId: payOrder.id }
   },
 
   async getPaymentParamsNative (ctx) {
