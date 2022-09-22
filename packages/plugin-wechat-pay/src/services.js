@@ -18,9 +18,8 @@ module.exports = {
     amount,
     callbackServiceJson // { serviceName: 'completeOrder',  params: { orderId: 1 } }
   }) {
-    const { user, app } = ctx.state
-    const { wechatOpenid } = user
-
+    const { app } = ctx.state
+    const user = await ctx.queries.get('user', { id: ctx.state.user.id }, { allowPrivate: true })
     const merchant = await ctx.queries.get('wechat_merchant', { id: merchantId })
 
     if (!merchant) {
@@ -61,7 +60,7 @@ module.exports = {
           total: amount,
           currency: 'CNY'
         },
-        payer: { sub_openid: wechatOpenid }
+        payer: { sub_openid: user.wechatOpenid }
       })
 
       return result
@@ -88,7 +87,7 @@ module.exports = {
       out_trade_no: order.orderId,
       notify_url: process.env.BASE_URL + '/api/wechat/pay/notify',
       amount: { total: amount },
-      payer: { openid: wechatOpenid }
+      payer: { openid: user.wechatOpenid }
     })
 
     return result
