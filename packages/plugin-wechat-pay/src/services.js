@@ -19,16 +19,16 @@ module.exports = {
     callbackServiceJson // { serviceName: 'completeOrder',  params: { orderId: 1 } }
   }) {
     const { user, app } = ctx.state
-    const { wechatOpenId } = user
+    const { wechatOpenid } = user
 
     const merchant = await ctx.queries.get('wechat_merchant', { id: merchantId })
 
     if (!merchant) {
-      return ctx.badRequest('merchant not found')
+      throw new Error('merchant not found')
     }
 
     if (!merchant.useV3Api) {
-      return ctx.notImplemented('not implemented')
+      throw new Error('not implemented')
     }
 
     const orderId = nanoid()
@@ -55,13 +55,13 @@ module.exports = {
       const result = await wxpay.transactions_jsapi_sp({
         description,
         out_trade_no: orderId,
-        sub_appid: app.id,
+        sub_appid: app.appId,
         sub_mchid: merchant.merchantId,
         amount: {
           total: amount,
           currency: 'CNY'
         },
-        payer: { sub_openid: wechatOpenId }
+        payer: { sub_openid: wechatOpenid }
       })
 
       return result
@@ -88,7 +88,7 @@ module.exports = {
       out_trade_no: order.orderId,
       notify_url: process.env.BASE_URL + '/api/wechat/pay/notify',
       amount: { total: amount },
-      payer: { openid: wechatOpenId }
+      payer: { openid: wechatOpenid }
     })
 
     return result
