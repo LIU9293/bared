@@ -14,7 +14,7 @@ module.exports = {
     })
 
     const { callbackServiceJson } = payOrder
-    const { service, params } = JSON.parse(callbackServiceJson)
+    const { service, params } = typeof callbackServiceJson === 'string' ? JSON.parse(callbackServiceJson) : callbackServiceJson
     
     try {
       await ctx.services[service](ctx, params)

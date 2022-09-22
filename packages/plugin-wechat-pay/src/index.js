@@ -5,6 +5,7 @@ const {
   getPaymentParams,
   decodePaymentResource
 } = require('./services')
+const routes = require('./router')
 
 module.exports = () => {
   return {
@@ -15,7 +16,13 @@ module.exports = () => {
       wechatPayOrderSchema,
       wechatMerchantSpSchema
     ],
-    routers: [],
+   
+    routers: [
+      {
+        name: 'WechatPayment',
+        routes
+      }
+    ],
     middlewares: [],
     services: [
       {
