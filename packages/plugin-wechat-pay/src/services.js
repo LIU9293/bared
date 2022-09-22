@@ -49,7 +49,7 @@ module.exports = {
         amount,
         merchantId: merchant.id,
         success: false,
-        callbackServiceJson: JSON.stringify(JSON.parse(callbackServiceJson))
+        callbackServiceJson: JSON.stringify(callbackServiceJson)
       })
 
       const result = await wxpay.transactions_jsapi_sp({
@@ -80,7 +80,7 @@ module.exports = {
       amount,
       merchantId: merchant.id,
       success: false,
-      callbackServiceJson: JSON.stringify(JSON.parse(callbackServiceJson))
+      callbackServiceJson: JSON.stringify(callbackServiceJson)
     })
 
     const result = await wxpay.transactions_jsapi({
