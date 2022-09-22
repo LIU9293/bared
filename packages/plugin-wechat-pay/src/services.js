@@ -98,7 +98,9 @@ module.exports = {
   },
 
   async decodePaymentResource (ctx, { resource, merchantSpId }) {
-    const { spAppId, spMchId, publicKey, privateKey, serialNo, password } = await ctx.queries.get('wechat_merchant_sp', { id: merchantSpId })
+    const { spAppId, spMchId, publicKey, privateKey, serialNo, password } = await ctx.queries.get(
+      'wechat_merchant_sp', { id: merchantSpId }, { allowPrivate: true })
+    
     const wxpay = new WxPay({
       sp_appid: spAppId,
       sp_mchid: spMchId,
