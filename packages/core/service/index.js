@@ -8,6 +8,11 @@ const getService = (schemas, knex) =>
     { allowPrivate = false } = {}
   ) => {
     const schema = schemas.find(i => i.tableName === tableName)
+
+    if (!schema) {
+      return null
+    }
+
     const res = await knex(tableName)
       .where(builder => {
         whereBuilder(schema, builder, query)

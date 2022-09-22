@@ -1,20 +1,19 @@
 const wechatMerchantSchema = require('./wechatMerchantSchema')
 const wechatPayOrderSchema = require('./wechatPayOrderSchema')
+const wechatMerchantSpSchema = require('./wechatMerchantSpSchema')
 const {
-  getPaymentParams
+  getPaymentParams,
+  decodePaymentResource
 } = require('./services')
 
 module.exports = () => {
   return {
     pluginName: 'wechat-pay',
-    extendUserSchema: schema => {
-      return {
-        ...schema
-      }
-    },
+    extendUserSchema: schema => schema,
     schemas: [
       wechatMerchantSchema,
-      wechatPayOrderSchema
+      wechatPayOrderSchema,
+      wechatMerchantSpSchema
     ],
     routers: [],
     middlewares: [],
@@ -23,9 +22,18 @@ module.exports = () => {
         name: 'getPaymentParams',
         service: getPaymentParams,
         params: {
+          merchantId: 'integer',
           description: 'string',
           amount: 'integer',
           callbackServiceJson: 'string'
+        }
+      },
+      {
+        name: 'decodePaymentResource',
+        service: decodePaymentResource,
+        params: {
+          resource: 'string',
+          merchantSpId: 'integer'
         }
       }
     ]

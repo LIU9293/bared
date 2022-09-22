@@ -26,7 +26,7 @@ module.exports = {
         defaultShow: true
       }
     },
-    merchant: {
+    merchantId: {
       type: 'integer',
       required: true
     },
@@ -49,9 +49,9 @@ module.exports = {
       default: ''
     },
     callbackServiceJson: {
-      type: 'string',
+      type: 'json',
       required: false,
-      default: ''
+      default: {}
     }
   }
 }

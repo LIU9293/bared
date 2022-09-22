@@ -11,13 +11,6 @@ module.exports = {
         defaultShow: true
       }
     },
-    appId: {
-      type: 'string',
-      required: true,
-      tableConfig: {
-        defaultShow: true
-      }
-    },
     merchantId: {
       type: 'string',
       required: true,
@@ -60,6 +53,10 @@ module.exports = {
       tableConfig: {
         defaultShow: false
       }
+    },
+    parentMerchantId: {
+      type: 'integer',
+      required: false,
     }
   }
 }
