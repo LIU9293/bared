@@ -1,6 +1,6 @@
 {
   "name": "bared",
-  "private": true,
+  "version": "0.0.49",
   "description": "Headless NodeJS CMS for better developer experience",
   "scripts": {
     "start": "node ./packages/demo/index.js",
@@ -28,6 +28,5 @@
   ],
   "workspaces": [
     "packages/*"
-  ],
-  "version": "0.0.0"
+  ]
 }
