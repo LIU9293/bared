@@ -1,6 +1,6 @@
 {
   "name": "@bared/plugin-meituan",
-  "version": "0.0.47",
+  "version": "0.0.48",
   "description": "Ttlock service for bared CMS",
   "keywords": [],
   "main": "src/index.js",
