@@ -6,7 +6,7 @@ module.exports = {
     const { app } = ctx.state
 
     if (!app) {
-      return ctx.badRequest(`need to specify appId in http header or url query`)
+      return ctx.badRequest('need to specify appId in http header or url query')
     }
 
     const appWithSecret = await ctx.queries.get('app', { id: app.id }, { allowPrivate: true })

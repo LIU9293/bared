@@ -21,5 +21,8 @@ module.exports = {
     default: '',
     required: false,
     private: true
+  },
+  shortId: {
+    type: 'string'
   }
 }
