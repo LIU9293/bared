@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.47](https://github.com-baredigit/baredigit/bared/compare/v0.0.36...v0.0.47) (2022-10-11)
+
+**Note:** Version bump only for package @bared/plugin-wechat-login
+
+
+
+
+
 ## [0.0.36](https://github.com/baredigit/bared/compare/v0.0.33...v0.0.36) (2022-09-22)
 
 **Note:** Version bump only for package @bared/plugin-wechat-login

@@ -1,6 +1,6 @@
 {
   "name": "@bared/plugin-aliyun-sms",
-  "version": "0.0.36",
+  "version": "0.0.47",
   "description": "Aliyun SMS plugin for bared CMS",
   "keywords": [],
   "main": "src/index.js",
