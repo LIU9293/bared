@@ -1,7 +1,7 @@
 const axios = require('axios')
 const WEXIN_API_BASE_URL = 'https://api.weixin.qq.com'
 const { customAlphabet } = require('nanoid')
-const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+const alphabet = '0123456789abcdefghijklmnopqrstuvwxyz'
 const nanoid = customAlphabet(alphabet, 6)
 
 module.exports = {

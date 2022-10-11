@@ -18,43 +18,43 @@ const whereBuilder = (schema, builder, query) => {
           case 'eq':
             builder.where({ [column]: query[key] })
             break
-  
+
           case 'ne':
             builder.where(column, '!=', query[key])
             break
-  
+
           case 'gt':
             builder.where(column, '>', query[key])
             break
-  
+
           case 'gte':
             builder.where(column, '>=', query[key])
             break
-  
+
           case 'lt':
             builder.where(column, '<', query[key])
             break
-  
+
           case 'lte':
             builder.where(column, '<=', query[key])
             break
-  
+
           case 'in':
             builder.whereIn(
               column,
-              typeof query[key] === "string"
+              typeof query[key] === 'string'
                 ? JSON.parse(query[key])
                 : query[key]
-              )
+            )
             break
-  
+
           case 'nin':
             builder.whereNotIn(
               column,
-              typeof query[key] === "string"
+              typeof query[key] === 'string'
                 ? JSON.parse(query[key])
                 : query[key]
-              )
+            )
             break
           default:
             builder.where({ [column]: query[key] })

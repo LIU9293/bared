@@ -56,7 +56,7 @@ module.exports = {
     },
     parentMerchantId: {
       type: 'integer',
-      required: false,
+      required: false
     }
   }
 }

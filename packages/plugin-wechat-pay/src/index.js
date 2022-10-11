@@ -16,7 +16,7 @@ module.exports = () => {
       wechatPayOrderSchema,
       wechatMerchantSpSchema
     ],
-   
+
     routers: [
       {
         name: 'WechatPayment',

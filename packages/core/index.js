@@ -50,7 +50,7 @@ async function start ({
    *       name,
    *       service,
    *       params
-   *     } 
+   *     }
    *   ]
    * }
    */
@@ -76,7 +76,7 @@ async function start ({
   routers = [],
 
   middlewares = [],
-  
+
   corsConfig = {},
 
   // extend original user schema

@@ -89,13 +89,13 @@ module.exports = {
       throw new Error(result.data.msg)
     }
 
-    let returnData = []
+    const returnData = []
 
     if (upsert) {
       for (const shop of data) {
         const { shopname, branchname, shopaddress, cityname } = shop
         const uuid = shop.open_shop_uuid
-        
+
         const res = await ctx.queries.upsert('meituan_shop', { uuid }, {
           name: shopname,
           branch: branchname,
@@ -143,7 +143,6 @@ module.exports = {
 
     const { code, data } = result.data
     if (code !== 200) {
-
       if (result.data.msg === '该门店下没有团购信息') {
         return []
       }

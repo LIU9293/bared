@@ -84,7 +84,7 @@ module.exports = {
 
     const result = await wxpay.transactions_jsapi({
       description,
-      out_trade_no: order.orderId,
+      out_trade_no: orderId,
       notify_url: process.env.BASE_URL + '/api/wechat/pay/notify',
       amount: { total: amount },
       payer: { openid: user.wechatOpenid }
@@ -100,7 +100,7 @@ module.exports = {
   async decodePaymentResource (ctx, { resource, merchantSpId }) {
     const { spAppId, spMchId, publicKey, privateKey, serialNo, password } = await ctx.queries.get(
       'wechat_merchant_sp', { id: merchantSpId }, { allowPrivate: true })
-    
+
     const wxpay = new WxPay({
       sp_appid: spAppId,
       sp_mchid: spMchId,

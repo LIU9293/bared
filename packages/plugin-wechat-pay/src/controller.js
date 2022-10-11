@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 module.exports = {
   async paymentCallback3d (ctx) {
     const { resource } = ctx.request.body
@@ -15,7 +17,7 @@ module.exports = {
 
     const { callbackServiceJson } = payOrder
     const { service, params } = typeof callbackServiceJson === 'string' ? JSON.parse(callbackServiceJson) : callbackServiceJson
-    
+
     try {
       await ctx.services[service](ctx, params)
     } catch (error) {
