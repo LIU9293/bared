@@ -12,7 +12,7 @@ async function ttlockRequest ({ clientId, accessToken, url, data, method = 'POST
 
   const result = await axios({
     method,
-    url: 'https://api.ttlock.com' + url,
+    url: 'https://cnapi.ttlock.com' + url,
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     params
   })
@@ -35,7 +35,7 @@ module.exports = {
 
     const result = await axios({
       method: 'POST',
-      url: 'https://api.ttlock.com/oauth2/token',
+      url: 'https://cnapi.ttlock.com/oauth2/token',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       params
     })
@@ -75,7 +75,7 @@ module.exports = {
 
     const result = await axios({
       method: 'POST',
-      url: 'https://api.ttlock.com/oauth2/token',
+      url: 'https://cnapi.ttlock.com/oauth2/token',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       params
     })
