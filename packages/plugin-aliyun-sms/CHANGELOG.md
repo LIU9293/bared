@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.50](https://github.com/baredigit/bared/compare/v0.0.48...v0.0.50) (2022-10-12)
+
+**Note:** Version bump only for package @bared/plugin-aliyun-sms
+
+
+
+
+
 ## [0.0.48](https://github.com-baredigit/baredigit/bared/compare/v0.0.47...v0.0.48) (2022-10-11)
 
 **Note:** Version bump only for package @bared/plugin-aliyun-sms
