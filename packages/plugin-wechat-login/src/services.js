@@ -45,7 +45,7 @@ module.exports = {
       wechatAppid: appId,
       wechatOpenid: openid,
       wechatUnionid: unionid,
-        wechatSessionKey: session_key // eslint-disable-line
+      wechatSessionKey: session_key // eslint-disable-line
     })
 
     const jwt = ctx.utils.createJwtToken(newUser.id)

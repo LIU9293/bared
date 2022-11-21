@@ -2,8 +2,10 @@ const wechatMerchantSchema = require('./wechatMerchantSchema')
 const wechatPayOrderSchema = require('./wechatPayOrderSchema')
 const wechatMerchantSpSchema = require('./wechatMerchantSpSchema')
 const {
+  getPayInstance,
   getPaymentParams,
-  decodePaymentResource
+  decodePaymentResource,
+  decodePaymentResource3d
 } = require('./services')
 const routes = require('./router')
 
@@ -26,6 +28,13 @@ module.exports = () => {
     middlewares: [],
     services: [
       {
+        name: 'getPayInstance',
+        service: getPayInstance,
+        params: {
+          merchantId: 'integer'
+        }
+      },
+      {
         name: 'getPaymentParams',
         service: getPaymentParams,
         params: {
@@ -38,6 +47,13 @@ module.exports = () => {
       {
         name: 'decodePaymentResource',
         service: decodePaymentResource,
+        params: {
+          resource: 'string'
+        }
+      },
+      {
+        name: 'decodePaymentResource3d',
+        service: decodePaymentResource3d,
         params: {
           resource: 'string',
           merchantSpId: 'integer'

@@ -1,6 +1,19 @@
-const { paymentCallback3d } = require('./controller')
+const {
+  paymentCallback,
+  paymentCallback3d
+} = require('./controller')
 
 module.exports = [
+  {
+    url: '/wechat/pay/notify',
+    method: 'POST',
+    controller: paymentCallback,
+    public: true,
+    description: 'Wechat payment callback',
+    params: {
+      resource: { type: 'json', required: true }
+    }
+  },
   {
     url: '/wechat/pay/notify3d',
     method: 'POST',

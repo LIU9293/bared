@@ -26,6 +26,10 @@ module.exports = {
         defaultShow: true
       }
     },
+    refundedAmount: {
+      type: 'integer',
+      default: 0
+    },
     merchantId: {
       type: 'integer',
       required: true
