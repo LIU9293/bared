@@ -10,7 +10,8 @@ const {
   aqaraTurnSwitch,
   aqaraTurnSwitchById,
   aqaraGetDeviceResoures,
-  aqaraGetSwitchStatus
+  aqaraGetSwitchStatus,
+  aqaraRefreshToken
 } = require('./services')
 
 module.exports = () => {
@@ -42,6 +43,14 @@ module.exports = () => {
           aqaraDeveloperId: 'integer',
           account: 'string',
           authCode: 'string'
+        }
+      },
+      {
+        name: 'aqaraRefreshToken',
+        service: aqaraRefreshToken,
+        showInAdmin: true,
+        params: {
+          aqaraUserId: 'integer'
         }
       },
       {

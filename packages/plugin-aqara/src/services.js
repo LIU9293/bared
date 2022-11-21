@@ -61,6 +61,37 @@ module.exports = {
     return result
   },
 
+  async aqaraRefreshToken (ctx, { aqaraUserId }) {
+    const aqaraUser = await ctx.queries.get('aqara_user', { id: aqaraUserId }, { allowPrivate: true })
+    const aqaraDeveloper = await ctx.queries.get('aqara_developer', { id: aqaraUser.developerId }, { allowPrivate: true })
+
+    if (!aqaraUser) {
+      throw new Error(`Aqara user not found for id ${aqaraUserId}`)
+    }
+
+    const { appId, appKey, keyId } = aqaraDeveloper
+
+    const result = await request({
+      intent: 'config.auth.refreshToken',
+      data: {
+        refreshToken: aqaraUser.refreshToken
+      },
+      appId,
+      appKey,
+      keyId
+    })
+
+    const { accessToken, openId, refreshToken, expiresIn } = result
+    const newAqaraUser = await ctx.queries.upsert('aqara_user', { openId }, {
+      accessToken,
+      openId,
+      refreshToken,
+      expiresIn
+    })
+
+    return newAqaraUser
+  },
+
   async aqaraVerifyAuthCode (ctx, { aqaraDeveloperId, account, authCode }) {
     const aqaraDeveloper = await ctx.queries.get('aqara_developer', { id: aqaraDeveloperId }, { allowPrivate: true })
 

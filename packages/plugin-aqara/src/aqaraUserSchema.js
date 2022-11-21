@@ -14,6 +14,11 @@ module.exports = {
   },
   rowActions: [
     {
+      text: 'Refresh Token',
+      serviceName: 'aqaraRefreshToken',
+      paramsMap: { aqaraUserId: 'id' }
+    },
+    {
       text: 'Refresh Devices',
       serviceName: 'aqaraUpdateDevicesForAccount',
       paramsMap: { aqaraUserId: 'id' }
