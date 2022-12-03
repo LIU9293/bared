@@ -5,7 +5,8 @@ const {
   getPayInstance,
   getPaymentParams,
   decodePaymentResource,
-  decodePaymentResourceDirect
+  decodePaymentResourceDirect,
+  refundPayment
 } = require('./services')
 const routes = require('./router')
 
@@ -57,6 +58,14 @@ module.exports = () => {
         service: decodePaymentResource,
         params: {
           resource: 'string'
+        }
+      },
+      {
+        name: 'refundPayment',
+        service: refundPayment,
+        params: {
+          payOrderId: 'integer',
+          amount: 'integer'
         }
       }
     ]

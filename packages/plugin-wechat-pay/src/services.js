@@ -23,6 +23,7 @@ module.exports = {
       wxpay = new WxPay({
         sp_appid: merchantSp.spAppId,
         sp_mchid: merchantSp.spMchId,
+        sub_mchid: merchant.mchId,
         publicKey: merchantSp.publicKey,
         privateKey: merchantSp.privateKey,
         notify_url: process.env.BASE_URL + '/api/wechat/pay/notify3d',
@@ -57,24 +58,10 @@ module.exports = {
   }) {
     const { app } = ctx.state
     const user = await ctx.queries.get('user', { id: ctx.state.user.id }, { allowPrivate: true })
-    const merchant = await ctx.queries.get('wechat_merchant', { id: merchantId }, { allowPrivate: true })
-
-    if (!merchant) {
-      throw new Error('merchant not found')
-    }
+    const { payInstance, merchant } = await ctx.services.getPayInstance(ctx, { merchantId })
 
     const orderId = nanoid()
     if (merchant.parentMerchantId) {
-      const merchantSp = await ctx.queries.get('wechat_merchant_sp', { id: merchant.parentMerchantId }, { allowPrivate: true })
-      const wxpay = new WxPay({
-        sp_appid: merchantSp.spAppId,
-        sp_mchid: merchantSp.spMchId,
-        publicKey: merchantSp.publicKey,
-        privateKey: merchantSp.privateKey,
-        notify_url: process.env.BASE_URL + '/api/wechat/pay/notify3d',
-        serial_no: merchantSp.serialNo
-      })
-
       const payOrder = await ctx.queries.create('wechat_pay_order', {
         orderId,
         userId: user.id,
@@ -84,7 +71,7 @@ module.exports = {
         callbackServiceJson: JSON.stringify(callbackServiceJson)
       })
 
-      const result = await wxpay.transactions_jsapi_sp({
+      const result = await payInstance.transactions_jsapi_sp({
         description,
         out_trade_no: orderId,
         sub_appid: app.appId,
@@ -99,13 +86,6 @@ module.exports = {
       return { ...result, payOrderId: payOrder.id }
     }
 
-    const wxpay = new WxPay({
-      appid: app.appId,
-      mchid: merchant.merchantId,
-      publicKey: merchant.merchantCert,
-      privateKey: merchant.merchantPrivateKey
-    })
-
     const payOrder = await ctx.queries.create('wechat_pay_order', {
       orderId,
       userId: user.id,
@@ -115,10 +95,9 @@ module.exports = {
       callbackServiceJson: JSON.stringify(callbackServiceJson)
     })
 
-    const result = await wxpay.transactions_jsapi({
+    const result = await payInstance.transactions_jsapi({
       description,
       out_trade_no: orderId,
-      notify_url: process.env.BASE_URL + '/api/wechat/pay/notify/' + merchant.id,
       amount: { total: amount },
       payer: { openid: user.wechatOpenid }
     })
@@ -132,6 +111,22 @@ module.exports = {
 
   async refundPayment (ctx, { payOrderId, amount }) {
     const payOrder = await ctx.queries.get('wechat_pay_order', { id: payOrderId }, { allowPrivate: true }) // eslint-disable-line
+
+    if (payOrder.refundPayment + amount > payOrder.amount) {
+      throw new Error('refund amount exceed original amount')
+    }
+
+    const { payInstance } = await ctx.services.getPayInstance(ctx, { merchantId: payOrder.merchantId })
+    const result = await payInstance.refunds({
+      out_refund_no: nanoid(),
+      out_trade_no: payOrder.txid,
+      amount
+    })
+
+    await ctx.queries.update('wechat_pay_order', { id: payOrder.id }, {
+      refundPayment: payOrder.refundPayment + amount
+    })
+    return result
   },
 
   async decodePaymentResource (ctx, { resource, merchantSpId }) {
