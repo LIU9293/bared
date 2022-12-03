@@ -118,17 +118,24 @@ module.exports = {
     }
 
     const { payInstance, merchant } = await ctx.services.getPayInstance(ctx, { merchantId: payOrder.merchantId })
-    const result = await payInstance.refunds({
-      out_refund_no: nanoid(),
-      out_trade_no: payOrder.txid,
-      amount,
-      sub_mchid: merchant.parentMerchantId ? merchant.merchantId : null
-    })
+    const result = await payInstance.refunds(
+      merchant.parentMerchantId
+      ? {
+        out_refund_no: nanoid(),
+        transaction_id: payOrder.txid,
+        amount,
+        sub_mchid: merchant.merchantId
+      } 
+      : {
+        out_refund_no: nanoid(),
+        transaction_id: payOrder.txid,
+        amount,
+      })
 
     setTimeout(async () => {
       try {
         await ctx.queries.update('wechat_pay_order', { id: payOrder.id }, {
-          refundedAmount: payOrder.refundedAmount + amount
+          refundedAmount: payOrder.refundedAmount + amount.refund
         })
       } catch (error) {
         console.log(error)
