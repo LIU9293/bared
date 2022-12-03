@@ -1,6 +1,6 @@
 {
   "name": "@bared/plugin-wechat-pay",
-  "version": "0.0.53",
+  "version": "0.0.54",
   "description": "Wechat payment for bared CMS",
   "keywords": [],
   "main": "src/index.js",
