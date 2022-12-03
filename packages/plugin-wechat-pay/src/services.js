@@ -23,7 +23,7 @@ module.exports = {
       wxpay = new WxPay({
         sp_appid: merchantSp.spAppId,
         sp_mchid: merchantSp.spMchId,
-        sub_mchid: merchant.mchId,
+        sub_mchid: merchant.merchantId,
         publicKey: merchantSp.publicKey,
         privateKey: merchantSp.privateKey,
         notify_url: process.env.BASE_URL + '/api/wechat/pay/notify3d',
@@ -120,12 +120,20 @@ module.exports = {
     const result = await payInstance.refunds({
       out_refund_no: nanoid(),
       out_trade_no: payOrder.txid,
-      amount
+      amount,
+      sub_mchid: merchant.parentMerchantId ? merchant.merchantId : null
     })
 
-    await ctx.queries.update('wechat_pay_order', { id: payOrder.id }, {
-      refundPayment: payOrder.refundPayment + amount
-    })
+    setTimeout(async () => {
+      try {
+        await ctx.queries.update('wechat_pay_order', { id: payOrder.id }, {
+          refundedAmount: payOrder.refundedAmount + amount
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }, 0)
+    
     return result
   },
 

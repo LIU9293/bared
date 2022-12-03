@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@bared/wechatpay-node-v3@1.3.4":
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/@bared/wechatpay-node-v3/-/wechatpay-node-v3-1.3.4.tgz#50b3d278c89d4d5ed4ff3d398c403b10486a1fa2"
-  integrity sha512-i3DkE5GpYqQ+rh6hzYqrsGVrLagb7LxIdDj+r9ky+oXYU9sD691VQwZYeWNG2AhMe81KZ4VSV9Ramoj1ob5m8Q==
+"@bared/wechatpay-node-v3@1.3.5":
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/@bared/wechatpay-node-v3/-/wechatpay-node-v3-1.3.5.tgz#ffcd97c1ceb6b37052ed9cf0e196783e0eafe5be"
+  integrity sha512-/ZdF85jQJVtMvxMOwuuDSpKS4cCP2o/5RyKO7zJBH947oebqvsev5szodvQCN69o9aqcd5pAdsnvXyfFOBTyVQ==
   dependencies:
     "@fidm/x509" "^1.2.1"
     superagent "^6.1.0"
