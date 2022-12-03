@@ -5,9 +5,9 @@ const {
 
 module.exports = [
   {
-    url: '/wechat/pay/notify',
+    url: '/wechat/pay/notify3d',
     method: 'POST',
-    controller: paymentCallback,
+    controller: paymentCallback3d,
     public: true,
     description: 'Wechat payment callback',
     params: {
@@ -15,9 +15,9 @@ module.exports = [
     }
   },
   {
-    url: '/wechat/pay/notify3d',
+    url: '/wechat/pay/notify/:merchantId',
     method: 'POST',
-    controller: paymentCallback3d,
+    controller: paymentCallback,
     public: true,
     description: 'Wechat payment callback',
     params: {

@@ -5,7 +5,7 @@ const {
   getPayInstance,
   getPaymentParams,
   decodePaymentResource,
-  decodePaymentResource3d
+  decodePaymentResourceDirect
 } = require('./services')
 const routes = require('./router')
 
@@ -45,18 +45,18 @@ module.exports = () => {
         }
       },
       {
+        name: 'decodePaymentResourceDirect',
+        service: decodePaymentResourceDirect,
+        params: {
+          resource: 'string',
+          merchantId: 'integer'
+        }
+      },
+      {
         name: 'decodePaymentResource',
         service: decodePaymentResource,
         params: {
           resource: 'string'
-        }
-      },
-      {
-        name: 'decodePaymentResource3d',
-        service: decodePaymentResource3d,
-        params: {
-          resource: 'string',
-          merchantSpId: 'integer'
         }
       }
     ]

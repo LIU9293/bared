@@ -46,7 +46,7 @@ module.exports = {
       }
     },
     merchantPrivateKey: {
-      type: 'string',
+      type: 'text',
       default: '',
       required: false,
       private: true,

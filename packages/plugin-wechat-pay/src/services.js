@@ -6,7 +6,7 @@ const nanoid = customAlphabet(alphabet, 12)
 module.exports = {
   async getPayInstance (ctx, { merchantId }) {
     const { app } = ctx.state
-    const merchant = await ctx.queries.get('wechat_merchant', { id: merchantId })
+    const merchant = await ctx.queries.get('wechat_merchant', { id: merchantId }, { allowPrivate: true })
 
     if (!merchant) {
       throw new Error('merchant not found')
@@ -30,11 +30,11 @@ module.exports = {
       })
     } else {
       wxpay = new WxPay({
-        appid: app.id,
+        appid: app.appId,
         mchid: merchant.merchantId,
         publicKey: merchant.merchantCert,
         privateKey: merchant.merchantPrivateKey,
-        notify_url: process.env.BASE_URL + '/api/wechat/pay/notify'
+        notify_url: process.env.BASE_URL + '/api/wechat/pay/notify/' + merchant.id
       })
     }
 
@@ -57,21 +57,34 @@ module.exports = {
   }) {
     const { app } = ctx.state
     const user = await ctx.queries.get('user', { id: ctx.state.user.id }, { allowPrivate: true })
-    const { payInstance, merchant } = await ctx.services.getPayInstance(ctx, { merchantId })
+    const merchant = await ctx.queries.get('wechat_merchant', { id: merchantId }, { allowPrivate: true })
+
+    if (!merchant) {
+      throw new Error('merchant not found')
+    }
+
     const orderId = nanoid()
-
-    const payOrder = await ctx.queries.create('wechat_pay_order', {
-      orderId,
-      userId: user.id,
-      amount,
-      merchantId: merchant.id,
-      success: false,
-      callbackServiceJson: JSON.stringify(callbackServiceJson)
-    })
-
-    let result
     if (merchant.parentMerchantId) {
-      result = await payInstance.transactions_jsapi_sp({
+      const merchantSp = await ctx.queries.get('wechat_merchant_sp', { id: merchant.parentMerchantId }, { allowPrivate: true })
+      const wxpay = new WxPay({
+        sp_appid: merchantSp.spAppId,
+        sp_mchid: merchantSp.spMchId,
+        publicKey: merchantSp.publicKey,
+        privateKey: merchantSp.privateKey,
+        notify_url: process.env.BASE_URL + '/api/wechat/pay/notify3d',
+        serial_no: merchantSp.serialNo
+      })
+
+      const payOrder = await ctx.queries.create('wechat_pay_order', {
+        orderId,
+        userId: user.id,
+        amount,
+        merchantId: merchant.id,
+        success: false,
+        callbackServiceJson: JSON.stringify(callbackServiceJson)
+      })
+
+      const result = await wxpay.transactions_jsapi_sp({
         description,
         out_trade_no: orderId,
         sub_appid: app.appId,
@@ -82,15 +95,33 @@ module.exports = {
         },
         payer: { sub_openid: user.wechatOpenid }
       })
-    } else {
-      result = await payInstance.transactions_jsapi({
-        description,
-        out_trade_no: orderId,
-        notify_url: process.env.BASE_URL + '/api/wechat/pay/notify',
-        amount: { total: amount, currency: 'CNY' },
-        payer: { openid: user.wechatOpenid }
-      })
+
+      return { ...result, payOrderId: payOrder.id }
     }
+
+    const wxpay = new WxPay({
+      appid: app.appId,
+      mchid: merchant.merchantId,
+      publicKey: merchant.merchantCert,
+      privateKey: merchant.merchantPrivateKey
+    })
+
+    const payOrder = await ctx.queries.create('wechat_pay_order', {
+      orderId,
+      userId: user.id,
+      amount,
+      merchantId: merchant.id,
+      success: false,
+      callbackServiceJson: JSON.stringify(callbackServiceJson)
+    })
+
+    const result = await wxpay.transactions_jsapi({
+      description,
+      out_trade_no: orderId,
+      notify_url: process.env.BASE_URL + '/api/wechat/pay/notify/' + merchant.id,
+      amount: { total: amount },
+      payer: { openid: user.wechatOpenid }
+    })
 
     return { ...result, payOrderId: payOrder.id }
   },
@@ -118,6 +149,23 @@ module.exports = {
 
     const { ciphertext, associated_data, nonce } = resource // eslint-disable-line
     const result = wxpay.decipher_gcm(ciphertext, associated_data, nonce, password)
+    return result
+  },
+
+  async decodePaymentResourceDirect (ctx, { resource, merchantId }) {
+    const merchant = await ctx.queries.get(
+      'wechat_merchant', { id: merchantId }, { allowPrivate: true })
+    const app = await ctx.queries.get('app', { merchantId: merchant.id }, { allowPrivate: true })
+
+    const wxpay = new WxPay({
+      appid: app.appId,
+      mchid: merchant.merchantId,
+      publicKey: merchant.merchantCert,
+      privateKey: merchant.merchantPrivateKey
+    })
+
+    const { ciphertext, associated_data, nonce } = resource // eslint-disable-line
+    const result = wxpay.decipher_gcm(ciphertext, associated_data, nonce, merchant.merchantKey)
     return result
   }
 }

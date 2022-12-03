@@ -85,8 +85,7 @@ const getListService = (schemas, knex) =>
 const createService = (schemas, knex) =>
   async (
     tableName,
-    query,
-    { allowPrivate = false } = {}
+    query
   ) => {
     // hard code if is user table and has password
     if (tableName === 'user' && query.password) {
@@ -97,7 +96,7 @@ const createService = (schemas, knex) =>
     const res = await knex(tableName).insert(query)
     const id = res[0]
 
-    const item = await getService(schemas, knex)(tableName, { id }, { allowPrivate })
+    const item = await getService(schemas, knex)(tableName, { id }, { allowPrivate: true })
     return item
   }
 
@@ -154,7 +153,7 @@ const upsertService = (schemas, knex) => async (
 ) => {
   const existing = await getService(schemas, knex)(tableName, query, { allowPrivate })
   if (!existing) {
-    const item = await createService(schemas, knex)(tableName, data, { allowPrivate })
+    const item = await createService(schemas, knex)(tableName, data)
     return item
   } else {
     const updated = await updateService(schemas, knex)(tableName, query, data, { allowPrivate })
