@@ -99,7 +99,8 @@ module.exports = {
       description,
       out_trade_no: orderId,
       amount: { total: amount },
-      payer: { openid: user.wechatOpenid }
+      payer: { openid: user.wechatOpenid },
+      notify_url: process.env.BASE_URL + '/api/wechat/pay/notify/' + merchant.id
     })
 
     return { ...result, payOrderId: payOrder.id }
@@ -116,7 +117,7 @@ module.exports = {
       throw new Error('refund amount exceed original amount')
     }
 
-    const { payInstance } = await ctx.services.getPayInstance(ctx, { merchantId: payOrder.merchantId })
+    const { payInstance, merchant } = await ctx.services.getPayInstance(ctx, { merchantId: payOrder.merchantId })
     const result = await payInstance.refunds({
       out_refund_no: nanoid(),
       out_trade_no: payOrder.txid,
