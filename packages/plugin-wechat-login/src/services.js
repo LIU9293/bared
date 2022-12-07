@@ -52,11 +52,9 @@ module.exports = {
     return { user: newUser, jwt }
   },
 
-  async updateUserInfo (ctx) {
+  async updateUserInfo (ctx, { field, value}) {
     const { user } = ctx.state
-    const { field, value } = ctx.request.body
     const allowedFields = ['name', 'avatar', 'gender', 'description', 'gps']
-
     if (allowedFields.includes(field)) {
       return ctx.badRequest(`update field not allowed, allowed keys are ${allowedFields.concat(',')}`)
     }

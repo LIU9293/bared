@@ -1,4 +1,4 @@
-const { registerOrLogin } = require('./services')
+const { registerOrLogin, updateUserInfo } = require('./services')
 
 module.exports = {
   async registerOrLogin (ctx) {
@@ -26,5 +26,33 @@ module.exports = {
     }
 
     ctx.ok({ user })
+  },
+
+  async updatePhoneNumberWechat (ctx) {
+    const { encryptedData, iv } = ctx.request.body
+    const { wechatAppid, id } = ctx.state.user
+
+    const user = await ctx.queries.get('user', { id }, { allowPrivate: true })
+    const { wechatSessionKey } = user
+
+    if (!encryptedData || !iv) {
+      return ctx.badRequest('iv and encryptedData must be specified')
+    }
+
+    const pc = new WXBizDataCrypt(wechatAppid, wechatSessionKey)
+    const plainData = pc.decryptData(encryptedData, iv)
+    const { purePhoneNumber, countryCode } = plainData
+
+    const res = await ctx.queries.update('user', { id }, {
+      phoneNumber: purePhoneNumber,
+      countryCode
+    })
+    return ctx.send(res)
+  },
+
+  async updateUserInfo (ctx) {
+    const { field, value } = ctx.request.body
+    const res = await updateUserInfo(ctx, { field, value })
+    return ctx.send(res)
   }
 }

@@ -22,6 +22,14 @@ module.exports = {
     required: false,
     private: true
   },
+  phoneNumber: {
+    type: 'string',
+    default: '',
+  },
+  countryCode: {
+    type: 'string',
+    default: '',
+  },
   shortId: {
     type: 'string'
   }

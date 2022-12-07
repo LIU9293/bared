@@ -1,6 +1,7 @@
 const {
   registerOrLogin,
-  registerOrLoginNative
+  registerOrLoginNative,
+  updatePhoneNumberWechat
 } = require('./controllers')
 
 module.exports = [
@@ -20,5 +21,16 @@ module.exports = [
     controller: registerOrLoginNative,
     public: true,
     description: 'Login by wx.cloud.callContainer'
-  }
+  },
+  {
+    url: '/auth/phone/update',
+    method: 'POST',
+    controller: updatePhoneNumberWechat,
+    public: false,
+    description: '更新用户手机号',
+    params: {
+      encryptedData: { type: 'string', required: true },
+      iv: { type: 'string', required: true }
+    }
+  },
 ]
