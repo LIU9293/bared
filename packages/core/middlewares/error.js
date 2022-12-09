@@ -1,11 +1,16 @@
 
 async function errorMiddleware (ctx, next) {
   try {
+
     await next()
+
   } catch (error) {
+  
     if (process.env.IS_DEV) {
+      console.log('===== error middleware =====')
       console.log(error)
     }
+
     try {
       setTimeout(async () => {
         const request = JSON.parse(JSON.stringify(ctx.request))
@@ -24,10 +29,11 @@ async function errorMiddleware (ctx, next) {
         await ctx.queries.create('error', query)
       })
     } catch (e) {
+      console.log('===== error middleware, store error failed =====')
       console.error(e)
     }
 
-    throw error
+    ctx.body = { success: false, message: error.message }
   }
 }
 
