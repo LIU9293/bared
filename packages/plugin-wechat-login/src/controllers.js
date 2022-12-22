@@ -1,4 +1,4 @@
-const { registerOrLogin, updateUserInfo } = require('./services')
+const { updateUserInfo } = require('./services')
 
 module.exports = {
   async registerOrLogin (ctx) {
@@ -10,7 +10,7 @@ module.exports = {
     }
 
     const appWithSecret = await ctx.queries.get('app', { id: app.id }, { allowPrivate: true })
-    const result = await registerOrLogin(ctx, {
+    const result = await ctx.services.registerOrLogin(ctx, {
       code,
       appId: app.appId,
       appSecret: appWithSecret.appSecret
