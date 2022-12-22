@@ -1,4 +1,4 @@
-const crypto = require('crypto')
+const { randomBytes } = require('crypto')
 const jwt = require('jsonwebtoken')
 
 const getTokenOptions = () => {
@@ -9,7 +9,7 @@ const getTokenOptions = () => {
 }
 
 const createToken = () => {
-  return crypto.randomBytes(20).toString('hex')
+  return randomBytes(20).toString('hex')
 }
 
 const createJwtToken = id => {

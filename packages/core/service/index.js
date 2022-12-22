@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt')
+const { scryptSync, randomBytes } = require('crypto')
 const { whereBuilder } = require('./queryBuilder')
 
 const getService = (schemas, knex) =>
@@ -89,8 +89,9 @@ const createService = (schemas, knex) =>
   ) => {
     // hard code if is user table and has password
     if (tableName === 'user' && query.password) {
-      const hashedPassword = await bcrypt.hash(query.password, 10)
-      query.password = hashedPassword
+      const salt = randomBytes(16).toString("hex")
+      const buf = scryptSync(query.password, salt, 32)
+      query.password = `${buf.toString("hex")}.${salt}`
     }
 
     const res = await knex(tableName).insert(query)

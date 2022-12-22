@@ -197,7 +197,7 @@ async function start ({
 
   registerAllRouters(app, allPluginRouters.concat(appRouters))
 
-  const rootUser = await queries.get(allSchemas, knex)('user', { id: 1 })
+  const rootUser = await queries.get(allSchemas, knex)('user', { auth_type: 'developer' })
   if (!rootUser) {
     // hack here
     await queries.create(allSchemas, knex)('user', {

@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt')
+const { scryptSync, timingSafeEqual } = require('crypto')
 const { createJwtToken } = require('./utils/jwt')
 
 module.exports = {
@@ -12,7 +12,12 @@ module.exports = {
       return ctx.badRequest('username is not found')
     }
 
-    const verified = await bcrypt.compare(password, user.password)
+    const [hashedPassword, salt] = user.password.split(".")
+    const verified = timingSafeEqual(
+      Buffer.from(hashedPassword, "hex"),
+      scryptSync(password, salt, 32)
+    )
+
     if (!verified) {
       return ctx.badRequest('username or password is not correct')
     }
