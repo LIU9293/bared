@@ -8,6 +8,7 @@ module.exports = {
     appId,
     appSecret
   }, shortIdConfig = { length: 6, alphabet: '0123456789abcdefghijklmnopqrstuvwxyz' }) {
+    
     const url = `${WEXIN_API_BASE_URL}/sns/jscode2session?appid=${appId}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`
     const res = await axios.get(url)
     const { openid, unionid = '', session_key } = res.data // eslint-disable-line

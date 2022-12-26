@@ -33,10 +33,12 @@ const wechatAppInfoMiddleware = async (ctx, next) => {
     ctx.request.headers.appId ||
     ctx.request.query.appId ||
     ctx.request.query.appid
+  
   if (appId) {
-    const app = await ctx.queries.get('app', { appId })
+    const app = await ctx.queries.get('wechat_app', { appId })
     ctx.state.app = app
   }
+  
   await next()
 }
 

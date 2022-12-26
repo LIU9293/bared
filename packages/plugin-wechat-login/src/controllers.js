@@ -9,7 +9,7 @@ module.exports = {
       return ctx.badRequest('need to specify appId in http header or url query')
     }
 
-    const appWithSecret = await ctx.queries.get('app', { id: app.id }, { allowPrivate: true })
+    const appWithSecret = await ctx.queries.get('wechat_app', { id: app.id }, { allowPrivate: true })
     const result = await ctx.services.registerOrLogin(ctx, {
       code,
       appId: app.appId,
