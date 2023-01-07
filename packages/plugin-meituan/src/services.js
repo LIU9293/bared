@@ -22,6 +22,31 @@ function sign (param, appsecret) {
 }
 
 module.exports = {
+  async meituanGetPrepareInfo (ctx, { meituanShopId, meituanShopUuid }) {
+    let meituanAppInfo
+
+    if (meituanShopId) {
+      meituanAppInfo = await ctx.knex('meituan_shop')
+        .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
+        .select('meituan_app.appKey', 'meituan_app.appSecret', 'meituan_app.accessToken', 'meituan_shop.uuid', 'meituan_shop.id')
+        .where('meituan_shop.id', meituanShopId)
+        .first()
+    }
+
+    if (meituanShopUuid) {
+      meituanAppInfo = await ctx.knex('meituan_shop')
+        .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
+        .select('meituan_app.appKey', 'meituan_app.appSecret', 'meituan_app.accessToken', 'meituan_shop.uuid', 'meituan_shop.id')
+        .where('meituan_shop.uuid', meituanShopUuid)
+        .first()
+    }
+
+    if (!meituanAppInfo) {
+      throw new Error('meituanAppInfo not found, meituanShopId or meituanShopUuid is required')
+    }
+    return meituanAppInfo
+  },
+
   async meituanRefreshToken (ctx, { meituanAppId }) {
     const meituanApp = await ctx.queries.get('meituan_app', { id: meituanAppId }, { allowPrivate: true })
     const { refreshToken, appKey, appSecret, name } = meituanApp
@@ -112,19 +137,10 @@ module.exports = {
     return returnData.length > 0 ? returnData : data
   },
 
-  async meituanFetchCoupons (ctx, { meituanShopId, upsert = true }) {
-    const prepareInfo = await ctx.knex('meituan_shop')
-      .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
-      .select(
-        'meituan_shop.uuid',
-        'meituan_app.appKey',
-        'meituan_app.appSecret',
-        'meituan_app.accessToken'
-      )
-      .where('meituan_shop.id', meituanShopId)
-      .first()
-
+  async meituanFetchCoupons (ctx, { meituanShopId, meituanShopUuid, upsert = true }) {
+    const prepareInfo = await ctx.services.meituanGetPrepareInfo(ctx, { meituanShopId, meituanShopUuid })
     const { appKey, accessToken, appSecret, uuid } = prepareInfo
+
     const ts = formatInTimeZone(new Date(), 'Asia/Shanghai', 'yyyy-MM-dd HH:mm:ss')
     const params = {
       app_key: appKey,
@@ -180,27 +196,7 @@ module.exports = {
   },
 
   async meituanGetCouponInfo (ctx, { meituanShopId, meituanShopUuid, code }) {
-    let meituanAppInfo
-
-    if (meituanShopId) {
-      meituanAppInfo = await ctx.knex('meituan_shop')
-        .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
-        .select('meituan_app.appKey', 'meituan_app.appSecret', 'meituan_app.accessToken', 'meituan_shop.uuid', 'meituan_shop.id')
-        .where('meituan_shop.id', meituanShopId)
-        .first()
-    }
-
-    if (meituanShopUuid) {
-      meituanAppInfo = await ctx.knex('meituan_shop')
-        .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
-        .select('meituan_app.appKey', 'meituan_app.appSecret', 'meituan_app.accessToken', 'meituan_shop.uuid', 'meituan_shop.id')
-        .where('meituan_shop.uuid', meituanShopUuid)
-        .first()
-    }
-
-    if (!meituanAppInfo) {
-      throw new Error('meituanAppInfo not found, meituanShopId or meituanShopUuid is required')
-    }
+    const meituanAppInfo = await ctx.services.meituanGetPrepareInfo(ctx, { meituanShopId, meituanShopUuid })
 
     const { appKey, appSecret, accessToken, uuid } = meituanAppInfo
     const ts = formatInTimeZone(new Date(), 'Asia/Shanghai', 'yyyy-MM-dd HH:mm:ss')
@@ -232,28 +228,7 @@ module.exports = {
   },
 
   async meituanVerifyCode (ctx, { meituanShopId, meituanShopUuid, code, count = 1 }) {
-    let meituanAppInfo
-
-    if (meituanShopId) {
-      meituanAppInfo = await ctx.knex('meituan_shop')
-        .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
-        .select('meituan_app.appKey', 'meituan_app.appSecret', 'meituan_app.accessToken', 'meituan_shop.uuid', 'meituan_shop.id')
-        .where('meituan_shop.id', meituanShopId)
-        .first()
-    }
-
-    if (meituanShopUuid) {
-      meituanAppInfo = await ctx.knex('meituan_shop')
-        .join('meituan_app', 'meituan_shop.meituanAppId', '=', 'meituan_app.id')
-        .select('meituan_app.appKey', 'meituan_app.appSecret', 'meituan_app.accessToken', 'meituan_shop.uuid', 'meituan_shop.id')
-        .where('meituan_shop.uuid', meituanShopUuid)
-        .first()
-    }
-
-    if (!meituanAppInfo) {
-      throw new Error('meituanAppInfo not found, meituanShopId or meituanShopUuid is required')
-    }
-
+    const meituanAppInfo = await ctx.services.meituanGetPrepareInfo(ctx, { meituanShopId, meituanShopUuid })
     const { appKey, appSecret, accessToken, uuid } = meituanAppInfo
     const ts = formatInTimeZone(new Date(), 'Asia/Shanghai', 'yyyy-MM-dd HH:mm:ss')
 
@@ -285,5 +260,69 @@ module.exports = {
     } else {
       return { success: false, message: result.data.msg, code: result.data.code }
     }
-  }
+  },
+
+  async meituanGetRoomTraffic (ctx, { meituanShopId, meituanShopUuid, startDate, endDate }) {
+    const meituanAppInfo = await ctx.services.meituanGetPrepareInfo(ctx, { meituanShopId, meituanShopUuid })
+    const { appKey, appSecret, accessToken, uuid } = meituanAppInfo
+    const ts = formatInTimeZone(new Date(), 'Asia/Shanghai', 'yyyy-MM-dd HH:mm:ss')
+
+    const params = {
+      app_key: appKey,
+      timestamp: ts,
+      session: accessToken,
+      format: 'json',
+      v: 1,
+      sign_method: 'MD5',
+      open_shop_uuid: uuid,
+      platform: 'ALL',
+      start_date: startDate,
+      end_date: endDate
+    }
+
+    const sig = sign(params, appSecret)
+    const result = await axios({
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      url: 'https://openapi.dianping.com/router/merchant/data/poitraffic',
+      data: qs.stringify({ ...params, sign: sig })
+    })
+
+    if (result.data && result.data.code === 200) {
+      return { success: true, data: result.data.data }
+    } else {
+      return { success: false, message: result.data.msg, code: result.data.code }
+    }
+  },
+
+  async meituanGetRoomConsumption (ctx, { meituanShopId, meituanShopUuid, dateType = 30 }) {
+    const meituanAppInfo = await ctx.services.meituanGetPrepareInfo(ctx, { meituanShopId, meituanShopUuid })
+    const { appKey, appSecret, accessToken, uuid } = meituanAppInfo
+    const ts = formatInTimeZone(new Date(), 'Asia/Shanghai', 'yyyy-MM-dd HH:mm:ss')
+
+    const params = {
+      app_key: appKey,
+      timestamp: ts,
+      session: accessToken,
+      format: 'json',
+      v: 1,
+      sign_method: 'MD5',
+      open_shop_uuid: uuid,
+      date_type: dateType
+    }
+
+    const sig = sign(params, appSecret)
+    const result = await axios({
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      url: 'https://openapi.dianping.com/router/merchant/data/dealgroups',
+      data: qs.stringify({ ...params, sign: sig })
+    })
+
+    if (result.data && result.data.code === 200) {
+      return { success: true, data: result.data.data }
+    } else {
+      return { success: false, message: result.data.msg, code: result.data.code }
+    }
+  },
 }

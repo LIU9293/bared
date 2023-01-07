@@ -3,12 +3,15 @@ const meituanShopSchema = require('./meituanShopSchema')
 const meituanCouponSchema = require('./meituanCouponSchema')
 
 const {
+  meituanGetPrepareInfo,
   meituanFetchShops,
   meituanGetTokenValidTime,
   meituanRefreshToken,
   meituanGetCouponInfo,
   meituanVerifyCode,
-  meituanFetchCoupons
+  meituanFetchCoupons,
+  meituanGetRoomTraffic,
+  meituanGetRoomConsumption
 } = require('./services')
 
 module.exports = () => {
@@ -28,6 +31,14 @@ module.exports = () => {
     middlewares: [],
 
     services: [
+      {
+        name: 'meituanGetPrepareInfo',
+        service: meituanGetPrepareInfo,
+        params: {
+          meituanShopId: 'integer',
+          meituanShopUuid: 'string'
+        }
+      },
       {
         name: 'meituanFetchShops',
         service: meituanFetchShops,
@@ -74,7 +85,27 @@ module.exports = () => {
         name: 'meituanFetchCoupons',
         service: meituanFetchCoupons,
         params: {
-          meituanShopId: 'integer'
+          meituanShopId: 'integer',
+          meituanShopUuid: 'string',
+        }
+      },
+      {
+        name: 'meituanGetRoomTraffic',
+        service: meituanGetRoomTraffic,
+        params: {
+          meituanShopId: 'integer',
+          meituanShopUuid: 'string',
+          startDate: 'string',
+          endDate: 'string'
+        }
+      },
+      {
+        name: 'meituanGetRoomConsumption',
+        service: meituanGetRoomConsumption,
+        params: {
+          meituanShopId: 'integer',
+          meituanShopUuid: 'string',
+          dateType: 'integer'
         }
       }
     ]

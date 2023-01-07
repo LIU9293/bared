@@ -51,6 +51,21 @@ module.exports = {
       serviceName: 'meituanVerifyCode',
       paramsMap: { meituanShopId: 'id' },
       inputParams: { code: 'string' }
-    }
+    },
+    {
+      text: 'Traffic',
+      serviceName: 'meituanGetRoomTraffic',
+      paramsMap: { meituanShopId: 'id' },
+      inputParams: {
+        startDate: 'string',
+        endDate: 'string'
+      }
+    },
+    {
+      text: 'Consumption',
+      serviceName: 'meituanGetRoomConsumption',
+      paramsMap: { meituanShopId: 'id' },
+      inputParams: { dateType: 'integer' }
+    },
   ]
 }
