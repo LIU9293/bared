@@ -42,6 +42,9 @@ module.exports = {
       success: true
     })
 
+    console.log('--- payment callback ---')
+    console.log(payOrder)
+
     const { callbackServiceJson } = payOrder
     const { service, params } = typeof callbackServiceJson === 'string' ? JSON.parse(callbackServiceJson) : callbackServiceJson
 
