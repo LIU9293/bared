@@ -1,4 +1,5 @@
 const { updateUserInfo } = require('./services')
+const WXBizDataCrypt = require('./bizdata')
 
 module.exports = {
   async registerOrLogin (ctx) {
