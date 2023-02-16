@@ -27,7 +27,10 @@ module.exports = {
     {
       text: 'get auth url',
       serviceName: 'ewelinkGenerateAuthUrl',
-      inputParams: { ewelinkDeveloperId: 'integer', id: 'integer' }
+      inputParams: {
+        id: 'integer',
+        ewelinkDeveloperId: 'integer',
+      }
     }
   ]
 }

@@ -1,44 +1,44 @@
 const crypto = require('crypto')
 const axios = require('axios')
+const R = require('ramda')
 
-async function request ({ intent, data = {}, method = 'POST', accessToken, appId, keyId, appKey }) {
-  const ts = Math.round(new Date().getTime())
-  const str = accessToken
-    ? `Accesstoken=${accessToken}&Appid=${appId}&Keyid=${keyId}&Nonce=${ts}&time=${ts}${appKey}`.toLowerCase()
-    : `Appid=${appId}&Keyid=${keyId}&Nonce=${ts}&time=${ts}${appKey}`.toLowerCase()
-
-  const sign = crypto.createHash('md5').update(str).digest('hex')
-
-  const headers = {
-    Appid: appId,
-    Keyid: keyId,
-    Nonce: ts,
-    Sign: sign,
-    Time: ts,
-    'Content-Type': 'application/json'
-  }
-
-  if (accessToken) {
-    headers.Accesstoken = accessToken
-  }
-
-  const res = await axios({
-    url: 'https://open-cn.ewelink.com/v3.0/open/api',
-    method,
-    headers,
-    data: { intent, data }
-  })
-
-  if (res.data && (res.data.code === 0 || res.data.code === 200)) {
-    return res.data.result
-  }
-
-  throw new Error('ewelink api error:' + ' ' + (res.data.msgDetails || res.data.message))
+function toQueryString (obj) {
+  return Object.keys(obj).map(key => `${key}=${obj[key]}`).join('&')
 }
 
-function getSign ({ appId, appKey, ts }) {
-  const buffer = Buffer.from(`${appId}_${ts}`, "utf-8");
-  const sign = crypto.createHmac("sha256", appKey).update(buffer).digest("base64");
+async function request ({ url, params = {}, method = 'POST', accessToken, appId }) {
+  const requestUrl = method === 'GET' 
+    ? `https://apia.coolkit.cn/${url}?${toQueryString(params)}` 
+    : `https://apia.coolkit.cn/${url}`
+
+  const { data } = await axios({
+    url: requestUrl,
+    method,
+    headers: {
+      Host: 'cn-apia.coolkit.cn',
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+      'x-ck-appid': `${appId}`,
+    },
+    data: params
+  })
+
+  if (!data.error) {
+    return data.data
+  }
+
+  throw new Error('ewelink api error:' + ' ' + (data?.msg || data))
+}
+
+function getAuthLinkSign ({ appId, appKey, ts }) {
+  const buffer = Buffer.from(`${appId}_${ts}`, "utf-8")
+  const sign = crypto.createHmac("sha256", appKey).update(buffer).digest("base64")
+  return sign
+}
+
+function getRequestSign ({ params, appKey }) {
+  const buffer = Buffer.from(JSON.stringify(params), "utf-8" )
+  const sign = crypto.createHmac("sha256", appKey).update(buffer).digest("base64")
   return sign
 }
 
@@ -52,7 +52,7 @@ module.exports = {
 
     const ts = new Date().getTime()
     const { appId, appKey } = ewelinkDeveloper
-    const sign = getSign({ appId, appKey, ts })
+    const sign = getAuthLinkSign({ appId, appKey, ts })
     const requestParams = {
       clientId: appId,
       seq: ts,
@@ -77,23 +77,27 @@ module.exports = {
 
     const ts = new Date().getTime()
     const { appId, appKey } = ewelinkDeveloper
-    const sign = getSign({ appId, appKey, ts })
+
+    const params = { 
+      code,
+      grantType: 'authorization_code',
+      redirectUrl: process.env.BASE_URL + '/api/ewelink_auth',
+    }
+    const sign = getRequestSign({ params, appKey })
 
     const { data } = await axios({
       url: 'https://cn-apia.coolkit.cn/v2/user/oauth/token',
       method: 'POST',
       headers: {
-        Authorization: `${sign}`,
-        'Content-Type': 'application/json'
+        Host: 'cn-apia.coolkit.cn',
+        Authorization: `Sign ${sign}`,
+        'Content-Type': 'application/json',
+        'x-ck-appid': `${appId}`,
       },
-      data: { 
-        code,
-        redirectUrl: process.env.BASE_URL + '/api/ewelink_auth',
-        grantType: 'authorization_code'
-      }
+      data: params
     })
 
-    const { accessToken, atExpiredTime, refreshToken, rtExpiredTime } = data
+    const { accessToken, atExpiredTime, refreshToken, rtExpiredTime } = data.data
     const ewelinkUser = await ctx.queries.upsert('ewelink_user', { id }, {
       developerId: ewelinkDeveloperId,
       appId: id,
@@ -138,22 +142,26 @@ module.exports = {
   },
 
   async ewelinkUpdateDevicesForAccount (ctx, { ewelinkUserId, page = 1 }) {
-    const pageSize = 100
+    const pageSize = 30
     const ewelinkUser = await ctx.queries.get('ewelink_user', { id: ewelinkUserId })
+    
     const { accessToken, developerId, id } = ewelinkUser
     const ewelinkDeveloper = await ctx.queries.get('ewelink_developer', { id: developerId }, { allowPrivate: true })
-    const { appId, appKey, keyId } = ewelinkDeveloper
+    const { appId } = ewelinkDeveloper
 
-    const { data, totalCount } = await request({
-      intent: 'query.device.info',
-      data: { pageNum: page, pageSize },
+    // { thingList: [], total: 0 }
+    const { thingList, total } = await request({
+      url: 'v2/device/thing',
+      method: 'GET',
+      accessToken,
       appId,
-      appKey,
-      keyId,
-      accessToken
+      params: {
+        num: 30,
+        beginIndex: (page - 1) * 30
+      }
     })
 
-    for (const item of data) {
+    for (const item of thingList) {
       const { did, deviceName, model, state, positionId, parentDid } = item
       await ctx.queries.upsert('ewelink_device', { did }, {
         ewelinkUserId: id,
@@ -166,8 +174,8 @@ module.exports = {
       })
     }
 
-    if (totalCount > page * pageSize) {
-      console.log(`device length ${totalCount}, current got ${page * pageSize}, loading next 100`)
+    if (total > page * 30) {
+      console.log(`ewelink device length ${totalCount}, current got ${page * pageSize}, loading next 30`)
       await ctx.services.ewelinkUpdateDevicesForAccount(ctx, { ewelinkUserId, page: page + 1 })
     }
 
