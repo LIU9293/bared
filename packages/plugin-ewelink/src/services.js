@@ -118,27 +118,8 @@ module.exports = {
       throw new Error(`ewelink user not found for id ${ewelinkUserId}`)
     }
 
-    const { appId, appKey, keyId } = ewelinkDeveloper
-
-    const result = await request({
-      intent: 'config.auth.refreshToken',
-      data: {
-        refreshToken: ewelinkUser.refreshToken
-      },
-      appId,
-      appKey,
-      keyId
-    })
-
-    const { accessToken, openId, refreshToken, expiresIn } = result
-    const newewelinkUser = await ctx.queries.upsert('ewelink_user', { openId }, {
-      accessToken,
-      openId,
-      refreshToken,
-      expiresIn
-    })
-
-    return newewelinkUser
+    const { appId, appKey } = ewelinkDeveloper
+    return { success: false }
   },
 
   async ewelinkUpdateDevicesForAccount (ctx, { ewelinkUserId, page = 1 }) {
@@ -161,6 +142,7 @@ module.exports = {
       }
     })
 
+    console.log(thingList, total)
     for (const item of thingList) {
       const { did, deviceName, model, state, positionId, parentDid } = item
       await ctx.queries.upsert('ewelink_device', { did }, {
