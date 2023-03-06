@@ -192,7 +192,10 @@ module.exports = {
       }
     })
 
-    return data
+    console.log('=== ewelink device detail ===')
+    console.log(data)
+
+    return { response: data }
   },
 
   async ewelinkTurnSwitch (ctx, { ewelinkDeviceId, index, on }) {
@@ -210,7 +213,7 @@ module.exports = {
     console.log(info)
 
     const { data } = await request({
-      url: `v2/device/thing/status`,
+      url: 'v2/device/thing/status',
       method: 'POST',
       accessToken: info.accessToken,
       appId: info.appId,
@@ -225,7 +228,10 @@ module.exports = {
       }
     })
 
-    return data
+    console.log('=== ewelink turn switch response ===')
+    console.log(data)
+
+    return { response: data }
   },
 
   async ewelinkGetFamily (ctx, { ewelinkUserId }) {

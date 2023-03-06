@@ -32,7 +32,7 @@ module.exports = {
     {
       text: 'Get Switch State',
       serviceName: 'ewelinkGetDeviceDetail',
-      paramsMap: { ewelinkDeviceId: 'did' }
+      paramsMap: { ewelinkDeviceId: 'id' }
     }
   ]
 }
