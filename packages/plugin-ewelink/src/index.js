@@ -8,7 +8,7 @@ const {
   ewelinkTurnSwitch,
   ewelinkGetSwitchStatus,
   ewelinkRefreshToken,
-  ewelinkGetFamily
+  ewelinkGetDeviceDetail
 } = require('./services')
 const ewelinkRoutes = require('./router')
 
@@ -59,10 +59,12 @@ module.exports = () => {
         }
       },
       {
-        name: 'ewelinkGetFamily',
-        service: ewelinkGetFamily,
+        name: 'ewelinkGetDeviceDetail',
+        service: ewelinkGetDeviceDetail,
         showInAdmin: true,
-        params: {}
+        params: {
+          ewelinkDeviceId: 'integer'
+        }
       },
       {
         name: 'ewelinkGetSwitchStatus',
@@ -78,8 +80,8 @@ module.exports = () => {
         showInAdmin: true,
         params: {
           on: 'boolean',
-          did: 'string',
-          resourceId: 'string'
+          index: 'integer',
+          ewelinkDeviceId: 'integer'
         }
       }
     ]

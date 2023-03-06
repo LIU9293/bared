@@ -31,8 +31,8 @@ module.exports = {
   rowActions: [
     {
       text: 'Get Switch State',
-      serviceName: 'ewelinkGetSwitchStatus',
-      paramsMap: { did: 'did' }
+      serviceName: 'ewelinkGetDeviceDetail',
+      paramsMap: { ewelinkDeviceId: 'did' }
     }
   ]
 }
