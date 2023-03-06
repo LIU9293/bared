@@ -24,6 +24,7 @@ async function request ({ url, params = {}, method = 'POST', accessToken, appId 
   })
 
   if (!data.error) {
+    console.log(data)
     return data.data
   }
 
@@ -137,12 +138,11 @@ module.exports = {
       accessToken,
       appId,
       params: {
-        num: 30,
-        beginIndex: (page - 1) * 30
+        // num: 30,
+        // beginIndex: (page - 1) * 30
       }
     })
 
-    console.log(thingList, total)
     for (const item of thingList) {
       const { did, deviceName, model, state, positionId, parentDid } = item
       await ctx.queries.upsert('ewelink_device', { did }, {
@@ -162,6 +162,25 @@ module.exports = {
     }
 
     return { success: true }
+  },
+
+  async ewelinkGetFamily (ctx, { ewelinkUserId }) {
+    const ewelinkUser = await ctx.queries.get('ewelink_user', { id: ewelinkUserId })
+    
+    const { accessToken, developerId, id } = ewelinkUser
+    const ewelinkDeveloper = await ctx.queries.get('ewelink_developer', { id: developerId }, { allowPrivate: true })
+    const { appId } = ewelinkDeveloper
+
+    // { thingList: [], total: 0 }
+    const data = await request({
+      url: 'v2/family',
+      method: 'GET',
+      accessToken,
+      appId,
+      params: {}
+    })
+
+    return data
   },
 
   async ewelinkGetSwitchStatus (ctx, { did }) {

@@ -7,7 +7,8 @@ const {
   ewelinkUpdateDevicesForAccount,
   ewelinkTurnSwitch,
   ewelinkGetSwitchStatus,
-  ewelinkRefreshToken
+  ewelinkRefreshToken,
+  ewelinkGetFamily
 } = require('./services')
 const ewelinkRoutes = require('./router')
 
@@ -56,6 +57,12 @@ module.exports = () => {
         params: {
           ewelinkUserId: 'integer'
         }
+      },
+      {
+        name: 'ewelinkGetFamily',
+        service: ewelinkGetFamily,
+        showInAdmin: true,
+        params: {}
       },
       {
         name: 'ewelinkGetSwitchStatus',
