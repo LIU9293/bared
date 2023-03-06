@@ -4,7 +4,7 @@ module.exports = {
   description: '所有的Ewelink设备',
   isPluginSchema: true,
   attributes: {
-    aqaraUserId: {
+    ewelinkUserId: {
       type: 'integer',
       required: true
     },
@@ -21,16 +21,8 @@ module.exports = {
         defaultShow: true
       }
     },
-    positionId: { type: 'string' },
-    parentDid: { type: 'string' },
     model: {
       type: 'string',
-      tableConfig: {
-        defaultShow: true
-      }
-    },
-    state: {
-      type: 'integer',
       tableConfig: {
         defaultShow: true
       }

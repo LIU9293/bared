@@ -130,35 +130,31 @@ module.exports = {
     const { accessToken, developerId, id } = ewelinkUser
     const ewelinkDeveloper = await ctx.queries.get('ewelink_developer', { id: developerId }, { allowPrivate: true })
     const { appId } = ewelinkDeveloper
-
-    // { thingList: [], total: 0 }
     const { thingList, total } = await request({
       url: 'v2/device/thing',
       method: 'GET',
       accessToken,
       appId,
       params: {
-        // num: 30,
+        num: 30,
         // beginIndex: (page - 1) * 30
       }
     })
 
     for (const item of thingList) {
-      const { did, deviceName, model, state, positionId, parentDid } = item
-      await ctx.queries.upsert('ewelink_device', { did }, {
+      const { itemType, itemData, index } = item
+      console.log(itemData)
+      await ctx.queries.upsert('ewelink_device', { did: itemData.deviceid }, {
         ewelinkUserId: id,
-        did,
-        deviceName,
-        model,
-        state,
-        positionId,
-        parentDid
+        deviceName: itemData.name,
+        did: itemData.deviceid,
+        model: itemData.productModel
       })
     }
 
     if (total > page * 30) {
       console.log(`ewelink device length ${totalCount}, current got ${page * pageSize}, loading next 30`)
-      await ctx.services.ewelinkUpdateDevicesForAccount(ctx, { ewelinkUserId, page: page + 1 })
+      // await ctx.services.ewelinkUpdateDevicesForAccount(ctx, { ewelinkUserId, page: page + 1 })
     }
 
     return { success: true }
