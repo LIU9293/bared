@@ -189,7 +189,7 @@ module.exports = {
     return { response: data.params }
   },
 
-  async ewelinkTurnSwitch (ctx, { ewelinkDeviceId, index, on }) {
+  async ewelinkTurnSwitch (ctx, { ewelinkDeviceId, index = 0, on }) {
     const info = await ctx.knex('ewelink_device')
       .join('ewelink_user', 'ewelink_device.ewelinkUserId', 'ewelink_user.id')
       .join('ewelink_developer', 'ewelink_user.developerId', 'ewelink_developer.id')
@@ -209,9 +209,10 @@ module.exports = {
         type: 1,
         id: info.did,
         params: {
-          switches: [
-            { switch: on ? 'on' : 'off', outlet: index }
-          ]
+          switches: [{ 
+            switch: on ? 'on' : 'off', 
+            outlet: index || 0
+          }]
         }
       }
     })
