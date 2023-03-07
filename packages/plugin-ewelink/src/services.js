@@ -130,27 +130,24 @@ module.exports = {
     return { success: false }
   },
 
-  async ewelinkUpdateDevicesForAccount (ctx, { ewelinkUserId, page = 1 }) {
+  async ewelinkUpdateDevicesForAccount (ctx, { ewelinkUserId, page = 1, totalSize = 0 }) {
     const pageSize = 30
     const ewelinkUser = await ctx.queries.get('ewelink_user', { id: ewelinkUserId })
     const { accessToken, developerId, id } = ewelinkUser
     const ewelinkDeveloper = await ctx.queries.get('ewelink_developer', { id: developerId }, { allowPrivate: true })
     const { appId } = ewelinkDeveloper
+    const beginIndex = totalSize ? -(totalSize - pageSize * (page - 1)) : -9999999
+
     const { thingList, total } = await request({
       url: 'v2/device/thing',
       method: 'GET',
       accessToken,
       appId,
-      params: {
-        num: 30,
-        // beginIndex: (page - 1) * 30
-      }
+      params: { num: pageSize, beginIndex }
     })
 
     for (const item of thingList) {
       const { itemType, itemData, index } = item
-      console.log(itemData.name)
-      console.log(itemData.params?.switches)
       await ctx.queries.upsert('ewelink_device', { did: itemData.deviceid }, {
         ewelinkUserId: id,
         deviceName: itemData.name,
@@ -160,8 +157,8 @@ module.exports = {
     }
 
     if (total > page * 30) {
-      // console.log(`ewelink device length ${totalCount}, current got ${page * pageSize}, loading next 30`)
-      // await ctx.services.ewelinkUpdateDevicesForAccount(ctx, { ewelinkUserId, page: page + 1 })
+      console.log(`ewelink device length ${total}, current got ${page * pageSize}, loading next 30`)
+      await ctx.services.ewelinkUpdateDevicesForAccount(ctx, { ewelinkUserId, page: page + 1, totalSize: total })
     }
 
     return { success: true }
@@ -178,10 +175,7 @@ module.exports = {
       .where('ewelink_device.id', ewelinkDeviceId)
       .first()
 
-    console.log('=== ewelink device info ===')
-    console.log(info)
-
-    const { data } = await request({
+    const data = await request({
       url: `v2/device/thing/status`,
       method: 'GET',
       accessToken: info.accessToken,
@@ -192,10 +186,7 @@ module.exports = {
       }
     })
 
-    console.log('=== ewelink device detail ===')
-    console.log(data)
-
-    return { response: data }
+    return { response: data.params }
   },
 
   async ewelinkTurnSwitch (ctx, { ewelinkDeviceId, index, on }) {
@@ -209,10 +200,7 @@ module.exports = {
       .where('ewelink_device.id', ewelinkDeviceId)
       .first()
 
-    console.log('=== ewelink device info ===')
-    console.log(info)
-
-    const { data } = await request({
+    const data = await request({
       url: 'v2/device/thing/status',
       method: 'POST',
       accessToken: info.accessToken,
@@ -228,36 +216,6 @@ module.exports = {
       }
     })
 
-    console.log('=== ewelink turn switch response ===')
-    console.log(data)
-
-    return { response: data }
-  },
-
-  async ewelinkGetFamily (ctx, { ewelinkUserId }) {
-    const ewelinkUser = await ctx.queries.get('ewelink_user', { id: ewelinkUserId })
-    
-    const { accessToken, developerId, id } = ewelinkUser
-    const ewelinkDeveloper = await ctx.queries.get('ewelink_developer', { id: developerId }, { allowPrivate: true })
-    const { appId } = ewelinkDeveloper
-
-    // { thingList: [], total: 0 }
-    const data = await request({
-      url: 'v2/family',
-      method: 'GET',
-      accessToken,
-      appId,
-      params: {}
-    })
-
-    return data
-  },
-
-  async ewelinkGetSwitchStatus (ctx, { did }) {
-
-  },
-
-  async ewelinkTurnSwitch (ctx, { did, resourceId, on = false }) {
-
+    return { response: data.params }
   }
 }

@@ -6,7 +6,6 @@ const {
   ewelinkAccountAuth,
   ewelinkUpdateDevicesForAccount,
   ewelinkTurnSwitch,
-  ewelinkGetSwitchStatus,
   ewelinkRefreshToken,
   ewelinkGetDeviceDetail
 } = require('./services')
@@ -64,14 +63,6 @@ module.exports = () => {
         showInAdmin: true,
         params: {
           ewelinkDeviceId: 'integer'
-        }
-      },
-      {
-        name: 'ewelinkGetSwitchStatus',
-        service: ewelinkGetSwitchStatus,
-        showInAdmin: true,
-        params: {
-          did: 'string'
         }
       },
       {
