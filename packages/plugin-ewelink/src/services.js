@@ -110,12 +110,7 @@ module.exports = {
       rtExpiredTime
     })
 
-    return ctx.send(`
-      <div style="margin-top: 50px; text-align: center;">
-        <h1>MOGHUB授权成功</h1>
-        <h3>请关闭页面</h3>
-      </div>
-    `)
+    return { success: true }
   },
 
   async ewelinkRefreshToken (ctx, { ewelinkUserId }) {
@@ -146,14 +141,30 @@ module.exports = {
       params: { num: pageSize, beginIndex }
     })
 
+    console.log(`ewelink device length ${total}, current got ${thingList.length}`)
     for (const item of thingList) {
-      const { itemType, itemData, index } = item
-      await ctx.queries.upsert('ewelink_device', { did: itemData.deviceid }, {
-        ewelinkUserId: id,
-        deviceName: itemData.name,
-        did: itemData.deviceid,
-        model: itemData.productModel
-      })
+      const { itemType, itemData } = item
+
+      if (itemData.mainDeviceId) {
+        console.log('--- update device with mainDeviceId ---')
+        console.log(itemData)
+        await ctx.queries.upsert('ewelink_device', { did: itemData.mainDeviceId }, {
+          ewelinkUserId: id,
+          deviceName: itemData.name,
+          did: itemData.mainDeviceId,
+          model: itemData.productModel || itemData.id
+        })
+      } else if (itemData.deviceid) {
+        await ctx.queries.upsert('ewelink_device', { did: itemData.deviceid }, {
+          ewelinkUserId: id,
+          deviceName: itemData.name,
+          did: itemData.deviceid,
+          model: itemData.productModel
+        })
+      } else {
+        console.log(`itemData.deviceid not found for ${itemType}`)
+        console.log(itemData)
+      }
     }
 
     if (total > page * 30) {

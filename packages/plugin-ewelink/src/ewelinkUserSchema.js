@@ -9,7 +9,8 @@ module.exports = {
     accessToken: { type: 'string' },
     refreshToken: { type: 'string' },
     atExpiredTime: { type: 'bigint' },
-    rtExpiredTime: { type: 'bigint' }
+    rtExpiredTime: { type: 'bigint' },
+    memo: { type: 'string' }
   },
   rowActions: [
     {
