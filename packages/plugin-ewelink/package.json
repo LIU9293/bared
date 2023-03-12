@@ -1,6 +1,6 @@
 {
   "name": "@bared/plugin-ewelink",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "description": "ewelink IoT plugin for bared CMS",
   "keywords": [],
   "main": "src/index.js",

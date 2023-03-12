@@ -126,7 +126,7 @@ module.exports = {
   },
 
   async ewelinkUpdateDevicesForAccount (ctx, { ewelinkUserId, page = 1, totalSize = 0 }) {
-    const pageSize = 30
+    const pageSize = 100
     const ewelinkUser = await ctx.queries.get('ewelink_user', { id: ewelinkUserId })
     const { accessToken, developerId, id } = ewelinkUser
     const ewelinkDeveloper = await ctx.queries.get('ewelink_developer', { id: developerId }, { allowPrivate: true })
