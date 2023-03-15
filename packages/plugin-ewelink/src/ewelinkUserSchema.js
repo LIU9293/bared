@@ -14,6 +14,11 @@ module.exports = {
   },
   rowActions: [
     {
+      text: 'Get Auth Link',
+      serviceName: 'ewelinkGenerateAuthUrl',
+      paramsMap: { ewelinkDeveloperId: 'developerId', id: 'appId' }
+    },
+    {
       text: 'Refresh Token',
       serviceName: 'ewelinkRefreshToken',
       paramsMap: { ewelinkUserId: 'id' }
