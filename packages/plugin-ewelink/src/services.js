@@ -68,16 +68,13 @@ module.exports = {
 
   async ewelinkAccountAuth (ctx, { code, state }) {
     const ewelinkDeveloperId = state.split('_')[0]
-    const id = state.split('_')[1]
+    const id = parseInt(state.split('_')[1])
     if (!id || !ewelinkDeveloperId) {
       throw new Error('state error')
     }
 
     const ewelinkDeveloper = await ctx.queries.get('ewelink_developer', { id: ewelinkDeveloperId }, { allowPrivate: true })
-
-    const ts = new Date().getTime()
     const { appId, appKey } = ewelinkDeveloper
-
     const params = { 
       code,
       grantType: 'authorization_code',
@@ -101,7 +98,7 @@ module.exports = {
     console.log('=== ewelink user ===')
     console.log(data.data)
     
-    await ctx.queries.upsert('ewelink_user', { id }, {
+    await ctx.queries.upsert('ewelink_user', { appId: id }, {
       developerId: ewelinkDeveloperId,
       appId: id,
       accessToken,
@@ -142,6 +139,7 @@ module.exports = {
     
     return { data }
   },
+
 
   async ewelinkUpdateDevicesForAccount (ctx, { ewelinkUserId, page = 1, totalSize = 0 }) {
     const pageSize = 100
