@@ -114,15 +114,33 @@ module.exports = {
   },
 
   async ewelinkRefreshToken (ctx, { ewelinkUserId }) {
-    const ewelinkUser = await ctx.queries.get('ewelink_user', { id: ewelinkUserId }, { allowPrivate: true })
-    const ewelinkDeveloper = await ctx.queries.get('ewelink_developer', { id: ewelinkUser.developerId }, { allowPrivate: true })
+    const info = await ctx.knex('ewelink_user')
+      .join('ewelink_developer', 'ewelink_user.developerId', 'ewelink_developer.id')
+      .select(
+        'ewelink_user.accessToken',
+        'ewelink_user.refreshToken',
+        'ewelink_developer.appId')
+      .where('ewelink_user.id', ewelinkUserId)
+      .first()
 
-    if (!ewelinkUser) {
-      throw new Error(`ewelink user not found for id ${ewelinkUserId}`)
-    }
+    const data = await request({
+      url: 'v2/user/refresh',
+      method: 'POST',
+      accessToken: info.accessToken,
+      appId: info.appId,
+      params: {
+        rt: info.refreshToken,
+      }
+    })
 
-    const { appId, appKey } = ewelinkDeveloper
-    return { success: false }
+    const { at, rt } = data
+    console.log('refresh token: ', data)
+    await ctx.queries.update('ewelink_user', { id: ewelinkUserId }, {
+      accessToken: at,
+      refreshToken: rt
+    })
+    
+    return { data }
   },
 
   async ewelinkUpdateDevicesForAccount (ctx, { ewelinkUserId, page = 1, totalSize = 0 }) {
