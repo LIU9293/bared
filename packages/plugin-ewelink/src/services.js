@@ -131,13 +131,12 @@ module.exports = {
     })
 
     const { at, rt } = data
-    console.log('refresh token: ', data)
     await ctx.queries.update('ewelink_user', { id: ewelinkUserId }, {
       accessToken: at,
       refreshToken: rt
     })
     
-    return { data }
+    return { at, rt }
   },
 
 
