@@ -95,9 +95,7 @@ module.exports = {
     })
 
     const { accessToken, atExpiredTime, refreshToken, rtExpiredTime } = data.data
-    console.log('=== ewelink user ===')
-    console.log(data.data)
-    
+
     await ctx.queries.upsert('ewelink_user', { appId: id }, {
       developerId: ewelinkDeveloperId,
       appId: id,

@@ -110,7 +110,6 @@ module.exports = {
     const { code, data } = result.data
 
     if (code !== 200) {
-      console.log(`ts - ${ts}`)
       throw new Error(result.data.msg)
     }
 
