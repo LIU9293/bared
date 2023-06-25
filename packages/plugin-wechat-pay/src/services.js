@@ -166,17 +166,16 @@ module.exports = {
   async decodePaymentResourceDirect (ctx, { resource, merchantId }) {
     const merchant = await ctx.queries.get(
       'wechat_merchant', { id: merchantId }, { allowPrivate: true })
-    const app = await ctx.queries.get('app', { merchantId: merchant.id }, { allowPrivate: true })
-
-    const wxpay = new WxPay({
-      appid: app.appId,
-      mchid: merchant.merchantId,
-      publicKey: merchant.merchantCert,
-      privateKey: merchant.merchantPrivateKey
-    })
+    // const app = await ctx.queries.get('app', { merchantId: merchant.id }, { allowPrivate: true })
+    // const wxpay = new WxPay({
+    //   appid: app.appId,
+    //   mchid: merchant.merchantId,
+    //   publicKey: merchant.merchantCert,
+    //   privateKey: merchant.merchantPrivateKey
+    // })
 
     const { ciphertext, associated_data, nonce } = resource // eslint-disable-line
-    const result = wxpay.decipher_gcm(ciphertext, associated_data, nonce, merchant.merchantKey)
+    const result = WxPay.decipher_gcm(ciphertext, associated_data, nonce, merchant.merchantKey)
     return result
   }
 }
