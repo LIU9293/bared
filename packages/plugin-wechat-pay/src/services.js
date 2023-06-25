@@ -1,5 +1,6 @@
 const WxPay = require('@bared/wechatpay-node-v3')
 const { customAlphabet } = require('nanoid')
+const crypto = require('crypto')
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 const nanoid = customAlphabet(alphabet, 12)
 
@@ -8,7 +9,7 @@ function decipher_gcm (ciphertext, associated_data, nonce, key) {
     const _ciphertext = Buffer.from(ciphertext, 'base64')
     const authTag = _ciphertext.slice(_ciphertext.length - 16)
     const data = _ciphertext.slice(0, _ciphertext.length - 16)
-    const decipher = crypto_1.default.createDecipheriv('aes-256-gcm', key, nonce)
+    const decipher = crypto.createDecipheriv('aes-256-gcm', key, nonce)
     decipher.setAuthTag(authTag)
     decipher.setAAD(Buffer.from(associated_data))
     const decoded = decipher.update(data, undefined, 'utf8')
