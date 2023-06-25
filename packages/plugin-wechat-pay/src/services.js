@@ -3,6 +3,23 @@ const { customAlphabet } = require('nanoid')
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 const nanoid = customAlphabet(alphabet, 12)
 
+function decipher_gcm (ciphertext, associated_data, nonce, key) {
+  try {
+    const _ciphertext = Buffer.from(ciphertext, 'base64')
+    const authTag = _ciphertext.slice(_ciphertext.length - 16)
+    const data = _ciphertext.slice(0, _ciphertext.length - 16)
+    const decipher = crypto_1.default.createDecipheriv('aes-256-gcm', key, nonce)
+    decipher.setAuthTag(authTag)
+    decipher.setAAD(Buffer.from(associated_data))
+    const decoded = decipher.update(data, undefined, 'utf8')
+    decipher.final()
+    return JSON.parse(decoded)
+  } catch (e) {
+    console.error(e)
+    throw e
+  }
+}
+
 module.exports = {
   async getPayInstance (ctx, { merchantId }) {
     const { app } = ctx.state
@@ -167,14 +184,8 @@ module.exports = {
     const merchant = await ctx.queries.get(
       'wechat_merchant', { id: merchantId }, { allowPrivate: true })
 
-    const wxpay = new WxPay({
-      mchid: merchant.merchantId,
-      publicKey: merchant.merchantCert,
-      privateKey: merchant.merchantPrivateKey
-    })
-    
     const { ciphertext, associated_data, nonce } = resource // eslint-disable-line
-    const result = wxpay.decipher_gcm(ciphertext, associated_data, nonce, merchant.merchantKey)
+    const result = decipher_gcm(ciphertext, associated_data, nonce, merchant.merchantKey)
     return result
   }
 }
