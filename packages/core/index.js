@@ -80,7 +80,9 @@ async function start ({
   corsConfig = {},
 
   // extend original user schema
-  extendUserSchema = null
+  extendUserSchema = null,
+
+  skipCheckSchema = false
 }) {
   /** *************** basic koa setup *****************/
   const app = new Koa()
@@ -108,7 +110,13 @@ async function start ({
     ...plugins.map(i => i.schemas.map(s => ({ ...s, pluginName: i.pluginName })))
   ])
 
-  await registerSchemas(knex, allSchemas)
+
+  if (!skipCheckSchema) {
+    await registerSchemas(knex, allSchemas)
+  } else {
+    console.log('skip check schema...')
+  }
+  
   /** *************** done load schemas *****************/
 
   /** *************** register services *****************/
