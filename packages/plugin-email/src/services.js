@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer')
 
 module.exports = {
-  async sendEmail (ctx, { providerId, to, title, body }) {
+  async sendEmail (ctx, { providerId, to, title, body, attachments = [] }) {
     const emailProvider = await ctx.queries.get('email_provider', { id: providerId }, { allowPrivate: true })
 
     if (!emailProvider) {
@@ -23,7 +23,8 @@ module.exports = {
       from: senderName ? `"${senderName}" <${senderAddress}>` : senderAddress,
       to,
       subject: title,
-      html: body
+      html: body,
+      attachments
     })
 
     return { success: true }

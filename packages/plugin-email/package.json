@@ -1,6 +1,6 @@
 {
   "name": "@bared/plugin-email",
-  "version": "0.0.50",
+  "version": "0.0.51",
   "description": "Email plugin for bared CMS",
   "keywords": [],
   "main": "src/index.js",
