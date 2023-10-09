@@ -20,10 +20,36 @@ const registerRouter = ({ app, name = '', routes = [] }) => {
 
   const publicContentRoutes = routes.filter(i => i.public)
   const privateContentRoutes = routes.filter(i => !i.public)
+  const adminRoutes = routes.filter(i => i.admin)
 
   developerRouter.get(`/dapi/routes/${name}`, async ctx => {
     ctx.body = routes
   })
+
+  if (adminRoutes && adminRoutes.length > 0) {
+    adminRoutes.forEach(r => {
+      if (process.env.IS_DEV) {
+        console.log(`registering admin ${r.method} route: /dapi${r.url}`)
+      }
+      switch (r.method.toLowerCase()) {
+        case 'get':
+          developerRouter.get('/dapi' + r.url, r.controller)
+          break
+        case 'post':
+          developerRouter.post('/dapi' + r.url, r.controller)
+          break
+        case 'put':
+          developerRouter.put('/dapi' + r.url, r.controller)
+          break
+        case 'delete':
+          developerRouter.delete('/dapi' + r.url, r.controller)
+          break
+        default:
+          developerRouter.get('/dapi' + r.url, r.controller)
+          break
+      }
+    })
+  }
 
   app.use(developerRouter.routes())
   app.use(developerRouter.allowedMethods())
