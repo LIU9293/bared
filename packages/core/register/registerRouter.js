@@ -18,8 +18,8 @@ const registerRouter = ({ app, name = '', routes = [] }) => {
   privateRouter.use(allowBasic)
   developerRouter.use(allowDeveloper)
 
-  const publicContentRoutes = routes.filter(i => i.public)
-  const privateContentRoutes = routes.filter(i => !i.public)
+  const publicContentRoutes = routes.filter(i => i.public && !i.admin)
+  const privateContentRoutes = routes.filter(i => !i.public && !i.admin)
   const adminRoutes = routes.filter(i => i.admin)
 
   developerRouter.get(`/dapi/routes/${name}`, async ctx => {

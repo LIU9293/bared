@@ -109,8 +109,9 @@ const updateService = (schemas, knex) =>
     { allowPrivate = false } = {}
   ) => {
     if (tableName === 'user' && updateQuery.password) {
-      const hashedPassword = await bcrypt.hash(updateQuery.password, 10)
-      updateQuery.password = hashedPassword
+      const salt = randomBytes(16).toString("hex")
+      const buf = scryptSync(updateQuery.password, salt, 32)
+      updateQuery.password = `${buf.toString("hex")}.${salt}`
     }
 
     const schema = schemas.find(i => i.tableName === tableName)
