@@ -106,7 +106,7 @@ function insertKnexFields (t, field) {
   }
 }
 
-async function checkAndUpdateTableColumns (knex, tableName, fields) {
+async function checkAndUpdateTableColumns (knex, tableName, fields, skipCheckSchema) {
   for (const i in fields) {
     const field = fields[i]
     const hasColumn = await knex.schema.hasColumn(tableName, field.name)
@@ -117,8 +117,10 @@ async function checkAndUpdateTableColumns (knex, tableName, fields) {
       })
       console.log(`> database table \`${tableName}\` column \`${field.name}\` updated`)
     } else {
-      // loop each column and update
-      // TODO: handle unique change (maybe throw error?)
+      if (skipCheckSchema) {
+        continue
+      }
+
       await knex.schema.alterTable(tableName, t => {
         alterColumn(t, field)
       })

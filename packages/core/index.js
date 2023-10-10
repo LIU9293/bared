@@ -110,13 +110,7 @@ async function start ({
     ...plugins.map(i => i.schemas.map(s => ({ ...s, pluginName: i.pluginName })))
   ])
 
-
-  if (!skipCheckSchema) {
-    await registerSchemas(knex, allSchemas)
-  } else {
-    console.log('skip check schema...')
-  }
-  
+  await registerSchemas(knex, allSchemas, skipCheckSchema)  
   /** *************** done load schemas *****************/
 
   /** *************** register services *****************/
